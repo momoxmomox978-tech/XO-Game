@@ -2,143 +2,930 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>الأمن السيبراني - 1.1.0</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0D1117">
+<title>الأمن السيبراني - الإصدار 1.2.0</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial,sans-serif;-webkit-tap-highlight-color:transparent}
-body{background:#0D1117;color:#fff;min-height:100vh;overflow-x:hidden}
+/* ============================================
+   الأمن السيبراني - تطبيق تعليمي
+   الإصدار: 1.2.0
+   المطور: أنس خشان
+   ============================================ */
 
-/* ===== Splash Screen ===== */
-.splash{position:fixed;top:0;left:0;width:100%;height:100vh;background:#0D1117;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;transition:opacity 0.5s}
-.splash.hide{opacity:0;pointer-events:none}
-.splash-logo{font-size:100px;animation:pulse 1.5s infinite}
-.splash-title{font-size:24px;color:#4CAF50;margin-top:20px;font-weight:bold}
-.splash-sub{color:#666;margin-top:10px;font-size:14px}
-@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+    -webkit-tap-highlight-color: transparent;
+}
 
-/* ===== Login Screen ===== */
-.login{position:fixed;top:0;left:0;width:100%;height:100vh;background:linear-gradient(135deg,#0D1117 0%,#1a2332 100%);display:none;flex-direction:column;align-items:center;justify-content:center;padding:30px;z-index:9000}
-.login.active{display:flex}
-.login-logo{font-size:90px;margin-bottom:20px}
-.login h2{color:#4CAF50;margin-bottom:10px;font-size:26px}
-.login p{color:#888;margin-bottom:40px;font-size:14px}
-.login-input{width:100%;max-width:350px;padding:18px;border:2px solid #333;border-radius:12px;background:#1a2332;color:#fff;font-size:16px;text-align:center;margin-bottom:15px;outline:none;transition:border 0.3s;letter-spacing:2px}
-.login-input:focus{border-color:#4CAF50}
-.login-input::placeholder{color:#666;letter-spacing:0}
-.login-btn{width:100%;max-width:350px;padding:18px;background:linear-gradient(135deg,#4CAF50,#388E3C);color:#fff;border:none;border-radius:12px;font-size:18px;font-weight:bold;cursor:pointer;transition:transform 0.2s}
-.login-btn:active{transform:scale(0.96)}
-.login-error{color:#f44336;margin-top:15px;font-size:14px;display:none}
-.login-error.show{display:block;animation:shake 0.5s}
-@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-10px)}75%{transform:translateX(10px)}}
-.login-footer{position:absolute;bottom:20px;color:#444;font-size:12px}
+html, body {
+    background: #0D1117;
+    color: #fff;
+    min-height: 100vh;
+    overflow-x: hidden;
+    user-select: none;
+}
 
-/* ===== Main App ===== */
-.app{display:none;padding:20px;min-height:100vh;animation:fadeIn 0.5s}
-.app.active{display:block}
-@keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+/* ============ Splash Screen ============ */
+.splash {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100vh;
+    background: linear-gradient(135deg, #0D1117 0%, #161b22 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    transition: opacity 0.6s ease;
+}
 
-.header{text-align:center;padding:20px 0;margin-bottom:20px;border-bottom:1px solid #222}
-.header-logo{font-size:60px;margin-bottom:10px}
-.header h1{color:#4CAF50;font-size:26px;margin-bottom:5px}
-.header .version{color:#555;font-size:12px;margin-top:5px}
-.header .dev{color:#888;font-size:13px;margin-top:8px}
-.header .dev span{color:#4CAF50;font-weight:bold}
+.splash.hide {
+    opacity: 0;
+    pointer-events: none;
+}
 
-.menu{display:grid;grid-template-columns:1fr;gap:12px;max-width:400px;margin:0 auto}
+.splash-logo {
+    font-size: 110px;
+    animation: pulseGlow 1.5s infinite;
+    filter: drop-shadow(0 0 20px rgba(76, 175, 80, 0.5));
+}
 
-.btn{display:flex;align-items:center;justify-content:space-between;padding:20px;border:none;border-radius:15px;font-size:17px;font-weight:bold;color:#fff;cursor:pointer;text-decoration:none;transition:transform 0.2s,box-shadow 0.2s;width:100%}
-.btn:active{transform:scale(0.97)}
-.btn-arrow{opacity:0.6;font-size:20px}
-.btn-telegram{background:linear-gradient(135deg,#0088CC,#00A0E0);box-shadow:0 4px 15px rgba(0,136,204,0.3)}
-.btn-lessons{background:linear-gradient(135deg,#4CAF50,#66BB6A);box-shadow:0 4px 15px rgba(76,175,80,0.3)}
-.btn-quiz{background:linear-gradient(135deg,#FF9800,#FFB74D);box-shadow:0 4px 15px rgba(255,152,0,0.3)}
-.btn-tools{background:linear-gradient(135deg,#9C27B0,#BA68C8);box-shadow:0 4px 15px rgba(156,39,176,0.3)}
-.btn-about{background:linear-gradient(135deg,#607D8B,#78909C);box-shadow:0 4px 15px rgba(96,125,139,0.3)}
+.splash-title {
+    font-size: 28px;
+    color: #4CAF50;
+    margin-top: 25px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
 
-.footer{text-align:center;margin-top:40px;padding:20px;color:#444;font-size:12px;border-top:1px solid #1a1a1a}
+.splash-sub {
+    color: #666;
+    margin-top: 10px;
+    font-size: 14px;
+}
 
-/* ===== Pages (Lessons/Quiz/etc) ===== */
-.page{position:fixed;top:0;left:0;width:100%;height:100vh;background:#0D1117;overflow-y:auto;padding:20px;display:none;z-index:100;animation:slideIn 0.3s}
-.page.active{display:block}
-@keyframes slideIn{from{transform:translateX(100%)}to{transform:translateX(0)}}
-.page-header{display:flex;align-items:center;gap:15px;margin-bottom:25px;padding-bottom:15px;border-bottom:1px solid #222}
-.back-btn{background:#1a2332;border:none;color:#fff;width:45px;height:45px;border-radius:50%;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center}
-.back-btn:active{background:#2a3342}
-.page-title{font-size:22px;color:#4CAF50;font-weight:bold}
+.splash-dev {
+    color: #4CAF50;
+    margin-top: 5px;
+    font-size: 13px;
+}
 
-.lesson-card{background:#161b22;border-radius:15px;padding:20px;margin-bottom:15px;border:1px solid #21262d;cursor:pointer;transition:all 0.3s}
-.lesson-card:active{transform:scale(0.98);border-color:#4CAF50}
-.lesson-num{display:inline-block;background:#4CAF50;color:#fff;width:35px;height:35px;border-radius:50%;text-align:center;line-height:35px;font-weight:bold;margin-bottom:10px}
-.lesson-card h3{color:#4CAF50;font-size:17px;margin-bottom:8px}
-.lesson-card p{color:#aaa;font-size:14px;line-height:1.6}
+.splash-loader {
+    margin-top: 30px;
+    width: 200px;
+    height: 4px;
+    background: #21262d;
+    border-radius: 2px;
+    overflow: hidden;
+}
 
-.lesson-content{background:#161b22;padding:20px;border-radius:15px;line-height:1.9;font-size:15px;color:#ddd}
-.lesson-content h3{color:#4CAF50;margin:20px 0 10px;font-size:18px}
-.lesson-content ul{padding-right:20px;margin:10px 0}
-.lesson-content li{margin-bottom:8px}
-.lesson-content .tip{background:#1a3a1a;border-right:4px solid #4CAF50;padding:12px;border-radius:8px;margin:15px 0;font-size:14px}
-.lesson-content code{background:#0d1117;color:#4CAF50;padding:2px 6px;border-radius:4px;font-size:13px}
+.splash-loader-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #4CAF50, #66BB6A);
+    width: 0%;
+    animation: loadBar 2s ease-in-out forwards;
+}
 
-/* ===== Quiz ===== */
-.quiz-question{background:#161b22;border-radius:15px;padding:25px;margin-bottom:20px}
-.quiz-q-num{color:#4CAF50;font-size:13px;font-weight:bold;margin-bottom:10px}
-.quiz-q-text{font-size:17px;margin-bottom:20px;line-height:1.6}
-.quiz-option{display:block;width:100%;padding:15px;margin-bottom:10px;background:#1a2332;color:#fff;border:2px solid #333;border-radius:10px;font-size:15px;text-align:right;cursor:pointer;transition:all 0.3s}
-.quiz-option:active{transform:scale(0.98)}
-.quiz-option.correct{background:#1a3a1a;border-color:#4CAF50;color:#4CAF50}
-.quiz-option.wrong{background:#3a1a1a;border-color:#f44336;color:#f44336}
-.quiz-result{text-align:center;padding:40px 20px}
-.quiz-result .score{font-size:60px;color:#4CAF50;font-weight:bold}
-.quiz-result .msg{font-size:18px;margin-top:15px;color:#ddd}
+@keyframes loadBar {
+    0% { width: 0%; }
+    100% { width: 100%; }
+}
 
-/* ===== About ===== */
-.about-card{background:#161b22;border-radius:15px;padding:25px;margin-bottom:15px;border:1px solid #21262d}
-.about-row{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid #21262d}
-.about-row:last-child{border:none}
-.about-label{color:#888}
-.about-value{color:#4CAF50;font-weight:bold}
+@keyframes pulseGlow {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+}
 
-/* ===== Tools ===== */
-.tool-card{background:#161b22;border-radius:15px;padding:20px;margin-bottom:15px;border:1px solid #21262d}
-.tool-input{width:100%;padding:14px;background:#0d1117;border:2px solid #333;border-radius:10px;color:#fff;font-size:15px;outline:none;margin-bottom:12px}
-.tool-input:focus{border-color:#4CAF50}
-.tool-btn{width:100%;padding:14px;background:#4CAF50;color:#fff;border:none;border-radius:10px;font-size:16px;font-weight:bold;cursor:pointer}
-.tool-result{margin-top:15px;padding:15px;border-radius:10px;text-align:center;font-weight:bold;display:none}
-.tool-result.show{display:block}
-.tool-result.weak{background:#3a1a1a;color:#f44336}
-.tool-result.medium{background:#3a3a1a;color:#FF9800}
-.tool-result.strong{background:#1a3a1a;color:#4CAF50}
+/* ============ Main App ============ */
+.app {
+    display: none;
+    padding: 20px;
+    min-height: 100vh;
+    animation: fadeIn 0.5s ease;
+}
+
+.app.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ============ Header ============ */
+.header {
+    text-align: center;
+    padding: 15px 0 25px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #21262d;
+}
+
+.header-logo {
+    font-size: 65px;
+    margin-bottom: 10px;
+    display: inline-block;
+}
+
+.header h1 {
+    color: #4CAF50;
+    font-size: 26px;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.header .dev-name {
+    color: #888;
+    font-size: 13px;
+    margin-top: 8px;
+}
+
+.header .dev-name span {
+    color: #4CAF50;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.header .version {
+    color: #555;
+    font-size: 11px;
+    margin-top: 5px;
+    background: #161b22;
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 10px;
+}
+
+/* ============ Menu Buttons ============ */
+.menu {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 420px;
+    margin: 0 auto;
+}
+
+.btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    border: none;
+    border-radius: 15px;
+    font-size: 17px;
+    font-weight: bold;
+    color: #fff;
+    cursor: pointer;
+    text-decoration: none;
+    transition: transform 0.15s, box-shadow 0.15s;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: linear-gradient(120deg, transparent, rgba(255,255,255,0.1), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.5s;
+}
+
+.btn:active::before {
+    transform: translateX(100%);
+}
+
+.btn:active {
+    transform: scale(0.97);
+}
+
+.btn-arrow {
+    opacity: 0.5;
+    font-size: 20px;
+    font-weight: normal;
+}
+
+.btn-telegram {
+    background: linear-gradient(135deg, #0088CC, #00A0E0);
+    box-shadow: 0 4px 15px rgba(0, 136, 204, 0.3);
+}
+
+.btn-lessons {
+    background: linear-gradient(135deg, #4CAF50, #66BB6A);
+    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+}
+
+.btn-quiz {
+    background: linear-gradient(135deg, #FF9800, #FFB74D);
+    box-shadow: 0 4px 15px rgba(255, 152, 0, 0.3);
+}
+
+.btn-tools {
+    background: linear-gradient(135deg, #9C27B0, #BA68C8);
+    box-shadow: 0 4px 15px rgba(156, 39, 176, 0.3);
+}
+
+.btn-tips {
+    background: linear-gradient(135deg, #E91E63, #F06292);
+    box-shadow: 0 4px 15px rgba(233, 30, 99, 0.3);
+}
+
+.btn-about {
+    background: linear-gradient(135deg, #607D8B, #78909C);
+    box-shadow: 0 4px 15px rgba(96, 125, 139, 0.3);
+}
+
+/* ============ Footer ============ */
+.footer {
+    text-align: center;
+    margin-top: 40px;
+    padding: 20px;
+    color: #444;
+    font-size: 12px;
+    border-top: 1px solid #1a1a1a;
+    line-height: 1.8;
+}
+
+.footer strong {
+    color: #4CAF50;
+}
+
+/* ============ Pages ============ */
+.page {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100vh;
+    background: #0D1117;
+    overflow-y: auto;
+    padding: 20px;
+    display: none;
+    z-index: 100;
+    animation: slideIn 0.3s ease;
+}
+
+.page.active {
+    display: block;
+}
+
+@keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+.page-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #21262d;
+    position: sticky;
+    top: -20px;
+    background: #0D1117;
+    padding-top: 20px;
+    z-index: 10;
+}
+
+.back-btn {
+    background: #1a2332;
+    border: none;
+    color: #fff;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    font-size: 22px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+}
+
+.back-btn:active {
+    background: #2a3342;
+    transform: scale(0.92);
+}
+
+.page-title {
+    font-size: 22px;
+    color: #4CAF50;
+    font-weight: bold;
+}
+
+/* ============ Lessons ============ */
+.lesson-card {
+    background: #161b22;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 15px;
+    border: 1px solid #21262d;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.lesson-card:active {
+    transform: scale(0.98);
+    border-color: #4CAF50;
+    background: #1a2332;
+}
+
+.lesson-num {
+    display: inline-block;
+    background: linear-gradient(135deg, #4CAF50, #66BB6A);
+    color: #fff;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 38px;
+    font-weight: bold;
+    margin-bottom: 12px;
+    box-shadow: 0 3px 10px rgba(76, 175, 80, 0.3);
+}
+
+.lesson-card h3 {
+    color: #4CAF50;
+    font-size: 17px;
+    margin-bottom: 8px;
+}
+
+.lesson-card p {
+    color: #999;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.lesson-content {
+    background: #161b22;
+    padding: 22px;
+    border-radius: 15px;
+    line-height: 1.9;
+    font-size: 15px;
+    color: #ddd;
+    border: 1px solid #21262d;
+}
+
+.lesson-content h3 {
+    color: #4CAF50;
+    margin: 22px 0 12px;
+    font-size: 18px;
+    border-right: 4px solid #4CAF50;
+    padding-right: 10px;
+}
+
+.lesson-content h3:first-child {
+    margin-top: 0;
+}
+
+.lesson-content p {
+    margin-bottom: 12px;
+}
+
+.lesson-content ul, .lesson-content ol {
+    padding-right: 25px;
+    margin: 12px 0;
+}
+
+.lesson-content li {
+    margin-bottom: 10px;
+}
+
+.lesson-content .tip {
+    background: rgba(76, 175, 80, 0.1);
+    border-right: 4px solid #4CAF50;
+    padding: 14px;
+    border-radius: 8px;
+    margin: 18px 0;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.lesson-content .warning {
+    background: rgba(244, 67, 54, 0.1);
+    border-right: 4px solid #f44336;
+    padding: 14px;
+    border-radius: 8px;
+    margin: 18px 0;
+    font-size: 14px;
+}
+
+.lesson-content code {
+    background: #0d1117;
+    color: #4CAF50;
+    padding: 3px 8px;
+    border-radius: 5px;
+    font-size: 13px;
+    font-family: monospace;
+}
+
+.lesson-content strong {
+    color: #4CAF50;
+}
+
+/* ============ Quiz ============ */
+.quiz-question {
+    background: #161b22;
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 20px;
+    border: 1px solid #21262d;
+}
+
+.quiz-progress {
+    width: 100%;
+    height: 6px;
+    background: #21262d;
+    border-radius: 3px;
+    margin-bottom: 15px;
+    overflow: hidden;
+}
+
+.quiz-progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #4CAF50, #66BB6A);
+    border-radius: 3px;
+    transition: width 0.5s;
+}
+
+.quiz-q-num {
+    color: #4CAF50;
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 12px;
+}
+
+.quiz-q-text {
+    font-size: 17px;
+    margin-bottom: 22px;
+    line-height: 1.7;
+    font-weight: 500;
+}
+
+.quiz-option {
+    display: block;
+    width: 100%;
+    padding: 16px;
+    margin-bottom: 10px;
+    background: #1a2332;
+    color: #fff;
+    border: 2px solid #333;
+    border-radius: 10px;
+    font-size: 15px;
+    text-align: right;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.quiz-option:active {
+    transform: scale(0.98);
+}
+
+.quiz-option.correct {
+    background: rgba(76, 175, 80, 0.2);
+    border-color: #4CAF50;
+    color: #4CAF50;
+}
+
+.quiz-option.wrong {
+    background: rgba(244, 67, 54, 0.2);
+    border-color: #f44336;
+    color: #f44336;
+}
+
+.quiz-result {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.quiz-result .score {
+    font-size: 70px;
+    color: #4CAF50;
+    font-weight: bold;
+    text-shadow: 0 0 30px rgba(76, 175, 80, 0.5);
+}
+
+.quiz-result .msg {
+    font-size: 20px;
+    margin-top: 15px;
+    color: #ddd;
+}
+
+.quiz-result .percent {
+    color: #888;
+    margin-top: 10px;
+    font-size: 16px;
+}
+
+/* ============ Tools ============ */
+.tool-card {
+    background: #161b22;
+    border-radius: 15px;
+    padding: 22px;
+    margin-bottom: 18px;
+    border: 1px solid #21262d;
+}
+
+.tool-card h3 {
+    color: #4CAF50;
+    margin-bottom: 15px;
+    font-size: 17px;
+}
+
+.tool-input {
+    width: 100%;
+    padding: 14px;
+    background: #0d1117;
+    border: 2px solid #333;
+    border-radius: 10px;
+    color: #fff;
+    font-size: 15px;
+    outline: none;
+    margin-bottom: 12px;
+    transition: border 0.3s;
+}
+
+.tool-input:focus {
+    border-color: #4CAF50;
+}
+
+.tool-btn {
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(135deg, #4CAF50, #388E3C);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.tool-btn:active {
+    transform: scale(0.97);
+}
+
+.tool-result {
+    margin-top: 15px;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    font-weight: bold;
+    display: none;
+    animation: fadeIn 0.3s;
+}
+
+.tool-result.show {
+    display: block;
+}
+
+.tool-result.weak {
+    background: rgba(244, 67, 54, 0.15);
+    color: #f44336;
+    border: 1px solid #f44336;
+}
+
+.tool-result.medium {
+    background: rgba(255, 152, 0, 0.15);
+    color: #FF9800;
+    border: 1px solid #FF9800;
+}
+
+.tool-result.strong {
+    background: rgba(76, 175, 80, 0.15);
+    color: #4CAF50;
+    border: 1px solid #4CAF50;
+}
+
+/* ============ About ============ */
+.about-card {
+    background: #161b22;
+    border-radius: 15px;
+    padding: 22px;
+    margin-bottom: 15px;
+    border: 1px solid #21262d;
+}
+
+.about-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid #21262d;
+}
+
+.about-row:last-child {
+    border-bottom: none;
+}
+
+.about-label {
+    color: #888;
+}
+
+.about-value {
+    color: #4CAF50;
+    font-weight: bold;
+}
+
+.about-card h3 {
+    color: #4CAF50;
+    margin-bottom: 15px;
+    font-size: 17px;
+}
+
+.about-card p {
+    color: #aaa;
+    line-height: 1.8;
+    font-size: 14px;
+}
+
+.about-link {
+    display: block;
+    margin-top: 15px;
+    padding: 15px;
+    background: #0088CC;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 10px;
+    text-align: center;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+.about-link:active {
+    background: #006699;
+}
+
+/* ============ Developer Mode ============ */
+.dev-modal {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100vh;
+    background: rgba(0, 0, 0, 0.85);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9998;
+    padding: 20px;
+}
+
+.dev-modal.active {
+    display: flex;
+    animation: fadeIn 0.3s;
+}
+
+.dev-modal-content {
+    background: #161b22;
+    border-radius: 20px;
+    padding: 30px;
+    max-width: 400px;
+    width: 100%;
+    border: 1px solid #4CAF50;
+    box-shadow: 0 0 40px rgba(76, 175, 80, 0.3);
+}
+
+.dev-modal-content h3 {
+    color: #4CAF50;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 20px;
+}
+
+.dev-password-input {
+    width: 100%;
+    padding: 16px;
+    background: #0d1117;
+    border: 2px solid #333;
+    border-radius: 12px;
+    color: #fff;
+    font-size: 18px;
+    text-align: center;
+    letter-spacing: 3px;
+    outline: none;
+    margin-bottom: 15px;
+    transition: border 0.3s;
+}
+
+.dev-password-input:focus {
+    border-color: #4CAF50;
+}
+
+.dev-modal-btns {
+    display: flex;
+    gap: 10px;
+}
+
+.dev-modal-btn {
+    flex: 1;
+    padding: 14px;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.dev-modal-btn.cancel {
+    background: #333;
+    color: #fff;
+}
+
+.dev-modal-btn.confirm {
+    background: linear-gradient(135deg, #4CAF50, #388E3C);
+    color: #fff;
+}
+
+/* ============ Developer Panel ============ */
+.dev-panel {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100vh;
+    background: #0D1117;
+    overflow-y: auto;
+    padding: 20px;
+    display: none;
+    z-index: 9997;
+    animation: slideIn 0.3s;
+}
+
+.dev-panel.active {
+    display: block;
+}
+
+.dev-panel-header {
+    background: linear-gradient(135deg, #4CAF50, #2E7D32);
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.dev-panel-header h2 {
+    font-size: 22px;
+    margin-bottom: 5px;
+}
+
+.dev-panel-header p {
+    font-size: 13px;
+    opacity: 0.9;
+}
+
+.dev-stat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.dev-stat {
+    background: #161b22;
+    padding: 18px;
+    border-radius: 12px;
+    text-align: center;
+    border: 1px solid #21262d;
+}
+
+.dev-stat-icon {
+    font-size: 30px;
+    margin-bottom: 8px;
+}
+
+.dev-stat-value {
+    color: #4CAF50;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.dev-stat-label {
+    color: #888;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+.dev-action {
+    background: #161b22;
+    padding: 18px;
+    border-radius: 12px;
+    margin-bottom: 10px;
+    border: 1px solid #21262d;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    transition: all 0.3s;
+}
+
+.dev-action:active {
+    transform: scale(0.98);
+    border-color: #4CAF50;
+}
+
+.dev-action-icon {
+    font-size: 24px;
+}
+
+.dev-action-text {
+    flex: 1;
+}
+
+.dev-action-title {
+    color: #fff;
+    font-weight: bold;
+    font-size: 15px;
+    margin-bottom: 3px;
+}
+
+.dev-action-desc {
+    color: #888;
+    font-size: 12px;
+}
+
+/* ============ Toast ============ */
+.toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: #4CAF50;
+    color: #fff;
+    padding: 14px 25px;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: bold;
+    z-index: 99999;
+    opacity: 0;
+    transition: all 0.3s;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+    max-width: 90%;
+    text-align: center;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+.toast.error {
+    background: #f44336;
+}
+
+.toast.info {
+    background: #2196F3;
+}
+
+/* ============ Scrollbar ============ */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: #0D1117;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #4CAF50;
+    border-radius: 3px;
+}
+
+/* ============ Responsive ============ */
+@media (max-width: 360px) {
+    .header-logo { font-size: 55px; }
+    .header h1 { font-size: 22px; }
+    .btn { font-size: 15px; padding: 18px; }
+    .splash-logo { font-size: 90px; }
+}
 </style>
 </head>
 <body>
 
-<!-- ===== Splash Screen ===== -->
+<!-- ============================================
+     Splash Screen
+     ============================================ -->
 <div class="splash" id="splash">
     <div class="splash-logo">🛡️</div>
     <div class="splash-title">الأمن السيبراني</div>
-    <div class="splash-sub">الإصدار 1.1.0</div>
-</div>
-
-<!-- ===== Login Screen ===== -->
-<div class="login" id="login">
-    <div class="login-logo">🔐</div>
-    <h2>تسجيل الدخول</h2>
-    <p>أدخل كلمة المرور للدخول</p>
-    <input type="password" class="login-input" id="passInput" placeholder="••••••••••" inputmode="numeric" maxlength="10">
-    <button class="login-btn" onclick="checkPassword()">🔓 دخول</button>
-    <div class="login-error" id="loginError">❌ كلمة المرور غير صحيحة</div>
-    <div class="login-footer">
-        المطور: <strong style="color:#4CAF50">أنس خشان</strong>
+    <div class="splash-sub">الإصدار 1.2.0</div>
+    <div class="splash-dev">تطوير: أنس خشان</div>
+    <div class="splash-loader">
+        <div class="splash-loader-bar"></div>
     </div>
 </div>
 
-<!-- ===== Main App ===== -->
+<!-- ============================================
+     Main App
+     ============================================ -->
 <div class="app" id="app">
     <div class="header">
         <div class="header-logo">🛡️</div>
         <h1>الأمن السيبراني</h1>
-        <div class="dev">المطور: <span>أنس خشان</span></div>
-        <div class="version">الإصدار 1.1.0</div>
+        <div class="dev-name">
+            المطور: <span onclick="openDevLogin()" id="devTrigger">أنس خشان</span>
+        </div>
+        <div class="version">الإصدار 1.2.0</div>
     </div>
 
     <div class="menu">
@@ -158,6 +945,10 @@ body{background:#0D1117;color:#fff;min-height:100vh;overflow-x:hidden}
             <span>🔧 أدوات أمنية</span>
             <span class="btn-arrow">←</span>
         </button>
+        <button class="btn btn-tips" onclick="openPage('tipsPage')">
+            <span>💡 نصائح سريعة</span>
+            <span class="btn-arrow">←</span>
+        </button>
         <button class="btn btn-about" onclick="openPage('aboutPage')">
             <span>ℹ️ حول التطبيق</span>
             <span class="btn-arrow">←</span>
@@ -166,11 +957,14 @@ body{background:#0D1117;color:#fff;min-height:100vh;overflow-x:hidden}
 
     <div class="footer">
         © 2025 - الأمن السيبراني<br>
-        تطوير: <strong style="color:#4CAF50">أنس خشان</strong>
+        تطوير: <strong>أنس خشان</strong><br>
+        الإصدار 1.2.0
     </div>
 </div>
 
-<!-- ===== Lessons Page ===== -->
+<!-- ============================================
+     Lessons Page
+     ============================================ -->
 <div class="page" id="lessonsPage">
     <div class="page-header">
         <button class="back-btn" onclick="closePage('lessonsPage')">→</button>
@@ -212,9 +1006,23 @@ body{background:#0D1117;color:#fff;min-height:100vh;overflow-x:hidden}
         <h3>أمان الهاتف</h3>
         <p>كيف تحمي هاتفك من الاختراق</p>
     </div>
+    
+    <div class="lesson-card" onclick="showLesson(7)">
+        <div class="lesson-num">7</div>
+        <h3>أمان الشبكات</h3>
+        <p>حماية شبكتك المنزلية والواي فاي</p>
+    </div>
+    
+    <div class="lesson-card" onclick="showLesson(8)">
+        <div class="lesson-num">8</div>
+        <h3>الاحتيال الإلكتروني</h3>
+        <p>كيف تتعرف على عمليات النصب</p>
+    </div>
 </div>
 
-<!-- ===== Lesson Content Page ===== -->
+<!-- ============================================
+     Lesson Content Page
+     ============================================ -->
 <div class="page" id="lessonContentPage">
     <div class="page-header">
         <button class="back-btn" onclick="closePage('lessonContentPage')">→</button>
@@ -223,7 +1031,9 @@ body{background:#0D1117;color:#fff;min-height:100vh;overflow-x:hidden}
     <div class="lesson-content" id="lessonBody"></div>
 </div>
 
-<!-- ===== Quiz Page ===== -->
+<!-- ============================================
+     Quiz Page
+     ============================================ -->
 <div class="page" id="quizPage">
     <div class="page-header">
         <button class="back-btn" onclick="closePage('quizPage')">→</button>
@@ -232,7 +1042,9 @@ body{background:#0D1117;color:#fff;min-height:100vh;overflow-x:hidden}
     <div id="quizContainer"></div>
 </div>
 
-<!-- ===== Tools Page ===== -->
+<!-- ============================================
+     Tools Page
+     ============================================ -->
 <div class="page" id="toolsPage">
     <div class="page-header">
         <button class="back-btn" onclick="closePage('toolsPage')">→</button>
@@ -240,19 +1052,78 @@ body{background:#0D1117;color:#fff;min-height:100vh;overflow-x:hidden}
     </div>
     
     <div class="tool-card">
-        <h3 style="color:#4CAF50;margin-bottom:15px">🔒 فاحص قوة كلمة المرور</h3>
+        <h3>🔒 فاحص قوة كلمة المرور</h3>
         <input type="text" class="tool-input" id="passCheck" placeholder="اكتب كلمة المرور هنا" oninput="checkStrength()">
         <div class="tool-result" id="strengthResult"></div>
     </div>
     
     <div class="tool-card">
-        <h3 style="color:#4CAF50;margin-bottom:15px">🎲 مولّد كلمات مرور قوية</h3>
+        <h3>🎲 مولّد كلمات مرور قوية</h3>
         <button class="tool-btn" onclick="generatePassword()">🎲 توليد كلمة مرور</button>
-        <div class="tool-result show" id="generatedPass" style="background:#1a3a1a;color:#4CAF50;font-family:monospace;font-size:16px;margin-top:15px"></div>
+        <div class="tool-result show" id="generatedPass" style="background:rgba(76,175,80,0.15);color:#4CAF50;font-family:monospace;font-size:15px;margin-top:15px;word-break:break-all;"></div>
+    </div>
+    
+    <div class="tool-card">
+        <h3>🔍 فاحص عناوين URL</h3>
+        <input type="text" class="tool-input" id="urlCheck" placeholder="https://example.com">
+        <button class="tool-btn" onclick="checkUrl()">🔍 فحص الرابط</button>
+        <div class="tool-result" id="urlResult"></div>
     </div>
 </div>
 
-<!-- ===== About Page ===== -->
+<!-- ============================================
+     Tips Page
+     ============================================ -->
+<div class="page" id="tipsPage">
+    <div class="page-header">
+        <button class="back-btn" onclick="closePage('tipsPage')">→</button>
+        <div class="page-title">💡 نصائح سريعة</div>
+    </div>
+    
+    <div class="lesson-card">
+        <h3>🔐 كلمات المرور</h3>
+        <p>استخدم 12 حرفاً على الأقل، مع أحرف كبيرة وصغيرة وأرقام ورموز</p>
+    </div>
+    
+    <div class="lesson-card">
+        <h3>📧 رسائل البريد</h3>
+        <p>لا تفتح روابط من مرسلين مجهولين، تحقق من عنوان المرسل جيداً</p>
+    </div>
+    
+    <div class="lesson-card">
+        <h3>📱 تحديثات النظام</h3>
+        <p>حدّث نظامك وتطبيقاتك دائماً — التحديثات تسد الثغرات الأمنية</p>
+    </div>
+    
+    <div class="lesson-card">
+        <h3>🔒 التحقق بخطوتين</h3>
+        <p>فعّل التحقق بخطوتين في جميع حساباتك المهمة</p>
+    </div>
+    
+    <div class="lesson-card">
+        <h3>🌐 شبكات Wi-Fi</h3>
+        <p>تجنب البنوك والتسوق عبر شبكات Wi-Fi العامة</p>
+    </div>
+    
+    <div class="lesson-card">
+        <h3>💾 النسخ الاحتياطية</h3>
+        <p>اعمل نسخة احتياطية لبياناتك المهمة بشكل دوري</p>
+    </div>
+    
+    <div class="lesson-card">
+        <h3>🚫 الروابط المشبوهة</h3>
+        <p>لا تضغط على روابط قصيرة مجهولة (bit.ly وغيرها)</p>
+    </div>
+    
+    <div class="lesson-card">
+        <h3>🎁 العروض المغرية</h3>
+        <p>احذر من العروض "المجانية" الخيالية — غالباً احتيال</p>
+    </div>
+</div>
+
+<!-- ============================================
+     About Page
+     ============================================ -->
 <div class="page" id="aboutPage">
     <div class="page-header">
         <button class="back-btn" onclick="closePage('aboutPage')">→</button>
@@ -266,11 +1137,11 @@ body{background:#0D1117;color:#fff;min-height:100vh;overflow-x:hidden}
         </div>
         <div class="about-row">
             <span class="about-label">الإصدار</span>
-            <span class="about-value">1.1.0</span>
+            <span class="about-value">1.2.0</span>
         </div>
         <div class="about-row">
             <span class="about-label">المطور</span>
-            <span class="about-value">أنس خشان</span>
+            <span class="about-value" id="aboutDevName">أنس خشان</span>
         </div>
         <div class="about-row">
             <span class="about-label">قناة تلغرام</span>
@@ -280,80 +1151,204 @@ body{background:#0D1117;color:#fff;min-height:100vh;overflow-x:hidden}
             <span class="about-label">السنة</span>
             <span class="about-value">2025</span>
         </div>
+        <div class="about-row">
+            <span class="about-label">الحجم</span>
+            <span class="about-value">صغير جداً</span>
+        </div>
     </div>
     
     <div class="about-card">
-        <h3 style="color:#4CAF50;margin-bottom:15px">🎯 هدف التطبيق</h3>
-        <p style="color:#aaa;line-height:1.8">تطبيق تعليمي يهدف إلى نشر الوعي بالأمن السيبراني وتعليم المستخدمين كيفية حماية أنفسهم من الهجمات الإلكترونية.</p>
+        <h3>🎯 هدف التطبيق</h3>
+        <p>تطبيق تعليمي يهدف إلى نشر الوعي بالأمن السيبراني وتعليم المستخدمين كيفية حماية أنفسهم من الهجمات الإلكترونية بطرق بسيطة وفعالة.</p>
     </div>
     
     <div class="about-card">
-        <h3 style="color:#4CAF50;margin-bottom:15px">📞 تواصل معنا</h3>
-        <p style="color:#aaa">للاقتراحات والاستفسارات، انضم إلى قناتنا على تلغرام:</p>
-        <a href="https://t.me/amn_sirani" style="display:block;margin-top:15px;padding:15px;background:#0088CC;color:#fff;text-decoration:none;border-radius:10px;text-align:center;font-weight:bold">📺 @amn_sirani</a>
+        <h3>✨ ميزات التطبيق</h3>
+        <p>
+            ✅ 8 دروس تعليمية شاملة<br>
+            ✅ اختبار تفاعلي بـ 10 أسئلة<br>
+            ✅ أدوات أمنية عملية<br>
+            ✅ نصائح سريعة ومهمة<br>
+            ✅ يعمل بدون إنترنت<br>
+            ✅ تصميم عصري ومريح
+        </p>
+    </div>
+    
+    <div class="about-card">
+        <h3>📞 تواصل معنا</h3>
+        <p>للاقتراحات والاستفسارات، انضم إلى قناتنا على تلغرام:</p>
+        <a href="https://t.me/amn_sirani" class="about-link">📺 @amn_sirani</a>
+    </div>
+    
+    <div class="about-card">
+        <h3>⚙️ اضغط 7 مرات على اسم المطور للدخول لوضع المطور</h3>
+        <p style="text-align:center;font-size:12px;color:#555">هذه الميزة للمطور فقط</p>
     </div>
 </div>
 
-<script>
-// ===== Password Check =====
-const CORRECT_PASSWORD = "1234567890";
-const SESSION_KEY = "cyber_app_auth";
+<!-- ============================================
+     Developer Login Modal
+     ============================================ -->
+<div class="dev-modal" id="devModal">
+    <div class="dev-modal-content">
+        <h3>🔐 دخول المطور</h3>
+        <input type="password" class="dev-password-input" id="devPassword" placeholder="••••••••••" inputmode="numeric" maxlength="10">
+        <div class="dev-modal-btns">
+            <button class="dev-modal-btn cancel" onclick="closeDevLogin()">إلغاء</button>
+            <button class="dev-modal-btn confirm" onclick="checkDevPassword()">دخول</button>
+        </div>
+    </div>
+</div>
 
-// Auto-login if already authenticated
-window.onload = function() {
-    setTimeout(function() {
-        document.getElementById('splash').classList.add('hide');
-        
-        if(localStorage.getItem(SESSION_KEY) === "true") {
-            showApp();
-        } else {
-            document.getElementById('login').classList.add('active');
-        }
-    }, 2000);
+<!-- ============================================
+     Developer Panel
+     ============================================ -->
+<div class="dev-panel" id="devPanel">
+    <div class="dev-panel-header">
+        <h2>👨‍💻 لوحة تحكم المطور</h2>
+        <p>مرحباً أنس خشان</p>
+    </div>
+    
+    <div class="dev-stat-grid">
+        <div class="dev-stat">
+            <div class="dev-stat-icon">📚</div>
+            <div class="dev-stat-value">8</div>
+            <div class="dev-stat-label">دروس</div>
+        </div>
+        <div class="dev-stat">
+            <div class="dev-stat-icon">🧪</div>
+            <div class="dev-stat-value">10</div>
+            <div class="dev-stat-label">أسئلة</div>
+        </div>
+        <div class="dev-stat">
+            <div class="dev-stat-icon">🔧</div>
+            <div class="dev-stat-value">3</div>
+            <div class="dev-stat-label">أدوات</div>
+        </div>
+        <div class="dev-stat">
+            <div class="dev-stat-icon">💡</div>
+            <div class="dev-stat-value">8</div>
+            <div class="dev-stat-label">نصائح</div>
+        </div>
+    </div>
+    
+    <div class="dev-action" onclick="devAction('تحديث الإصدار')">
+        <div class="dev-action-icon">🚀</div>
+        <div class="dev-action-text">
+            <div class="dev-action-title">تحديث الإصدار</div>
+            <div class="dev-action-desc">الإصدار الحالي: 1.2.0</div>
+        </div>
+    </div>
+    
+    <div class="dev-action" onclick="devAction('إضافة دروس جديدة')">
+        <div class="dev-action-icon">📚</div>
+        <div class="dev-action-text">
+            <div class="dev-action-title">إضافة دروس جديدة</div>
+            <div class="dev-action-desc">أضف محتوى تعليمي</div>
+        </div>
+    </div>
+    
+    <div class="dev-action" onclick="devAction('تعديل الأسئلة')">
+        <div class="dev-action-icon">🧪</div>
+        <div class="dev-action-text">
+            <div class="dev-action-title">تعديل أسئلة الاختبار</div>
+            <div class="dev-action-desc">تحكم في الأسئلة</div>
+        </div>
+    </div>
+    
+    <div class="dev-action" onclick="devAction('إحصائيات الاستخدام')">
+        <div class="dev-action-icon">📊</div>
+        <div class="dev-action-text">
+            <div class="dev-action-title">إحصائيات الاستخدام</div>
+            <div class="dev-action-desc">معلومات المستخدمين</div>
+        </div>
+    </div>
+    
+    <div class="dev-action" onclick="devAction('تصدير البيانات')">
+        <div class="dev-action-icon">💾</div>
+        <div class="dev-action-text">
+            <div class="dev-action-title">تصدير البيانات</div>
+            <div class="dev-action-desc">نسخة احتياطية</div>
+        </div>
+    </div>
+    
+    <div class="dev-action" onclick="devAction('إعادة تعيين التطبيق')">
+        <div class="dev-action-icon">🔄</div>
+        <div class="dev-action-text">
+            <div class="dev-action-title">إعادة تعيين التطبيق</div>
+            <div class="dev-action-desc">حذف جميع البيانات</div>
+        </div>
+    </div>
+    
+    <div class="dev-action" onclick="closeDevPanel()" style="background:linear-gradient(135deg,#f44336,#c62828)">
+        <div class="dev-action-icon">🚪</div>
+        <div class="dev-action-text">
+            <div class="dev-action-title">خروج</div>
+            <div class="dev-action-desc">العودة للتطبيق</div>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================
+     Toast
+     ============================================ -->
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============================================
+   الأمن السيبراني - الإصدار 1.2.0
+   المطور: أنس خشان
+   ============================================ */
+
+// ============ Config ============
+const CONFIG = {
+    version: "1.2.0",
+    developer: "أنس خشان",
+    devPassword: "1234567890",
+    telegram: "https://t.me/amn_sirani"
 };
 
-function checkPassword() {
-    const input = document.getElementById('passInput').value;
-    const error = document.getElementById('loginError');
-    
-    if(input === CORRECT_PASSWORD) {
-        localStorage.setItem(SESSION_KEY, "true");
-        error.classList.remove('show');
-        document.getElementById('login').classList.remove('active');
-        showApp();
-    } else {
-        error.classList.add('show');
-        document.getElementById('passInput').value = '';
-        // Haptic feedback if available
-        if(navigator.vibrate) navigator.vibrate(200);
-    }
-}
-
-function showApp() {
-    document.getElementById('app').classList.add('active');
-}
-
-// Allow Enter key
-document.getElementById('passInput').addEventListener('keypress', function(e) {
-    if(e.key === 'Enter') checkPassword();
+// ============ Splash ============
+window.addEventListener('load', function() {
+    setTimeout(function() {
+        document.getElementById('splash').classList.add('hide');
+        document.getElementById('app').classList.add('active');
+    }, 2200);
 });
 
-// ===== Page Navigation =====
+// ============ Toast Notifications ============
+function showToast(msg, type) {
+    const toast = document.getElementById('toast');
+    toast.textContent = msg;
+    toast.className = 'toast';
+    if(type) toast.classList.add(type);
+    toast.classList.add('show');
+    
+    setTimeout(function() {
+        toast.classList.remove('show');
+    }, 2500);
+}
+
+// ============ Page Navigation ============
 function openPage(pageId) {
     document.getElementById(pageId).classList.add('active');
+    
+    if(pageId === 'quizPage') {
+        startQuiz();
+    }
 }
 
 function closePage(pageId) {
     document.getElementById(pageId).classList.remove('active');
 }
 
-// ===== Lessons Data =====
+// ============ Lessons Data ============
 const lessons = {
     1: {
         title: "ما هو الأمن السيبراني؟",
         content: `
             <h3>🎯 تعريف الأمن السيبراني</h3>
-            <p>الأمن السيبراني هو مجموعة من الممارسات والتقنيات التي تهدف إلى حماية الأنظمة والشبكات والبيانات من الهجمات الإلكترونية.</p>
+            <p>الأمن السيبراني هو مجموعة من الممارسات والتقنيات التي تهدف إلى حماية الأنظمة والشبكات والبيانات من الهجمات الإلكترونية والوصول غير المصرح به.</p>
             
             <h3>📌 لماذا هو مهم؟</h3>
             <ul>
@@ -361,15 +1356,24 @@ const lessons = {
                 <li>الحفاظ على خصوصيتك على الإنترنت</li>
                 <li>منع الوصول غير المصرح به لأجهزتك</li>
                 <li>حماية أموالك من الاحتيال الإلكتروني</li>
+                <li>حماية سمعتك وسمعة عملك</li>
             </ul>
             
-            <div class="tip">💡 <strong>نصيحة:</strong> الأمن السيبراني ليس مجرد تقنية، بل هو أسلوب حياة!</div>
+            <div class="tip">💡 <strong>نصيحة:</strong> الأمن السيبراني ليس مجرد تقنية، بل هو أسلوب حياة يجب ممارسته يومياً!</div>
             
             <h3>🔑 المبادئ الأساسية الثلاثة</h3>
             <ul>
                 <li><strong>السرية:</strong> منع الوصول غير المصرح به للمعلومات</li>
                 <li><strong>السلامة:</strong> ضمان عدم تعديل البيانات</li>
                 <li><strong>التوفر:</strong> ضمان الوصول للمعلومات عند الحاجة</li>
+            </ul>
+            
+            <h3>🎯 من هم المهاجمون؟</h3>
+            <ul>
+                <li><strong>الهاكرز:</strong> أفراد يخترقون الأنظمة</li>
+                <li><strong>المجرمون الإلكترونيون:</strong> يبحثون عن المال</li>
+                <li><strong>الجواسيس:</strong> يبحثون عن معلومات حساسة</li>
+                <li><strong>الهاكرز الأخلاقيون:</strong> يحمون الأنظمة (الجانب الجيد)</li>
             </ul>
         `
     },
@@ -380,17 +1384,26 @@ const lessons = {
             
             <h3>1. الفيشينغ (Phishing)</h3>
             <p>رسائل مزيفة تبدو حقيقية تسرق بياناتك. مثال: إيميل من "البنك" يطلب كلمة المرور.</p>
+            <div class="warning">⚠️ <strong>علامات الفيشينغ:</strong> أخطاء إملائية، روابط غريبة، طلب معلومات عاجل</div>
             
             <h3>2. برامج الفدية (Ransomware)</h3>
-            <p>برامج تشفر ملفاتك وتطلب فدية لاستعادتها.</p>
+            <p>برامج تشفر ملفاتك وتطلب فدية مالية لاستعادتها.</p>
             
             <h3>3. هجمات حجب الخدمة (DDoS)</h3>
             <p>إغراق الموقع بطلبات كثيرة حتى يتوقف عن العمل.</p>
             
             <h3>4. الهندسة الاجتماعية</h3>
-            <p>خداع الناس للحصول على معلوماتهم بدلاً من اختراق الأنظمة.</p>
+            <p>خداع الناس للحصول على معلوماتهم بدلاً من اختراق الأنظمة تقنياً.</p>
             
-            <div class="tip">🛡️ <strong>للحماية:</strong> لا تفتح روابط مشبوهة، ولا تشارك بياناتك مع أحد.</div>
+            <h3>5. البرمجيات الخبيثة (Malware)</h3>
+            <ul>
+                <li><strong>الفيروسات:</strong> تنتشر وتضر بالملفات</li>
+                <li><strong>الديدان:</strong> تنتشر عبر الشبكات</li>
+                <li><strong>أحصنة طروادة:</strong> تبدو مفيدة لكنها ضارة</li>
+                <li><strong>برامج التجسس:</strong> تراقب نشاطك</li>
+            </ul>
+            
+            <div class="tip">🛡️ <strong>للحماية:</strong> لا تفتح روابط مشبوهة، ولا تشارك بياناتك مع أحد، وحدّث نظامك دائماً.</div>
         `
     },
     3: {
@@ -403,9 +1416,10 @@ const lessons = {
                 <li><strong>التنويع:</strong> حروف كبيرة + صغيرة + أرقام + رموز</li>
                 <li><strong>التفرد:</strong> كلمة مرور مختلفة لكل حساب</li>
                 <li><strong>التحديث:</strong> تغييرها كل 3-6 أشهر</li>
+                <li><strong>السرية:</strong> لا تشاركها مع أي شخص</li>
             </ul>
             
-            <div class="tip">❌ <strong>تجنب:</strong> تاريخ ميلادك، أسماء أفراد عائلتك، كلمات مثل "123456"</div>
+            <div class="warning">❌ <strong>تجنب:</strong> تاريخ ميلادك، أسماء أفراد عائلتك، كلمات مثل "123456"، "password"</div>
             
             <h3>✅ أمثلة كلمات قوية:</h3>
             <p><code>My$ecure#2025!Pass</code></p>
@@ -414,6 +1428,9 @@ const lessons = {
             <h3>🎯 طريقة ذكية:</h3>
             <p>استخدم جملة تحبها وحوّل أول حرف من كل كلمة:</p>
             <p>"أحب القراءة كل صباح" → <code>أ أ ق ك ص @2025</code></p>
+            
+            <h3>💡 نصيحة إضافية:</h3>
+            <p>استخدم مدير كلمات مرور مثل <strong>Bitwarden</strong> (مجاني) لتخزين كلماتك بشكل آمن.</p>
         `
     },
     4: {
@@ -429,13 +1446,22 @@ const lessons = {
                 <li><strong>VPN موثوق:</strong> لتشفير اتصالك</li>
             </ul>
             
-            <div class="tip">🔍 <strong>علامات الموقع المشبوه:</strong> أخطاء إملائية، تصميم رديء، عروض خيالية</div>
+            <div class="tip">🔍 <strong>علامات الموقع المشبوه:</strong> أخطاء إملائية، تصميم رديء، عروض خيالية، نوافذ منبثقة كثيرة</div>
             
             <h3>🚫 لا تفعل أبداً:</h3>
             <ul>
                 <li>تحميل ملفات من مواقع غير موثوقة</li>
                 <li>إدخال بياناتك في مواقع مشبوهة</li>
                 <li>الضغط على روابط في رسائل مجهولة</li>
+                <li>استخدام نفس كلمة المرور في مواقع مختلفة</li>
+            </ul>
+            
+            <h3>🎯 اختبر نفسك:</h3>
+            <p>عند دخولك أي موقع، اسأل نفسك:</p>
+            <ul>
+                <li>هل الرابط صحيح؟</li>
+                <li>هل الموقع HTTPS؟</li>
+                <li>هل يطلب معلومات غير ضرورية؟</li>
             </ul>
         `
     },
@@ -450,16 +1476,25 @@ const lessons = {
                 <li>Gmail</li>
                 <li>Facebook</li>
                 <li>WhatsApp</li>
+                <li>Instagram</li>
                 <li>جميع حساباتك المهمة</li>
             </ul>
             
             <h3>2. مدير كلمات المرور</h3>
-            <p>يخزّن كلماتك بشكل مشفر. أمثلة: Bitwarden، LastPass، 1Password</p>
+            <p>يخزّن كلماتك بشكل مشفر. أمثلة:</p>
+            <ul>
+                <li><strong>Bitwarden:</strong> مجاني ومفتوح المصدر</li>
+                <li><strong>LastPass:</strong> مشهور وسهل</li>
+                <li><strong>1Password:</strong> مدفوع لكن ممتاز</li>
+            </ul>
             
             <h3>3. مراجعة الأجهزة المتصلة</h3>
             <p>افحص من حساباتك من الأجهزة، وأزل الأجهزة غير المعروفة.</p>
             
             <div class="tip">📧 <strong>راقب بريدك:</strong> إذا وصلك إشعار بتسجيل دخول لم تعرفه، غيّر كلمة المرور فوراً!</div>
+            
+            <h3>4. معلومات الاسترداد</h3>
+            <p>أضف بريداً احتياطياً ورقم هاتف للاسترداد في حال فقدان حسابك.</p>
         `
     },
     6: {
@@ -475,6 +1510,7 @@ const lessons = {
                 <li>مراجعة صلاحيات التطبيقات</li>
                 <li>تفعيل "العثور على هاتفي"</li>
                 <li>عمل نسخ احتياطية</li>
+                <li>استخدام VPN عند الحاجة</li>
             </ul>
             
             <h3>❌ لا تفعل:</h3>
@@ -483,9 +1519,87 @@ const lessons = {
                 <li>تحميل APK من مواقع مجهولة</li>
                 <li>منح صلاحيات غير ضرورية للتطبيقات</li>
                 <li>الاتصال بشبكات Wi-Fi مفتوحة للبنوك</li>
+                <li>فتح روابط من رسائل SMS مجهولة</li>
             </ul>
             
-            <div class="tip">🔍 <strong>علامات اختراق الهاتف:</strong> بطء مفاجئ، بطارية تنفد بسرعة، إعلانات غريبة، تطبيقات لا تعرفها</div>
+            <div class="warning">🔍 <strong>علامات اختراق الهاتف:</strong> بطء مفاجئ، بطارية تنفد بسرعة، إعلانات غريبة، تطبيقات لا تعرفها، استهلاك بيانات مرتفع</div>
+            
+            <h3>🛡️ أفضل تطبيقات الحماية:</h3>
+            <ul>
+                <li><strong>Malwarebytes:</strong> مضاد للبرمجيات الخبيثة</li>
+                <li><strong>Bitdefender:</strong> حماية شاملة</li>
+                <li><strong>ProtonVPN:</strong> VPN مجاني موثوق</li>
+            </ul>
+        `
+    },
+    7: {
+        title: "أمان الشبكات",
+        content: `
+            <h3>🌐 حماية شبكتك المنزلية</h3>
+            
+            <h3>1. راوتر آمن</h3>
+            <ul>
+                <li>غيّر كلمة سر الراوتر الافتراضية</li>
+                <li>استخدم WPA3 أو WPA2</li>
+                <li>عطّل WPS</li>
+                <li>حدّث firmware الراوتر</li>
+                <li>غيّر اسم الشبكة (SSID)</li>
+            </ul>
+            
+            <h3>2. شبكة الضيوف</h3>
+            <p>أنشئ شبكة منفصلة للزوار، حتى لا يصلوا لأجهزتك الشخصية.</p>
+            
+            <h3>3. مراقبة الأجهزة</h3>
+            <p>افحص من المتصل بشبكتك بشكل دوري من لوحة تحكم الراوتر.</p>
+            
+            <div class="tip">🔐 <strong>نصيحة:</strong> استخدم VPN عند الاتصال بشبكات Wi-Fi العامة في المقاهي والمطارات.</div>
+            
+            <h3>⚠️ خطر الشبكات العامة:</h3>
+            <ul>
+                <li>يمكن اعتراض بياناتك</li>
+                <li>يمكن سرقة كلمات المرور</li>
+                <li>يمكن زرع برامج خبيثة</li>
+            </ul>
+        `
+    },
+    8: {
+        title: "الاحتيال الإلكتروني",
+        content: `
+            <h3>⚠️ كيف تتعرف على الاحتيال؟</h3>
+            
+            <h3>علامات التحذير:</h3>
+            <ul>
+                <li>عروض خيالية (ربحت مليون دولار!)</li>
+                <li>طلبات عاجلة للتحويل المالي</li>
+                <li>طلب معلومات شخصية حساسة</li>
+                <li>روابط مختصرة غريبة</li>
+                <li>أخطاء إملائية في الرسالة</li>
+                <li>مرسل غير معروف</li>
+            </ul>
+            
+            <h3>أنواع الاحتيال الشائعة:</h3>
+            
+            <h3>1. احتيال البنوك</h3>
+            <p>رسالة تدّعي أنها من البنك تطلب تحديث بياناتك.</p>
+            
+            <h3>2. احتيال الجوائز</h3>
+            <p>"لقد ربحت جائزة!" — تطلب دفع رسوم لاستلامها.</p>
+            
+            <h3>3. احتيال الوظائف</h3>
+            <p>عروض عمل برواتب عالية جداً مقابل رسوم.</p>
+            
+            <h3>4. احتيال المشاعر</h3>
+            <p>علاقات عاطفية مزيفة تطلب المال لاحقاً.</p>
+            
+            <div class="warning">🚨 <strong>القاعدة الذهبية:</strong> إذا كان العرض يبدو مثالياً جداً، فهو غالباً احتيال!</div>
+            
+            <h3>✅ كيف تتصرف؟</h3>
+            <ul>
+                <li>لا ترد على الرسائل المشبوهة</li>
+                <li>لا تضغط على الروابط</li>
+                <li>احذف الرسالة</li>
+                <li>أبلغ الجهات المختصة</li>
+            </ul>
         `
     }
 };
@@ -498,7 +1612,7 @@ function showLesson(num) {
     openPage('lessonContentPage');
 }
 
-// ===== Quiz =====
+// ============ Quiz ============
 const quizQuestions = [
     {q: "ما هو الأمن السيبراني؟", options: ["حماية الأنظمة والبيانات", "لعبة فيديو", "برنامج محاسبة", "تطبيق تواصل"], correct: 0},
     {q: "ما هي أفضل كلمة مرور؟", options: ["123456", "اسمك", "تاريخ ميلادك", "K9@mN2#pL8$"], correct: 3},
@@ -509,7 +1623,7 @@ const quizQuestions = [
     {q: "ما هو الـ VPN؟", options: ["برنامج تصميم", "شبكة افتراضية لتشفير اتصالك", "موقع تواصل", "لعبة"], correct: 1},
     {q: "كيف تحمي هاتفك؟", options: ["Root الجهاز", "تحميل APK مجهولة", "تحديث النظام دورياً", "لا تفعل شيئاً"], correct: 2},
     {q: "ما هي الهندسة الاجتماعية؟", options: ["بناء الجسور", "خداع الناس لأخذ بياناتهم", "برمجة", "تصميم"], correct: 1},
-    {q: "ما هو برنامج الفدية؟", options: ["برنامج مجاني", "برنامج تشفير ملفاتك وطلب فدية", "لعبة", "متصفح"], correct: 1}
+    {q: "ما هو برنامج الفدية؟", options: ["برنامج مجاني", "برنامج يشفر ملفاتك ويطلب فدية", "لعبة", "متصفح"], correct: 1}
 ];
 
 let currentQ = 0;
@@ -530,7 +1644,12 @@ function renderQuestion() {
     }
     
     const q = quizQuestions[currentQ];
+    const progress = ((currentQ) / quizQuestions.length) * 100;
+    
     let html = `<div class="quiz-question">
+        <div class="quiz-progress">
+            <div class="quiz-progress-bar" style="width: ${progress}%"></div>
+        </div>
         <div class="quiz-q-num">السؤال ${currentQ + 1} من ${quizQuestions.length}</div>
         <div class="quiz-q-text">${q.q}</div>`;
     
@@ -573,20 +1692,13 @@ function showResult() {
         <div class="quiz-result">
             <div class="score">${score}/${quizQuestions.length}</div>
             <div class="msg">${msg}</div>
-            <div style="color:#888;margin-top:10px">النسبة: ${percent}%</div>
+            <div class="percent">النسبة: ${percent}%</div>
             <button class="tool-btn" style="margin-top:30px;max-width:300px" onclick="startQuiz()">🔄 إعادة الاختبار</button>
         </div>
     `;
 }
 
-// Auto-start quiz when page opens
-const originalOpenPage = openPage;
-openPage = function(pageId) {
-    originalOpenPage(pageId);
-    if(pageId === 'quizPage') startQuiz();
-};
-
-// ===== Tools =====
+// ============ Tools ============
 function checkStrength() {
     const pass = document.getElementById('passCheck').value;
     const result = document.getElementById('strengthResult');
@@ -628,16 +1740,121 @@ function generatePassword() {
     document.getElementById('generatedPass').textContent = "🔑 " + pass;
 }
 
-// Prevent back button from closing app
+function checkUrl() {
+    const url = document.getElementById('urlCheck').value.trim();
+    const result = document.getElementById('urlResult');
+    
+    if(!url) {
+        result.classList.remove('show');
+        return;
+    }
+    
+    result.classList.add('show');
+    result.classList.remove('weak', 'medium', 'strong');
+    
+    const hasHttps = url.toLowerCase().startsWith('https://');
+    const hasHttp = url.toLowerCase().startsWith('http://');
+    const suspicious = /[а-яА-Я]|bit\.ly|tinyurl|free-money|win-|prize|click-here/i.test(url);
+    const hasIp = /^https?:\/\/\d+\.\d+\.\d+\.\d+/.test(url);
+    
+    if(suspicious || hasIp) {
+        result.classList.add('weak');
+        result.textContent = "🔴 رابط مشبوه - احذر!";
+    } else if(!hasHttps) {
+        result.classList.add('medium');
+        result.textContent = "🟡 غير مشفر - يفضل HTTPS";
+    } else {
+        result.classList.add('strong');
+        result.textContent = "🟢 الرابط يبدو آمناً";
+    }
+}
+
+// ============ Developer Mode ============
+let devClickCount = 0;
+let devClickTimer = null;
+
+function openDevLogin() {
+    devClickCount++;
+    
+    clearTimeout(devClickTimer);
+    devClickTimer = setTimeout(function() {
+        devClickCount = 0;
+    }, 3000);
+    
+    if(devClickCount >= 7) {
+        devClickCount = 0;
+        document.getElementById('devModal').classList.add('active');
+        document.getElementById('devPassword').value = '';
+        document.getElementById('devPassword').focus();
+    } else if(devClickCount >= 3) {
+        showToast("اضغط " + (7 - devClickCount) + " مرات أخرى...", "info");
+    }
+}
+
+function closeDevLogin() {
+    document.getElementById('devModal').classList.remove('active');
+}
+
+function checkDevPassword() {
+    const pass = document.getElementById('devPassword').value;
+    
+    if(pass === CONFIG.devPassword) {
+        closeDevLogin();
+        document.getElementById('devPanel').classList.add('active');
+        showToast("🎉 مرحباً بك يا مطور!", "info");
+    } else {
+        showToast("❌ كلمة سر خاطئة", "error");
+        if(navigator.vibrate) navigator.vibrate(200);
+    }
+}
+
+function closeDevPanel() {
+    document.getElementById('devPanel').classList.remove('active');
+    showToast("👋 تم الخروج من وضع المطور");
+}
+
+function devAction(action) {
+    showToast("⚙️ " + action + " - قريباً");
+}
+
+// Allow Enter key for developer password
+document.getElementById('devPassword').addEventListener('keypress', function(e) {
+    if(e.key === 'Enter') checkDevPassword();
+});
+
+// ============ Prevent back button from closing app ============
 history.pushState(null, null, location.href);
 window.onpopstate = function() {
-    // Close active page if any
     const pages = document.querySelectorAll('.page.active');
-    if(pages.length > 0) {
+    const devPanel = document.getElementById('devPanel');
+    const devModal = document.getElementById('devModal');
+    
+    if(devModal.classList.contains('active')) {
+        closeDevLogin();
+    } else if(devPanel.classList.contains('active')) {
+        closeDevPanel();
+    } else if(pages.length > 0) {
         pages.forEach(p => p.classList.remove('active'));
-        history.pushState(null, null, location.href);
     }
+    
+    history.pushState(null, null, location.href);
 };
+
+// ============ Double tap prevention ============
+let lastTouchEnd = 0;
+document.addEventListener('touchend', function(event) {
+    const now = (new Date()).getTime();
+    if(now - lastTouchEnd <= 300) {
+        event.preventDefault();
+    }
+    lastTouchEnd = now;
+}, false);
+
+// ============ Console Welcome ============
+console.log("%c🛡️ الأمن السيبراني - الإصدار 1.2.0", "color: #4CAF50; font-size: 20px; font-weight: bold;");
+console.log("%cالمطور: أنس خشان", "color: #4CAF50; font-size: 14px;");
+console.log("%cقناة تلغرام: @amn_sirani", "color: #0088CC; font-size: 14px;");
+console.log("%c⚠️ هذه المنطقة للمطورين فقط!", "color: #FF9800; font-size: 14px; font-weight: bold;");
 </script>
 </body>
 </html>
