@@ -7,7 +7,7 @@
 <title>الأمن السيبراني - 1.7.0</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Arial,sans-serif;-webkit-tap-highlight-color:transparent}
-:root{--bg:#0D1117;--bg2:#161b22;--bg3:#1a2332;--border:#21262d;--primary:#4CAF50;--primary2:#66BB6A;--accent:#00FFAA;--text:#fff;--text2:#888;--text3:#555;--danger:#f44336;--warning:#FF9800;--info:#2196F3;--gold:#FFD700;--purple:#9C27B0;--pink:#E91E63;--cyan:#00BCD4;--lime:#CDDC39}
+:root{--bg:#0D1117;--bg2:#161b22;--bg3:#1a2332;--border:#21262d;--primary:#4CAF50;--primary2:#66BB6A;--accent:#00FFAA;--text:#fff;--text2:#888;--text3:#555;--danger:#f44336;--warning:#FF9800;--info:#2196F3;--gold:#FFD700;--purple:#9C27B0;--pink:#E91E63;--cyan:#00BCD4}
 body.light{--bg:#f5f5f5;--bg2:#fff;--bg3:#e8e8e8;--border:#ddd;--text:#222;--text2:#666;--text3:#999}
 body.theme-blue{--primary:#2196F3;--primary2:#42A5F5}
 body.theme-purple{--primary:#9C27B0;--primary2:#BA68C8}
@@ -18,18 +18,18 @@ body.theme-cyan{--primary:#00BCD4;--primary2:#4DD0E1}
 body.theme-indigo{--primary:#3F51B5;--primary2:#5C6BC0}
 body.theme-teal{--primary:#009688;--primary2:#4DB6AC}
 body.theme-amber{--primary:#FFC107;--primary2:#FFD54F}
-html,body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;user-select:none;transition:background 0.3s,color 0.3s}
-.splash{position:fixed;inset:0;background:linear-gradient(135deg,#0D1117,#161b22);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:99999;transition:opacity 0.6s}
+html,body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;user-select:none;transition:background 0.3s}
+.splash{position:fixed;top:0;left:0;width:100%;height:100vh;background:linear-gradient(135deg,#0D1117,#161b22);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:99999;transition:opacity 0.6s}
 .splash.hide{opacity:0;pointer-events:none}
 .splash-logo{font-size:130px;animation:pulseGlow 1.5s infinite;filter:drop-shadow(0 0 40px rgba(76,175,80,0.7))}
-.splash-title{font-size:32px;color:#4CAF50;margin-top:25px;font-weight:bold;text-shadow:0 0 20px rgba(76,175,80,0.5)}
+.splash-title{font-size:32px;color:#4CAF50;margin-top:25px;font-weight:bold}
 .splash-sub{color:#666;margin-top:10px;font-size:15px}
 .splash-dev{color:#4CAF50;margin-top:5px;font-size:14px}
 .splash-loader{margin-top:40px;width:240px;height:5px;background:#21262d;border-radius:3px;overflow:hidden}
-.splash-loader-bar{height:100%;background:linear-gradient(90deg,#4CAF50,#66BB6A,#00FFAA);width:0%;animation:loadBar 2.5s forwards;box-shadow:0 0 15px #4CAF50}
+.splash-loader-bar{height:100%;background:linear-gradient(90deg,#4CAF50,#66BB6A,#00FFAA);width:0%;animation:loadBar 2.5s forwards}
 @keyframes loadBar{to{width:100%}}
 @keyframes pulseGlow{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
-.welcome{position:fixed;inset:0;background:linear-gradient(135deg,#0D1117,#161b22);display:none;flex-direction:column;align-items:center;justify-content:center;padding:30px;z-index:9998;text-align:center}
+.welcome{position:fixed;top:0;left:0;width:100%;height:100vh;background:linear-gradient(135deg,#0D1117,#161b22);display:none;flex-direction:column;align-items:center;justify-content:center;padding:30px;z-index:9998;text-align:center}
 .welcome.active{display:flex}
 .welcome-avatar{width:160px;height:160px;border-radius:50%;background:linear-gradient(135deg,#4CAF50,#66BB6A);display:flex;align-items:center;justify-content:center;font-size:90px;border:6px solid #4CAF50;box-shadow:0 0 50px rgba(76,175,80,0.6);margin-bottom:25px;animation:pulseGlow 2s infinite}
 .welcome-name{font-size:30px;color:#4CAF50;font-weight:bold;margin-bottom:8px}
@@ -37,7 +37,7 @@ html,body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hid
 .welcome-title{font-size:26px;margin-bottom:15px}
 .welcome-desc{font-size:15px;color:#888;line-height:1.8;margin-bottom:40px;max-width:400px}
 .welcome-btn{padding:20px 70px;background:linear-gradient(135deg,#4CAF50,#66BB6A);color:#fff;border:none;border-radius:18px;font-size:19px;font-weight:bold;cursor:pointer;box-shadow:0 8px 30px rgba(76,175,80,0.5)}
-.terms{position:fixed;inset:0;background:var(--bg);display:none;flex-direction:column;z-index:9997;padding:25px}
+.terms{position:fixed;top:0;left:0;width:100%;height:100vh;background:var(--bg);display:none;flex-direction:column;z-index:9997;padding:25px}
 .terms.active{display:flex}
 .terms-header{text-align:center;padding:20px 0;border-bottom:2px solid var(--border);margin-bottom:20px}
 .terms-header h2{color:var(--primary);font-size:26px;margin-bottom:5px}
@@ -46,21 +46,20 @@ html,body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hid
 .terms-body h3{color:var(--primary);margin:18px 0 10px;font-size:17px}
 .terms-body ul{padding-right:20px;margin:10px 0}
 .terms-body li{margin-bottom:8px}
-.terms-check{display:flex;align-items:center;gap:12px;padding:15px;margin:15px 0;background:var(--bg2);border-radius:12px;border:2px solid var(--border);cursor:pointer;transition:all 0.3s}
+.terms-check{display:flex;align-items:center;gap:12px;padding:15px;margin:15px 0;background:var(--bg2);border-radius:12px;border:2px solid var(--border);cursor:pointer}
 .terms-check.checked{border-color:var(--primary);background:rgba(76,175,80,0.1)}
 .terms-checkbox{width:28px;height:28px;border:2px solid var(--border);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .terms-check.checked .terms-checkbox{background:var(--primary);border-color:var(--primary)}
 .terms-check.checked .terms-checkbox::after{content:'✓';color:#fff;font-weight:bold;font-size:18px}
 .terms-check-label{font-size:15px}
-.terms-btn{padding:18px;background:linear-gradient(135deg,#4CAF50,#66BB6A);color:#fff;border:none;border-radius:15px;font-size:17px;font-weight:bold;cursor:pointer;margin-top:15px;opacity:0.5;pointer-events:none;transition:all 0.3s}
+.terms-btn{padding:18px;background:linear-gradient(135deg,#4CAF50,#66BB6A);color:#fff;border:none;border-radius:15px;font-size:17px;font-weight:bold;cursor:pointer;margin-top:15px;opacity:0.5;pointer-events:none}
 .terms-btn.active{opacity:1;pointer-events:auto}
-.version-choice{position:fixed;inset:0;background:var(--bg);display:none;flex-direction:column;align-items:center;justify-content:center;padding:25px;z-index:9996;text-align:center}
+.version-choice{position:fixed;top:0;left:0;width:100%;height:100vh;background:var(--bg);display:none;flex-direction:column;align-items:center;justify-content:center;padding:25px;z-index:9996;text-align:center}
 .version-choice.active{display:flex}
 .version-title{font-size:28px;color:var(--primary);font-weight:bold;margin-bottom:10px}
 .version-sub{font-size:14px;color:var(--text2);margin-bottom:35px}
 .version-cards{display:flex;flex-direction:column;gap:18px;width:100%;max-width:420px}
-.version-card{background:var(--bg2);border:2px solid var(--border);border-radius:20px;padding:24px;cursor:pointer;text-align:right;position:relative;overflow:hidden;transition:transform 0.2s}
-.version-card:active{transform:scale(0.98)}
+.version-card{background:var(--bg2);border:2px solid var(--border);border-radius:20px;padding:24px;cursor:pointer;text-align:right;position:relative;overflow:hidden}
 .version-card.free{border-color:var(--primary)}
 .version-card.pro{border-color:var(--gold)}
 .version-card.pro::before{content:'⭐';position:absolute;top:-15px;right:-15px;font-size:90px;opacity:0.1}
@@ -72,7 +71,7 @@ html,body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hid
 .version-card-price{font-size:15px;margin-top:12px;font-weight:bold}
 .version-card.free .version-card-price{color:var(--primary)}
 .version-card.pro .version-card-price{color:var(--gold)}
-.pro-code{position:fixed;inset:0;background:rgba(0,0,0,0.9);display:none;align-items:center;justify-content:center;z-index:9995;padding:20px}
+.pro-code{position:fixed;top:0;left:0;width:100%;height:100vh;background:rgba(0,0,0,0.9);display:none;align-items:center;justify-content:center;z-index:9995;padding:20px}
 .pro-code.active{display:flex}
 .pro-code-box{background:var(--bg2);border:2px solid var(--gold);border-radius:22px;padding:32px;max-width:400px;width:100%;text-align:center}
 .pro-code-box h3{color:var(--gold);margin-bottom:10px;font-size:22px}
@@ -84,9 +83,8 @@ html,body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hid
 .header-left h1{font-size:23px;color:var(--primary);margin-bottom:3px}
 .header-left p{font-size:11px;color:var(--text2)}
 .header-btns{display:flex;gap:10px}
-.header-btn{width:45px;height:45px;border-radius:50%;background:var(--bg2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:21px;cursor:pointer;position:relative;transition:transform 0.2s}
-.header-btn:active{transform:scale(0.9);background:var(--bg3)}
-.header-badge{position:absolute;top:-3px;left:-3px;background:var(--gold);color:#333;font-size:10px;font-weight:bold;padding:2px 6px;border-radius:10px}
+.header-btn{width:45px;height:45px;border-radius:50%;background:var(--bg2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:21px;cursor:pointer;position:relative}
+.header-btn:active{transform:scale(0.9)}
 .pro-banner{background:linear-gradient(135deg,rgba(255,215,0,0.15),rgba(255,215,0,0.05));border:1px solid var(--gold);border-radius:15px;padding:15px;margin-bottom:15px;display:flex;align-items:center;gap:15px}
 .pro-banner-icon{font-size:38px}
 .pro-banner-content{flex:1}
@@ -105,7 +103,7 @@ html,body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hid
 .search-item-type{color:var(--text2);font-size:11px;margin-top:3px}
 .search-empty{padding:25px;text-align:center;color:var(--text2);font-size:14px}
 .menu{display:flex;flex-direction:column;gap:12px;max-width:500px;margin:0 auto}
-.btn{display:flex;align-items:center;justify-content:space-between;padding:18px;border:none;border-radius:16px;font-size:16px;font-weight:bold;color:#fff;cursor:pointer;text-decoration:none;width:100%;transition:transform 0.15s}
+.btn{display:flex;align-items:center;justify-content:space-between;padding:18px;border:none;border-radius:16px;font-size:16px;font-weight:bold;color:#fff;cursor:pointer;text-decoration:none;width:100%}
 .btn:active{transform:scale(0.97)}
 .btn-arrow{opacity:0.5;font-size:18px}
 .btn-telegram{background:linear-gradient(135deg,#0088CC,#00A0E0)}
@@ -120,13 +118,12 @@ html,body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hid
 .btn-aigame{background:linear-gradient(135deg,#00E5FF,#00B8D4)}
 .btn-map{background:linear-gradient(135deg,#9C27B0,#BA68C8)}
 .btn-glossary{background:linear-gradient(135deg,#00BCD4,#4DD0E1)}
-.btn-scanner{background:linear-gradient(135deg,#9C27B0,#BA68C8}
+.btn-scanner{background:linear-gradient(135deg,#9C27B0,#BA68C8)}
 .btn-emergency{background:linear-gradient(135deg,#f44336,#EF5350)}
-.btn-tools{background:linear-gradient(135deg,#607D8B,#78909C}
+.btn-tools{background:linear-gradient(135deg,#607D8B,#78909C)}
 .btn-docs{background:linear-gradient(135deg,#009688,#4DB6AC)}
 .btn-changelog{background:linear-gradient(135deg,#795548,#A1887F)}
 .btn-rate{background:linear-gradient(135deg,#FFC107,#FFD54F);color:#333}
-.btn-share{background:linear-gradient(135deg,#3F51B5,#5C6BC0)}
 .btn-about{background:linear-gradient(135deg,#455A64,#546E7A)}
 .page{position:fixed;top:0;left:0;width:100%;height:100vh;background:var(--bg);overflow-y:auto;padding:20px 20px 90px;display:none;z-index:100;animation:slideIn 0.3s}
 .page.active{display:block}
@@ -134,7 +131,7 @@ html,body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hid
 .page-header{display:flex;align-items:center;gap:15px;margin-bottom:25px;padding-bottom:15px;border-bottom:1px solid var(--border);position:sticky;top:-20px;background:var(--bg);padding-top:20px;z-index:10}
 .back-btn{background:var(--bg3);border:none;color:var(--text);width:45px;height:45px;border-radius:50%;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .page-title{font-size:21px;color:var(--primary);font-weight:bold}
-.lesson-item{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:12px;display:flex;align-items:center;gap:15px;cursor:pointer;transition:all 0.3s}
+.lesson-item{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:12px;display:flex;align-items:center;gap:15px;cursor:pointer}
 .lesson-item.completed{background:linear-gradient(135deg,#16261e,#0d1f17);border-color:rgba(76,175,80,0.5)}
 .lesson-item.pro-content{border-color:var(--gold)}
 .lesson-item.pro-content.locked{opacity:0.5}
@@ -187,7 +184,7 @@ html,body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hid
 .quiz-opt.correct{background:rgba(76,175,80,0.2);border-color:var(--primary);color:var(--primary)}
 .quiz-opt.wrong{background:rgba(244,67,54,0.2);border-color:var(--danger);color:var(--danger)}
 .result-box{text-align:center;padding:40px 20px}
-.result-score{font-size:85px;color:var(--primary);font-weight:bold;text-shadow:0 0 30px rgba(76,175,80,0.6)}
+.result-score{font-size:85px;color:var(--primary);font-weight:bold}
 .result-msg{font-size:20px;margin-top:15px}
 .result-points{color:var(--gold);font-size:24px;margin-top:15px;font-weight:bold}
 .result-btn{margin-top:30px;padding:15px 45px;background:linear-gradient(135deg,var(--primary),var(--primary2));color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:bold;cursor:pointer}
@@ -201,7 +198,6 @@ html,body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hid
 .tool-result.weak{background:rgba(244,67,54,0.15);color:var(--danger);border:1px solid var(--danger)}
 .tool-result.medium{background:rgba(255,152,0,0.15);color:var(--warning);border:1px solid var(--warning)}
 .tool-result.strong{background:rgba(76,175,80,0.15);color:var(--primary);border:1px solid var(--primary)}
-.tool-result.info{background:rgba(33,150,243,0.15);color:var(--info);border:1px solid var(--info)}
 .glossary-item{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:10px;cursor:pointer}
 .glossary-term{color:var(--primary);font-size:16px;font-weight:bold;display:flex;justify-content:space-between;align-items:center}
 .glossary-arrow{transition:transform 0.3s}
@@ -212,7 +208,7 @@ html,body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hid
 .emergency-num{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--danger),#EF5350);display:flex;align-items:center;justify-content:center;font-weight:bold;flex-shrink:0}
 .badge-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
 .badge-item-full{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:15px;text-align:center;opacity:0.4}
-.badge-item-full.earned{opacity:1;border-color:var(--gold);box-shadow:0 0 20px rgba(255,215,0,0.3)}
+.badge-item-full.earned{opacity:1;border-color:var(--gold)}
 .badge-icon-full{font-size:34px;margin-bottom:8px}
 .badge-name-full{font-size:12px;font-weight:bold}
 .badge-desc-full{font-size:10px;color:var(--text2);margin-top:5px}
@@ -243,8 +239,6 @@ html,body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hid
 .doc-section.open .doc-arrow{transform:rotate(90deg)}
 .doc-body{padding:0 16px 16px;color:var(--text2);font-size:14px;line-height:1.8;display:none}
 .doc-section.open .doc-body{display:block}
-.doc-body ul{padding-right:20px;margin:10px 0}
-.doc-body strong{color:var(--primary)}
 .changelog-item{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:15px;margin-bottom:10px}
 .changelog-version{color:var(--primary);font-weight:bold;font-size:16px;margin-bottom:8px;display:flex;justify-content:space-between}
 .changelog-date{color:var(--text2);font-size:12px;font-weight:normal}
@@ -256,19 +250,18 @@ html,body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hid
 .ai-answer{padding:15px;background:var(--bg3);border:2px solid var(--border);border-radius:10px;color:var(--text);font-size:14px;cursor:pointer}
 .ai-answer.correct{background:rgba(76,175,80,0.2);border-color:var(--primary);color:var(--primary)}
 .ai-answer.wrong{background:rgba(244,67,54,0.2);border-color:var(--danger);color:var(--danger)}
-.map-node{background:var(--bg2);border:2px solid var(--border);border-radius:16px;padding:18px;margin-bottom:15px;display:flex;align-items:center;gap:15px;position:relative}
+.map-node{background:var(--bg2);border:2px solid var(--border);border-radius:16px;padding:18px;margin-bottom:5px;display:flex;align-items:center;gap:15px}
 .map-node.completed{border-color:var(--primary);background:linear-gradient(135deg,rgba(76,175,80,0.1),var(--bg2))}
 .map-node.locked{opacity:0.5}
 .map-node-icon{width:55px;height:55px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--primary2));display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0}
-.map-node.locked .map-node-icon{background:var(--bg3)}
 .map-node-info{flex:1}
 .map-node-title{font-size:16px;font-weight:bold;margin-bottom:5px}
 .map-node-desc{color:var(--text2);font-size:12px}
 .map-node-progress{margin-top:8px;height:6px;background:var(--border);border-radius:3px;overflow:hidden}
 .map-node-progress-fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--primary2));border-radius:3px}
-.map-connector{width:3px;height:20px;background:var(--border);margin:0 auto}
-.map-connector.active{background:var(--primary);box-shadow:0 0 10px var(--primary)}
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.85);display:none;align-items:center;justify-content:center;z-index:99998;padding:20px}
+.map-connector{width:3px;height:15px;background:var(--border);margin:0 auto}
+.map-connector.active{background:var(--primary)}
+.modal-overlay{position:fixed;top:0;left:0;width:100%;height:100vh;background:rgba(0,0,0,0.85);display:none;align-items:center;justify-content:center;z-index:99998;padding:20px}
 .modal-overlay.active{display:flex}
 .modal-box{background:var(--bg2);border:1px solid var(--primary);border-radius:20px;padding:28px;max-width:420px;width:100%;text-align:center}
 .modal-box h3{color:var(--primary);margin-bottom:15px;font-size:21px}
@@ -278,7 +271,7 @@ html,body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hid
 .modal-btn{flex:1;padding:14px;border:none;border-radius:10px;font-size:15px;font-weight:bold;cursor:pointer}
 .modal-btn.cancel{background:var(--bg3);color:var(--text)}
 .modal-btn.confirm{background:linear-gradient(135deg,var(--primary),var(--primary2));color:#fff}
-.dev-panel{position:fixed;inset:0;background:var(--bg);overflow-y:auto;padding:20px;display:none;z-index:99997}
+.dev-panel{position:fixed;top:0;left:0;width:100%;height:100vh;background:var(--bg);overflow-y:auto;padding:20px;display:none;z-index:99997}
 .dev-panel.active{display:block}
 .dev-header{background:linear-gradient(135deg,var(--primary),#2E7D32);padding:28px;border-radius:18px;margin-bottom:20px;text-align:center;color:#fff}
 .dev-header h2{font-size:24px;margin-bottom:8px}
@@ -296,17 +289,16 @@ html,body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hid
 .dev-action-title{font-weight:bold;font-size:15px}
 .dev-action-desc{color:var(--text2);font-size:12px;margin-top:3px}
 .star-rating{display:flex;justify-content:center;gap:10px;margin:20px 0;font-size:50px}
-.star{cursor:pointer;color:var(--border);transition:color 0.2s,transform 0.2s}
+.star{cursor:pointer;color:var(--border);transition:color 0.2s}
 .star.active{color:var(--gold)}
-.star:active{transform:scale(1.2)}
-.toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--primary);color:#fff;padding:15px 28px;border-radius:30px;font-size:14px;font-weight:bold;z-index:99999;opacity:0;transition:all 0.3s;max-width:90%;text-align:center;box-shadow:0 8px 25px rgba(0,0,0,0.4)}
+.toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--primary);color:#fff;padding:15px 28px;border-radius:30px;font-size:14px;font-weight:bold;z-index:99999;opacity:0;transition:all 0.3s;max-width:90%;text-align:center}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .toast.error{background:var(--danger)}
 .toast.info{background:var(--info)}
 .toast.warning{background:var(--warning)}
 .toast.gold{background:var(--gold);color:#333}
 .bottom-nav{position:fixed;bottom:0;left:0;width:100%;height:72px;background:var(--bg2);border-top:1px solid var(--border);display:flex;justify-content:space-around;align-items:center;z-index:1000}
-.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;color:var(--text2);padding:8px 0;transition:color 0.3s}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;color:var(--text2);padding:8px 0}
 .nav-item.active{color:var(--primary)}
 .nav-icon{font-size:23px;margin-bottom:3px}
 .nav-label{font-size:10px}
@@ -319,20 +311,14 @@ html,body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hid
 </head>
 <body>
 
-<div class="splash" id="splash">
-<div class="splash-logo">🛡️</div>
-<div class="splash-title">الأمن السيبراني</div>
-<div class="splash-sub">الإصدار 1.7.0</div>
-<div class="splash-dev">تطوير: أنس خشان</div>
-<div class="splash-loader"><div class="splash-loader-bar"></div></div>
-</div>
+<div class="splash" id="splash"><div class="splash-logo">🛡️</div><div class="splash-title">الأمن السيبراني</div><div class="splash-sub">الإصدار 1.7.0</div><div class="splash-dev">تطوير: أنس خشان</div><div class="splash-loader"><div class="splash-loader-bar"></div></div></div>
 
 <div class="welcome" id="welcomeScreen">
 <div class="welcome-avatar">👨‍💻</div>
 <div class="welcome-name">أنس خشان</div>
 <div class="welcome-role">مطور التطبيق</div>
 <div class="welcome-title">🛡️ مرحباً بك في 1.7.0</div>
-<div class="welcome-desc">الإصدار الأضخم - 30 درس + 25 شارة + 15 تحدٍ + 3 ألعاب + خريطة تعلم</div>
+<div class="welcome-desc">الإصدار الأضخم - 30 درس + 25 شارة + 15 تحدٍ + 20 AI + خريطة تعلم</div>
 <button class="welcome-btn" onclick="showTerms()">🚀 ابدأ التعلم</button>
 </div>
 
@@ -352,8 +338,8 @@ html,body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hid
 <div class="version-title">🎯 اختر النسخة</div>
 <div class="version-sub">يمكنك الترقية لاحقاً</div>
 <div class="version-cards">
-<div class="version-card free" onclick="selectVersion('free')"><div class="version-card-icon">🆓</div><div class="version-card-title">النسخة العادية</div><div class="version-card-desc">30 درس، اختبارات، أدوات، قاموس، خريطة تعلم</div><div class="version-card-price">مجاني للأبد ✓</div></div>
-<div class="version-card pro" onclick="selectVersion('pro')"><div class="version-card-icon">⭐</div><div class="version-card-title">النسخة Pro</div><div class="version-card-desc">كل الميزات + 15 تحدٍ متقدم + شهادات + ألعاب</div><div class="version-card-price">كود: 0000</div></div>
+<div class="version-card free" onclick="selectVersion('free')"><div class="version-card-icon">🆓</div><div class="version-card-title">النسخة العادية</div><div class="version-card-desc">30 درس، اختبارات، أدوات، قاموس، خريطة</div><div class="version-card-price">مجاني للأبد ✓</div></div>
+<div class="version-card pro" onclick="selectVersion('pro')"><div class="version-card-icon">⭐</div><div class="version-card-title">النسخة Pro</div><div class="version-card-desc">كل الميزات + 15 تحدٍ + شهادات + ألعاب</div><div class="version-card-price">كود: 0000</div></div>
 </div>
 </div>
 
@@ -436,7 +422,7 @@ html,body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hid
 <div class="modal-overlay" id="devModal"><div class="modal-box"><h3>🔐 دخول المطورين</h3><p>للمطورين فقط</p><input type="password" id="devPassword" placeholder="••••••••••" inputmode="numeric" maxlength="10"><div class="modal-box-btns"><button class="modal-btn cancel" onclick="closeDevLogin()">إلغاء</button><button class="modal-btn confirm" onclick="checkDevPassword()">دخول</button></div></div></div>
 
 <div class="dev-panel" id="devPanel">
-<div class="dev-header"><h2>👨‍💻 لوحة المطورين</h2><p>الإصدار 1.7.0 - أنس خشان</p></div>
+<div class="dev-header"><h2>👨‍💻 لوحة المطورين</h2><p>الإصدار 1.7.0</p></div>
 <div class="dev-tabs">
 <div class="dev-tab active" onclick="switchDevTab('stats',event)">📊 إحصائيات</div>
 <div class="dev-tab" onclick="switchDevTab('content',event)">📝 المحتوى</div>
@@ -460,301 +446,123 @@ html,body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hid
 <div class="toast" id="toast"></div>
 
 <script>
-/* ============================================================
-   الأمن السيبراني - الإصدار 1.7.0
-   المطور: أنس خشان
-   ============================================================ */
+const CONFIG = {version:"1.7.0",developer:"أنس خشان",devPassword:"1234567890",proCode:"0000",telegram:"https://t.me/amn_sirani"};
+const STATE = {points:0,completedLessons:[],completedChallenges:[],completedQuizzes:[],completedAI:[],earnedBadges:[],userRating:0,darkMode:true,theme:"default",isPro:false,termsAccepted:false,versionChosen:false,userName:"هاكر مبتدئ",activityLog:[]};
 
-const CONFIG = {
-    version: "1.7.0",
-    developer: "أنس خشان",
-    devPassword: "1234567890",
-    proCode: "0000",
-    telegram: "https://t.me/amn_sirani"
-};
-
-const STATE = {
-    points: 0,
-    completedLessons: [],
-    completedChallenges: [],
-    completedQuizzes: [],
-    completedAI: [],
-    earnedBadges: [],
-    userRating: 0,
-    darkMode: true,
-    theme: "default",
-    isPro: false,
-    termsAccepted: false,
-    versionChosen: false,
-    userName: "هاكر مبتدئ",
-    activityLog: [],
-    gamesPlayed: 0
-};
-
-/* ============ Splash & Load ============ */
-window.addEventListener('load', function() {
-    setTimeout(function() {
-        document.getElementById('splash').classList.add('hide');
-        loadState();
-        applyTheme();
-        
-        if(STATE.termsAccepted && STATE.versionChosen) {
-            document.getElementById('app').classList.add('active');
-            document.getElementById('bottomNav').style.display = 'flex';
-            initApp();
-        } else if(STATE.termsAccepted) {
-            document.getElementById('versionChoice').classList.add('active');
-        } else {
-            document.getElementById('welcomeScreen').classList.add('active');
-        }
-    }, 2600);
+window.addEventListener('load',function(){
+setTimeout(function(){
+document.getElementById('splash').classList.add('hide');
+loadState();
+applyTheme();
+if(STATE.termsAccepted&&STATE.versionChosen){document.getElementById('app').classList.add('active');document.getElementById('bottomNav').style.display='flex';initApp();}
+else if(STATE.termsAccepted){document.getElementById('versionChoice').classList.add('active');}
+else{document.getElementById('welcomeScreen').classList.add('active');}
+},2600);
 });
 
-function loadState() {
-    try {
-        const s = localStorage.getItem('cyber_v170');
-        if(s) Object.assign(STATE, JSON.parse(s));
-    } catch(e) {}
-}
+function loadState(){try{const s=localStorage.getItem('cyber_v170');if(s)Object.assign(STATE,JSON.parse(s));}catch(e){}}
+function saveState(){try{localStorage.setItem('cyber_v170',JSON.stringify(STATE));}catch(e){}}
+function logActivity(txt){STATE.activityLog.push({t:txt,d:new Date().toISOString()});if(STATE.activityLog.length>50)STATE.activityLog.shift();saveState();}
 
-function saveState() {
-    try { localStorage.setItem('cyber_v170', JSON.stringify(STATE)); } catch(e) {}
-}
+function showTerms(){document.getElementById('welcomeScreen').classList.remove('active');document.getElementById('termsScreen').classList.add('active');}
+function toggleTerms(){const c=document.getElementById('termsCheck');c.classList.toggle('checked');const btn=document.getElementById('termsBtn');if(c.classList.contains('checked'))btn.classList.add('active');else btn.classList.remove('active');}
+function showVersionChoice(){if(!document.getElementById('termsCheck').classList.contains('checked')){showToast('❌ يجب الموافقة','error');return;}STATE.termsAccepted=true;saveState();document.getElementById('termsScreen').classList.remove('active');document.getElementById('versionChoice').classList.add('active');}
+function selectVersion(v){if(v==='pro'){document.getElementById('proCodeScreen').classList.add('active');}else{STATE.versionChosen=true;STATE.isPro=false;saveState();enterApp();}}
+function closeProCode(){document.getElementById('proCodeScreen').classList.remove('active');}
+function verifyProCode(){const code=document.getElementById('proCodeInput').value;if(code===CONFIG.proCode){STATE.isPro=true;STATE.versionChosen=true;saveState();closeProCode();showToast('⭐ تم تفعيل Pro!','gold');setTimeout(enterApp,1000);}else{showToast('❌ كود خاطئ','error');}}
+function enterApp(){document.getElementById('versionChoice').classList.remove('active');document.getElementById('app').classList.add('active');document.getElementById('bottomNav').style.display='flex';initApp();}
 
-function logActivity(txt) {
-    STATE.activityLog.push({t: txt, d: new Date().toISOString()});
-    if(STATE.activityLog.length > 50) STATE.activityLog.shift();
-    saveState();
-}
+function initApp(){renderLessons();renderVideos();renderGlossary();renderEmergency();renderDocs();renderChangelog();renderChallenges();renderBadgesPage();renderStats();renderCerts();renderLeaderboard();renderThemes();renderAIGame();renderMap();updateProfile();if(STATE.isPro)document.getElementById('proBanner').style.display='flex';}
 
-/* ============ Welcome & Terms ============ */
-function showTerms() {
-    document.getElementById('welcomeScreen').classList.remove('active');
-    document.getElementById('termsScreen').classList.add('active');
-}
-
-function toggleTerms() {
-    const c = document.getElementById('termsCheck');
-    c.classList.toggle('checked');
-    const btn = document.getElementById('termsBtn');
-    if(c.classList.contains('checked')) btn.classList.add('active');
-    else btn.classList.remove('active');
-}
-
-function showVersionChoice() {
-    if(!document.getElementById('termsCheck').classList.contains('checked')) {
-        showToast('❌ يجب الموافقة', 'error');
-        return;
-    }
-    STATE.termsAccepted = true;
-    saveState();
-    document.getElementById('termsScreen').classList.remove('active');
-    document.getElementById('versionChoice').classList.add('active');
-}
-
-function selectVersion(v) {
-    if(v === 'pro') {
-        document.getElementById('proCodeScreen').classList.add('active');
-    } else {
-        STATE.versionChosen = true;
-        STATE.isPro = false;
-        saveState();
-        enterApp();
-    }
-}
-
-function closeProCode() {
-    document.getElementById('proCodeScreen').classList.remove('active');
-}
-
-function verifyProCode() {
-    const code = document.getElementById('proCodeInput').value;
-    if(code === CONFIG.proCode) {
-        STATE.isPro = true;
-        STATE.versionChosen = true;
-        saveState();
-        closeProCode();
-        showToast('⭐ تم تفعيل Pro!', 'gold');
-        setTimeout(enterApp, 1000);
-    } else {
-        showToast('❌ كود خاطئ', 'error');
-    }
-}
-
-function enterApp() {
-    document.getElementById('versionChoice').classList.remove('active');
-    document.getElementById('app').classList.add('active');
-    document.getElementById('bottomNav').style.display = 'flex';
-    initApp();
-}
-
-function initApp() {
-    renderLessons();
-    renderVideos();
-    renderGlossary();
-    renderEmergency();
-    renderDocs();
-    renderChangelog();
-    renderChallenges();
-    renderBadgesPage();
-    renderStats();
-    renderCerts();
-    renderLeaderboard();
-    renderThemes();
-    renderAIGame();
-    renderMap();
-    updateProfile();
-    if(STATE.isPro) document.getElementById('proBanner').style.display = 'flex';
-}
-
-/* ============ Lessons (30) ============ */
 const LESSONS = [
-// قسم 1: الأساسيات
 {id:'l1',cat:'🔐 الأساسيات',title:'ما هو الأمن السيبراني؟',points:50,pro:false,content:'<h3>🎯 التعريف</h3><p>الأمن السيبراني هو حماية الأنظمة والشبكات والبيانات من الهجمات الإلكترونية.</p><h3>📌 الأهمية</h3><ul><li>حماية البيانات الشخصية</li><li>الحفاظ على الخصوصية</li><li>منع الاحتيال</li></ul><div class="tip">💡 أسلوب حياة!</div>'},
-{id:'l2',cat:'🔐 الأساسيات',title:'مبادئ CIA الثلاثة',points:60,pro:false,content:'<h3>🔺 السرية (Confidentiality)</h3><p>منع الوصول غير المصرح به.</p><h3>🔺 السلامة (Integrity)</h3><p>ضمان عدم تعديل البيانات.</p><h3>🔺 التوفر (Availability)</h3><p>الوصول عند الحاجة.</p>'},
+{id:'l2',cat:'🔐 الأساسيات',title:'مبادئ CIA الثلاثة',points:60,pro:false,content:'<h3>🔺 السرية</h3><p>منع الوصول غير المصرح.</p><h3>🔺 السلامة</h3><p>ضمان عدم التعديل.</p><h3>🔺 التوفر</h3><p>الوصول عند الحاجة.</p>'},
 {id:'l3',cat:'🔐 الأساسيات',title:'أنواع الهجمات',points:75,pro:false,content:'<h3>⚠️ الفيشينغ</h3><p>رسائل مزيفة.</p><h3>💀 برامج الفدية</h3><p>تشفر ملفاتك.</p><h3>🌊 DDoS</h3><p>إغراق الموقع.</p>'},
-// قسم 2: كلمات المرور
 {id:'l4',cat:'🔐 كلمات المرور',title:'كلمات المرور القوية',points:100,pro:false,content:'<h3>🔐 القواعد</h3><ul><li>12 حرفاً+</li><li>حروف كبيرة وصغيرة</li><li>أرقام ورموز</li><li>مختلفة لكل حساب</li></ul><div class="warning">❌ تجنب: تاريخ الميلاد</div>'},
-{id:'l5',cat:'🔐 كلمات المرور',title:'التحقق بخطوتين (2FA)',points:100,pro:false,content:'<h3>🛡️ 2FA</h3><p>طبقة حماية إضافية.</p><ul><li>SMS</li><li>تطبيق مصادقة</li><li>مفاتيح فيزيائية</li></ul>'},
+{id:'l5',cat:'🔐 كلمات المرور',title:'التحقق بخطوتين',points:100,pro:false,content:'<h3>🛡️ 2FA</h3><p>طبقة حماية إضافية.</p><ul><li>SMS</li><li>تطبيق مصادقة</li><li>مفاتيح</li></ul>'},
 {id:'l6',cat:'🔐 كلمات المرور',title:'مدير كلمات المرور',points:90,pro:false,content:'<h3>💾 المدير</h3><p>يخزن كلماتك مشفرة.</p><h3>🏆 الأفضل</h3><ul><li>Bitwarden (مجاني)</li><li>1Password</li><li>KeePass</li></ul>'},
-// قسم 3: الفيشينغ
 {id:'l7',cat:'🎣 الفيشينغ',title:'التعرف على الفيشينغ',points:80,pro:false,content:'<h3>🔍 العلامات</h3><ul><li>أخطاء إملائية</li><li>روابط غريبة</li><li>طلب عاجل</li><li>مرسل مجهول</li></ul>'},
-{id:'l8',cat:'🎣 الفيشينغ',title:'أنواع الفيشينغ',points:90,pro:false,content:'<h3>🎭 الأنواع</h3><ul><li>Email Phishing</li><li>Smishing (SMS)</li><li>Vishing (مكالمات)</li><li>Spear Phishing</li></ul>'},
-// قسم 4: الشبكات
-{id:'l9',cat:'🌐 الشبكات',title:'أساسيات الشبكات',points:75,pro:false,content:'<h3>🌐 المكونات</h3><ul><li>Router</li><li>Switch</li><li>Modem</li><li>IP Address</li></ul>'},
+{id:'l8',cat:'🎣 الفيشينغ',title:'أنواع الفيشينغ',points:90,pro:false,content:'<h3>🎭 الأنواع</h3><ul><li>Email Phishing</li><li>Smishing</li><li>Vishing</li><li>Spear Phishing</li></ul>'},
+{id:'l9',cat:'🌐 الشبكات',title:'أساسيات الشبكات',points:75,pro:false,content:'<h3>🌐 المكونات</h3><ul><li>Router</li><li>Switch</li><li>Modem</li><li>IP</li></ul>'},
 {id:'l10',cat:'🌐 الشبكات',title:'حماية الراوتر',points:100,pro:false,content:'<h3>🛡️ الخطوات</h3><ul><li>غيّر كلمة السر</li><li>WPA3</li><li>عطّل WPS</li><li>حدّث firmware</li></ul>'},
 {id:'l11',cat:'🌐 الشبكات',title:'شبكات Wi-Fi العامة',points:85,pro:false,content:'<h3>☕ خطر</h3><p>لا تستخدم البنوك على Wi-Fi عام.</p><div class="tip">🔐 استخدم VPN</div>'},
-// قسم 5: الهاتف
 {id:'l12',cat:'📱 الهاتف',title:'حماية الهاتف',points:75,pro:false,content:'<h3>✅ افعل</h3><ul><li>قفل الشاشة</li><li>تحديث النظام</li><li>نسخ احتياطية</li></ul><h3>❌ لا تفعل</h3><ul><li>Root</li><li>APK مجهولة</li></ul>'},
 {id:'l13',cat:'📱 الهاتف',title:'صلاحيات التطبيقات',points:85,pro:false,content:'<h3>🔐 راجع الصلاحيات</h3><p>لعبة لا تحتاج الكاميرا!</p>'},
 {id:'l14',cat:'📱 الهاتف',title:'النسخ الاحتياطية',points:70,pro:false,content:'<h3>💾 النسخ</h3><p>انسخ أسبوعياً على الأقل.</p>'},
-// قسم 6: التشفير
 {id:'l15',cat:'🔒 التشفير',title:'ما هو التشفير؟',points:100,pro:false,content:'<h3>🔒 التشفير</h3><p>تحويل البيانات لصيغة غير مفهومة.</p><h3>🎯 الأنواع</h3><ul><li>متماثل</li><li>غير متماثل</li></ul>'},
 {id:'l16',cat:'🔒 التشفير',title:'HTTPS و SSL',points:80,pro:false,content:'<h3>🔐 HTTPS</h3><p>النسخة المشفرة من HTTP.</p><div class="warning">⚠️ لا تدخل بياناتك بدون HTTPS</div>'},
 {id:'l17',cat:'🔒 التشفير',title:'تشفير الملفات',points:95,pro:false,content:'<h3>🗂️ الأدوات</h3><ul><li>7-Zip</li><li>VeraCrypt</li><li>Cryptomator</li></ul>'},
-// قسم 7: الهندسة الاجتماعية
 {id:'l18',cat:'🕵️ الهندسة',title:'ما هي الهندسة؟',points:100,pro:false,content:'<h3>🕵️ التعريف</h3><p>خداع الناس للحصول على معلوماتهم.</p>'},
 {id:'l19',cat:'🕵️ الهندسة',title:'أساليب المحتالين',points:90,pro:false,content:'<h3>🎯 الأساليب</h3><ul><li>الاستعجال</li><li>السلطة</li><li>المعروف</li><li>العاطفة</li></ul>'},
-// قسم 8: Pro
 {id:'l20',cat:'⭐ Pro',title:'الاختراق الأخلاقي',points:200,pro:true,content:'<h3>🎯 الاختراق الأخلاقي</h3><p>للأغراض الأمنية المشروعة.</p><h3>📋 المراحل</h3><ul><li>التخطيط</li><li>جمع المعلومات</li><li>المسح</li><li>الاستغلال</li><li>التقرير</li></ul>'},
 {id:'l21',cat:'⭐ Pro',title:'تحليل الحزم',points:200,pro:true,content:'<h3>📦 Wireshark</h3><p>لتحليل حركة الشبكة.</p>'},
 {id:'l22',cat:'⭐ Pro',title:'الاستجابة للحوادث',points:200,pro:true,content:'<h3>🚨 الخطوات</h3><ol><li>الاكتشاف</li><li>الاحتواء</li><li>الاستئصال</li><li>الاستعادة</li></ol>'},
 {id:'l23',cat:'⭐ Pro',title:'اختبار الاختراق',points:250,pro:true,content:'<h3>🔍 PenTest</h3><p>محاكاة هجوم لاكتشاف الثغرات.</p>'},
 {id:'l24',cat:'⭐ Pro',title:'الأمن السحابي',points:200,pro:true,content:'<h3>☁️ Cloud Security</h3><p>حماية البيانات في السحابة.</p>'},
-// قسم 9: متقدم
 {id:'l25',cat:'🚀 متقدم',title:'أمن IoT',points:150,pro:false,content:'<h3>🌐 IoT</h3><p>أجهزة إنترنت الأشياء تحتاج حماية خاصة.</p>'},
 {id:'l26',cat:'🚀 متقدم',title:'Blockchain والأمن',points:150,pro:false,content:'<h3>⛓️ Blockchain</h3><p>تقنية موزعة آمنة.</p>'},
 {id:'l27',cat:'🚀 متقدم',title:'الذكاء الاصطناعي والأمن',points:150,pro:false,content:'<h3>🤖 AI</h3><p>يستخدم في الهجوم والدفاع.</p>'},
 {id:'l28',cat:'🚀 متقدم',title:'القرصنة الأخلاقية',points:180,pro:false,content:'<h3>👨‍💻 Hacking</h3><p>استخدام المهارات للخير.</p>'},
-{id:'l29',cat:'🚀 متقدم',title:'مستقبل الأمن السيبراني',points:180,pro:false,content:'<h3>🚀 المستقبل</h3><p>AI + Quantum + IoT.</p>'},
-{id:'l30',cat:'🚀 متقدم',title:'الخلاصة',points:200,pro:false,content:'<h3>🎓 الخلاصة</h3><p>أنت الآن خبير في أساسيات الأمن السيبراني!</p><div class="tip">🏆 استمر في التعلم!</div>'}
+{id:'l29',cat:'🚀 متقدم',title:'مستقبل الأمن',points:180,pro:false,content:'<h3>🚀 المستقبل</h3><p>AI + Quantum + IoT.</p>'},
+{id:'l30',cat:'🚀 متقدم',title:'الخلاصة',points:200,pro:false,content:'<h3>🎓 الخلاصة</h3><p>أنت الآن خبير!</p><div class="tip">🏆 استمر!</div>'}
 ];
 
 let currentLesson = null;
 
-function renderLessons() {
-    const list = document.getElementById('lessonsList');
-    let html = '';
-    let lastCat = '';
-    LESSONS.forEach((l, i) => {
-        if(l.cat !== lastCat) {
-            html += `<div style="color:var(--primary);font-weight:bold;margin:20px 0 10px">${l.cat}</div>`;
-            lastCat = l.cat;
-        }
-        const done = STATE.completedLessons.includes(l.id);
-        const locked = l.pro && !STATE.isPro;
-        html += `<div class="lesson-item ${done?'completed':''} ${l.pro?'pro-content':''} ${locked?'locked':''}" onclick="openLesson('${l.id}')">
-            <div class="lesson-check">${done?'✓':(locked?'🔒':(i+1))}</div>
-            <div class="lesson-info">
-                <h4>${l.title}</h4>
-                <p>${done?'مكتمل':(locked?'Pro':'اضغط للبدء')}</p>
-                <span class="lesson-badge ${l.pro?'pro':'free'}">${l.pro?'⭐ Pro':'🆓'}</span>
-            </div>
-            <div class="lesson-points">+${l.points}</div>
-        </div>`;
-    });
-    list.innerHTML = html;
+function renderLessons(){
+const list=document.getElementById('lessonsList');let html='';let lastCat='';
+LESSONS.forEach((l,i)=>{
+if(l.cat!==lastCat){html+=`<div style="color:var(--primary);font-weight:bold;margin:20px 0 10px">${l.cat}</div>`;lastCat=l.cat;}
+const done=STATE.completedLessons.includes(l.id);const locked=l.pro&&!STATE.isPro;
+html+=`<div class="lesson-item ${done?'completed':''} ${l.pro?'pro-content':''} ${locked?'locked':''}" onclick="openLesson('${l.id}')"><div class="lesson-check">${done?'✓':(locked?'🔒':(i+1))}</div><div class="lesson-info"><h4>${l.title}</h4><p>${done?'مكتمل':(locked?'Pro':'اضغط')}</p><span class="lesson-badge ${l.pro?'pro':'free'}">${l.pro?'⭐ Pro':'🆓'}</span></div><div class="lesson-points">+${l.points}</div></div>`;
+});
+list.innerHTML=html;
 }
 
-function openLesson(id) {
-    const lesson = LESSONS.find(l => l.id === id);
-    if(!lesson) return;
-    if(lesson.pro && !STATE.isPro) {
-        showToast('⭐ Pro فقط', 'gold');
-        return;
-    }
-    currentLesson = lesson;
-    document.getElementById('lessonTitle').textContent = lesson.title;
-    document.getElementById('lessonBody').innerHTML = lesson.content;
-    const btn = document.getElementById('completeBtn');
-    if(STATE.completedLessons.includes(id)) {
-        btn.textContent = '✅ مكتمل';
-        btn.classList.add('done');
-        btn.disabled = true;
-    } else {
-        btn.textContent = '✅ إكمال';
-        btn.classList.remove('done');
-        btn.disabled = false;
-    }
-    closePage('lessonsPage');
-    openPage('lessonContentPage');
+function openLesson(id){
+const lesson=LESSONS.find(l=>l.id===id);if(!lesson)return;
+if(lesson.pro&&!STATE.isPro){showToast('⭐ Pro فقط','gold');return;}
+currentLesson=lesson;
+document.getElementById('lessonTitle').textContent=lesson.title;
+document.getElementById('lessonBody').innerHTML=lesson.content;
+const btn=document.getElementById('completeBtn');
+if(STATE.completedLessons.includes(id)){btn.textContent='✅ مكتمل';btn.classList.add('done');btn.disabled=true;}
+else{btn.textContent='✅ إكمال';btn.classList.remove('done');btn.disabled=false;}
+closePage('lessonsPage');openPage('lessonContentPage');
 }
 
-function completeLesson() {
-    if(!currentLesson) return;
-    if(STATE.completedLessons.includes(currentLesson.id)) return;
-    STATE.completedLessons.push(currentLesson.id);
-    STATE.points += currentLesson.points;
-    logActivity('أكمل درس: ' + currentLesson.title);
-    saveState();
-    updateProfile();
-    showToast(`✅ +${currentLesson.points}`, 'gold');
-    document.getElementById('completeBtn').textContent = '✅ مكتمل';
-    document.getElementById('completeBtn').classList.add('done');
-    document.getElementById('completeBtn').disabled = true;
-    renderLessons();
-    renderMap();
-    checkBadges();
+function completeLesson(){
+if(!currentLesson)return;if(STATE.completedLessons.includes(currentLesson.id))return;
+STATE.completedLessons.push(currentLesson.id);STATE.points+=currentLesson.points;
+logActivity('أكمل درس: '+currentLesson.title);saveState();updateProfile();
+showToast(`✅ +${currentLesson.points}`,'gold');
+document.getElementById('completeBtn').textContent='✅ مكتمل';
+document.getElementById('completeBtn').classList.add('done');
+document.getElementById('completeBtn').disabled=true;
+renderLessons();renderMap();checkBadges();
 }
 
-/* ============ Videos ============ */
 const VIDEOS = [
-    {t:'مقدمة الأمن السيبراني',d:'للمبتدئين',dur:'10:30',free:true},
-    {t:'كلمات مرور قوية',d:'خطوات',dur:'8:15',free:true},
-    {t:'الفيشينغ',d:'أمثلة',dur:'12:20',free:true},
-    {t:'حماية الشبكة',d:'دليل',dur:'15:00',free:true},
-    {t:'أمان الهاتف',d:'شامل',dur:'14:30',free:true},
-    {t:'التشفير',d:'مبسط',dur:'18:45',free:false},
-    {t:'الاختراق الأخلاقي',d:'متقدم',dur:'25:00',free:false},
-    {t:'Wireshark',d:'تطبيقي',dur:'30:00',free:false},
-    {t:'الاستجابة للحوادث',d:'عملي',dur:'22:15',free:false}
+{t:'مقدمة الأمن',d:'للمبتدئين',dur:'10:30',free:true},
+{t:'كلمات مرور قوية',d:'خطوات',dur:'8:15',free:true},
+{t:'الفيشينغ',d:'أمثلة',dur:'12:20',free:true},
+{t:'حماية الشبكة',d:'دليل',dur:'15:00',free:true},
+{t:'أمان الهاتف',d:'شامل',dur:'14:30',free:true},
+{t:'التشفير',d:'مبسط',dur:'18:45',free:false},
+{t:'الاختراق الأخلاقي',d:'متقدم',dur:'25:00',free:false},
+{t:'Wireshark',d:'تطبيقي',dur:'30:00',free:false},
+{t:'الاستجابة',d:'عملي',dur:'22:15',free:false}
 ];
 
-function renderVideos() {
-    document.getElementById('videosList').innerHTML = VIDEOS.map((v, i) => 
-        `<div class="video-item" onclick="openVideo(${i})">
-            <div class="video-thumb">${(!v.free && !STATE.isPro) ? '🔒' : '🎬'}
-                <div class="video-play">${(!v.free && !STATE.isPro) ? '⭐' : '▶'}</div>
-            </div>
-            <div class="video-info">
-                <h4>${v.t}</h4>
-                <p>${v.d} • ${v.dur} ${!v.free?'<span style="color:var(--gold)">⭐ Pro</span>':''}</p>
-            </div>
-        </div>`
-    ).join('');
+function renderVideos(){
+document.getElementById('videosList').innerHTML=VIDEOS.map((v,i)=>`<div class="video-item" onclick="openVideo(${i})"><div class="video-thumb">${(!v.free&&!STATE.isPro)?'🔒':'🎬'}<div class="video-play">${(!v.free&&!STATE.isPro)?'⭐':'▶'}</div></div><div class="video-info"><h4>${v.t}</h4><p>${v.d} • ${v.dur} ${!v.free?'<span style="color:var(--gold)">⭐ Pro</span>':''}</p></div></div>`).join('');
 }
 
-function openVideo(i) {
-    const v = VIDEOS[i];
-    if(!v.free && !STATE.isPro) {
-        showToast('⭐ Pro فقط', 'gold');
-        return;
-    }
-    showToast('🎬 على تلغرام', 'info');
-    setTimeout(() => window.open(CONFIG.telegram, '_blank'), 1000);
+function openVideo(i){
+const v=VIDEOS[i];if(!v.free&&!STATE.isPro){showToast('⭐ Pro فقط','gold');return;}
+showToast('🎬 على تلغرام','info');setTimeout(()=>window.open(CONFIG.telegram,'_blank'),1000);
 }
 
-/* ============ Challenges (15) ============ */
 const CHALLENGES = [
 {id:'c1',level:'beginner',title:'تحدي كلمة المرور',desc:'اكتشف كلمة السر',points:100,pro:false,content:'<h3>🎯 الهدف</h3><p>ستحصل على hash</p><h3>🛠️ الأمر</h3><p><code>hashcat</code></p>'},
 {id:'c2',level:'beginner',title:'تحدي الشبكة',desc:'اكتشف الأجهزة',points:100,pro:false,content:'<h3>🎯</h3><p><code>nmap -sn 192.168.1.0/24</code></p>'},
@@ -773,102 +581,64 @@ const CHALLENGES = [
 {id:'c15',level:'advanced',title:'Zero Day',desc:'ثغرة يوم صفر',points:1000,pro:true,content:'<h3>🎯 Zero Day</h3>'}
 ];
 
-function renderChallenges() {
-    document.getElementById('challengesList').innerHTML = CHALLENGES.map(c => {
-        const done = STATE.completedChallenges.includes(c.id);
-        const locked = c.pro && !STATE.isPro;
-        return `<div class="challenge ${done?'completed':''}" onclick="openChallenge('${c.id}')">
-            <div class="challenge-header">
-                <div class="challenge-level level-${c.level}">${c.level==='beginner'?'🥉 مبتدئ':c.level==='intermediate'?'🥈 متوسط':'🥇 متقدم'}</div>
-                <div style="color:var(--gold);font-weight:bold;font-size:13px">+${c.points} ${locked?'🔒':(done?'✓':'')}</div>
-            </div>
-            <div class="challenge-title">${c.title}</div>
-            <div class="challenge-desc">${c.desc} ${c.pro?'⭐ Pro':''}</div>
-        </div>`;
-    }).join('');
+function renderChallenges(){
+document.getElementById('challengesList').innerHTML=CHALLENGES.map(c=>{
+const done=STATE.completedChallenges.includes(c.id);const locked=c.pro&&!STATE.isPro;
+return `<div class="challenge ${done?'completed':''}" onclick="openChallenge('${c.id}')"><div class="challenge-header"><div class="challenge-level level-${c.level}">${c.level==='beginner'?'🥉 مبتدئ':c.level==='intermediate'?'🥈 متوسط':'🥇 متقدم'}</div><div style="color:var(--gold);font-weight:bold;font-size:13px">+${c.points} ${locked?'🔒':(done?'✓':'')}</div></div><div class="challenge-title">${c.title}</div><div class="challenge-desc">${c.desc} ${c.pro?'⭐ Pro':''}</div></div>`;
+}).join('');
 }
 
 let currentChallenge = null;
 
-function openChallenge(id) {
-    const c = CHALLENGES.find(x => x.id === id);
-    if(!c) return;
-    if(c.pro && !STATE.isPro) {
-        showToast('⭐ Pro فقط', 'gold');
-        return;
-    }
-    currentChallenge = c;
-    document.getElementById('challengeTitle').textContent = c.title;
-    document.getElementById('challengeBody').innerHTML = c.content;
-    document.getElementById('challengeTerminal').innerHTML = '<div class="terminal-lab-line">🔒 جاهز...</div><div class="terminal-lab-line">$ help</div>';
-    const btn = document.getElementById('challengeCompleteBtn');
-    if(STATE.completedChallenges.includes(id)) {
-        btn.textContent = '✅ مكتمل';
-        btn.disabled = true;
-        btn.style.background = '#333';
-    } else {
-        btn.textContent = '✅ إكمال';
-        btn.disabled = false;
-        btn.style.background = 'linear-gradient(135deg,#673AB7,#9575CD)';
-    }
-    closePage('labPage');
-    openPage('challengeDetailPage');
+function openChallenge(id){
+const c=CHALLENGES.find(x=>x.id===id);if(!c)return;
+if(c.pro&&!STATE.isPro){showToast('⭐ Pro فقط','gold');return;}
+currentChallenge=c;
+document.getElementById('challengeTitle').textContent=c.title;
+document.getElementById('challengeBody').innerHTML=c.content;
+document.getElementById('challengeTerminal').innerHTML='<div class="terminal-lab-line">🔒 جاهز...</div><div class="terminal-lab-line">$ help</div>';
+const btn=document.getElementById('challengeCompleteBtn');
+if(STATE.completedChallenges.includes(id)){btn.textContent='✅ مكتمل';btn.disabled=true;btn.style.background='#333';}
+else{btn.textContent='✅ إكمال';btn.disabled=false;btn.style.background='linear-gradient(135deg,#673AB7,#9575CD)';}
+closePage('labPage');openPage('challengeDetailPage');
 }
 
-function execChallengeCmd() {
-    const input = document.getElementById('challengeInput');
-    const cmd = input.value.trim();
-    if(!cmd) return;
-    const term = document.getElementById('challengeTerminal');
-    term.innerHTML += `<div class="terminal-lab-line">$ ${cmd}</div>`;
-    term.innerHTML += `<div class="terminal-lab-line" style="color:#673AB7">${runChallengeCmd(cmd)}</div>`;
-    input.value = '';
-    term.scrollTop = term.scrollHeight;
+function execChallengeCmd(){
+const input=document.getElementById('challengeInput');const cmd=input.value.trim();if(!cmd)return;
+const term=document.getElementById('challengeTerminal');
+term.innerHTML+=`<div class="terminal-lab-line">$ ${cmd}</div>`;
+term.innerHTML+=`<div class="terminal-lab-line" style="color:#673AB7">${runChallengeCmd(cmd)}</div>`;
+input.value='';term.scrollTop=term.scrollHeight;
 }
 
-function runChallengeCmd(cmd) {
-    const c = cmd.toLowerCase();
-    if(c === 'help') return 'ls, cat, nmap, hashcat, sqlmap, wireshark, clear';
-    if(c === 'ls') return 'challenge.txt  hash.txt  logs.txt';
-    if(c.startsWith('cat ')) return 'بيانات سرية...';
-    if(c.startsWith('nmap')) return 'PORT  STATE\n22/tcp open ssh\n80/tcp open http\n443/tcp open https';
-    if(c.startsWith('hashcat')) return 'Password found: admin123';
-    if(c.startsWith('sqlmap')) return 'Vulnerable: SQL Injection detected';
-    if(c.startsWith('wireshark')) return 'Captured 1247 packets\nSuspicious: 192.168.1.100';
-    if(c === 'clear') { document.getElementById('challengeTerminal').innerHTML = ''; return ''; }
-    return 'غير معروف: ' + cmd;
+function runChallengeCmd(cmd){
+const c=cmd.toLowerCase();
+if(c==='help')return 'ls, cat, nmap, hashcat, sqlmap, wireshark, clear';
+if(c==='ls')return 'challenge.txt  hash.txt  logs.txt';
+if(c.startsWith('cat '))return 'بيانات سرية...';
+if(c.startsWith('nmap'))return 'PORT  STATE\n22/tcp open ssh\n80/tcp open http\n443/tcp open https';
+if(c.startsWith('hashcat'))return 'Password found: admin123';
+if(c.startsWith('sqlmap'))return 'Vulnerable: SQL Injection detected';
+if(c.startsWith('wireshark'))return 'Captured 1247 packets';
+if(c==='clear'){document.getElementById('challengeTerminal').innerHTML='';return'';}
+return 'غير معروف: '+cmd;
 }
 
-function completeChallenge() {
-    if(!currentChallenge) return;
-    if(STATE.completedChallenges.includes(currentChallenge.id)) return;
-    STATE.completedChallenges.push(currentChallenge.id);
-    STATE.points += currentChallenge.points;
-    logActivity('أكمل تحدي: ' + currentChallenge.title);
-    saveState();
-    updateProfile();
-    showToast(`✅ +${currentChallenge.points}`, 'gold');
-    document.getElementById('challengeCompleteBtn').textContent = '✅ مكتمل';
-    document.getElementById('challengeCompleteBtn').disabled = true;
-    document.getElementById('challengeCompleteBtn').style.background = '#333';
-    renderChallenges();
-    checkBadges();
-    setTimeout(() => resetLab(), 1500);
+function completeChallenge(){
+if(!currentChallenge)return;if(STATE.completedChallenges.includes(currentChallenge.id))return;
+STATE.completedChallenges.push(currentChallenge.id);STATE.points+=currentChallenge.points;
+logActivity('أكمل تحدي: '+currentChallenge.title);saveState();updateProfile();
+showToast(`✅ +${currentChallenge.points}`,'gold');
+document.getElementById('challengeCompleteBtn').textContent='✅ مكتمل';
+document.getElementById('challengeCompleteBtn').disabled=true;
+document.getElementById('challengeCompleteBtn').style.background='#333';
+renderChallenges();checkBadges();
+setTimeout(()=>resetLab(),1500);
 }
 
-function openLab() {
-    closePage('lessonsPage');
-    openPage('labPage');
-    renderChallenges();
-}
+function openLab(){closePage('lessonsPage');openPage('labPage');renderChallenges();}
+function resetLab(){const t=document.getElementById('challengeTerminal');if(t)t.innerHTML='<div class="terminal-lab-line">🔒 جاهز...</div>';showToast('🛡️ تم إعادة الضبط','info');}
 
-function resetLab() {
-    const t = document.getElementById('challengeTerminal');
-    if(t) t.innerHTML = '<div class="terminal-lab-line">🔒 جاهز...</div>';
-    showToast('🛡️ تم إعادة الضبط', 'info');
-}
-
-/* ============ Badges (25) ============ */
 const BADGES = [
 {id:'first_lesson',name:'أول درس',icon:'🥇',desc:'أكمل أول درس'},
 {id:'lessons_5',name:'طالب',icon:'📚',desc:'5 دروس'},
@@ -883,814 +653,561 @@ const BADGES = [
 {id:'points_5000',name:'5000 نقطة',icon:'💎',desc:'احصل على 5000'},
 {id:'points_10000',name:'10000 نقطة',icon:'👑',desc:'احصل على 10000'},
 {id:'perfect_quiz',name:'الكمّال',icon:'💯',desc:'اختبار 100%'},
-{id:'all_beginner',name:'مبتدئ كامل',icon:'🥉',desc:'كل المبتدئ'},
-{id:'all_intermediate',name:'متوسط كامل',icon:'🥈',desc:'كل المتوسط'},
+{id:'all_beginner',name:'مبتدئ',icon:'🥉',desc:'كل المبتدئ'},
+{id:'all_intermediate',name:'متوسط',icon:'🥈',desc:'كل المتوسط'},
 {id:'all_advanced',name:'متقدم',icon:'🥇',desc:'كل المتقدم'},
 {id:'pro_user',name:'Pro',icon:'👑',desc:'فعّل Pro'},
-{id:'ai_master',name:'AI Master',icon:'🤖',desc:'10 تحديات AI'},
-{id:'ai_expert',name:'AI Expert',icon:'🧠',desc:'20 تحدي AI'},
-{id:'rating_5',name:'معجب',icon:'❤️',desc:'قيّم 5 نجوم'},
-{id:'first_cert',name:'شهادة أولى',icon:'🎓',desc:'احصل على شهادة'},
-{id:'explorer',name:'مستكشف',icon:'🧭',desc:'زر 10 صفحات'},
+{id:'ai_master',name:'AI Master',icon:'🤖',desc:'10 AI'},
+{id:'ai_expert',name:'AI Expert',icon:'🧠',desc:'20 AI'},
+{id:'rating_5',name:'معجب',icon:'❤️',desc:'5 نجوم'},
+{id:'first_cert',name:'شهادة أولى',icon:'🎓',desc:'شهادة'},
+{id:'explorer',name:'مستكشف',icon:'🧭',desc:'10 صفحات'},
 {id:'dedicated',name:'ملتزم',icon:'🔥',desc:'50 نشاط'},
 {id:'champion',name:'بطل',icon:'🏆',desc:'5000 نقطة'},
 {id:'legend',name:'أسطورة',icon:'⚡',desc:'10000 نقطة'}
 ];
 
-function checkBadges() {
-    if(STATE.completedLessons.length >= 1) earnBadge('first_lesson');
-    if(STATE.completedLessons.length >= 5) earnBadge('lessons_5');
-    if(STATE.completedLessons.length >= 10) earnBadge('lessons_10');
-    if(STATE.completedLessons.length >= 20) earnBadge('lessons_20');
-    if(STATE.completedLessons.length >= 30) earnBadge('lessons_30');
-    if(STATE.completedChallenges.length >= 1) earnBadge('first_challenge');
-    if(STATE.completedChallenges.length >= 5) earnBadge('challenges_5');
-    if(STATE.completedChallenges.length >= 10) earnBadge('challenges_10');
-    if(STATE.points >= 500) earnBadge('points_500');
-    if(STATE.points >= 1000) earnBadge('points_1000');
-    if(STATE.points >= 5000) earnBadge('points_5000');
-    if(STATE.points >= 10000) earnBadge('points_10000');
-    if(STATE.isPro) earnBadge('pro_user');
-    if(STATE.userRating >= 5) earnBadge('rating_5');
-    if(STATE.completedAI.length >= 10) earnBadge('ai_master');
-    if(STATE.completedAI.length >= 20) earnBadge('ai_expert');
-    if(STATE.points >= 5000) earnBadge('champion');
-    if(STATE.points >= 10000) earnBadge('legend');
-    if(STATE.activityLog.length >= 50) earnBadge('dedicated');
+function checkBadges(){
+if(STATE.completedLessons.length>=1)earnBadge('first_lesson');
+if(STATE.completedLessons.length>=5)earnBadge('lessons_5');
+if(STATE.completedLessons.length>=10)earnBadge('lessons_10');
+if(STATE.completedLessons.length>=20)earnBadge('lessons_20');
+if(STATE.completedLessons.length>=30)earnBadge('lessons_30');
+if(STATE.completedChallenges.length>=1)earnBadge('first_challenge');
+if(STATE.completedChallenges.length>=5)earnBadge('challenges_5');
+if(STATE.completedChallenges.length>=10)earnBadge('challenges_10');
+if(STATE.points>=500)earnBadge('points_500');
+if(STATE.points>=1000)earnBadge('points_1000');
+if(STATE.points>=5000)earnBadge('points_5000');
+if(STATE.points>=10000)earnBadge('points_10000');
+if(STATE.isPro)earnBadge('pro_user');
+if(STATE.userRating>=5)earnBadge('rating_5');
+if(STATE.completedAI.length>=10)earnBadge('ai_master');
+if(STATE.completedAI.length>=20)earnBadge('ai_expert');
+if(STATE.points>=5000)earnBadge('champion');
+if(STATE.points>=10000)earnBadge('legend');
+if(STATE.activityLog.length>=50)earnBadge('dedicated');
 }
 
-function earnBadge(id) {
-    if(STATE.earnedBadges.includes(id)) return;
-    STATE.earnedBadges.push(id);
-    const b = BADGES.find(x => x.id === id);
-    if(!b) return;
-    saveState();
-    showToast(`🏆 شارة: ${b.name}!`, 'gold');
-    renderBadgesPage();
+function earnBadge(id){
+if(STATE.earnedBadges.includes(id))return;
+STATE.earnedBadges.push(id);
+const b=BADGES.find(x=>x.id===id);if(!b)return;
+saveState();showToast(`🏆 شارة: ${b.name}!`,'gold');
+renderBadgesPage();
 }
 
-function renderBadgesPage() {
-    const c = document.getElementById('badgesPageContent');
-    if(!c) return;
-    c.innerHTML = `<div style="text-align:center;padding:15px">
-        <div style="font-size:22px;font-weight:bold;color:var(--primary)">${STATE.earnedBadges.length} / ${BADGES.length}</div>
-        <div style="color:var(--text2);font-size:13px;margin-top:5px">شارة</div>
-    </div><div class="badge-grid">${BADGES.map(b => 
-        `<div class="badge-item-full ${STATE.earnedBadges.includes(b.id)?'earned':''}">
-            <div class="badge-icon-full">${b.icon}</div>
-            <div class="badge-name-full">${b.name}</div>
-            <div class="badge-desc-full">${b.desc}</div>
-        </div>`
-    ).join('')}</div>`;
+function renderBadgesPage(){
+const c=document.getElementById('badgesPageContent');if(!c)return;
+c.innerHTML=`<div style="text-align:center;padding:15px"><div style="font-size:22px;font-weight:bold;color:var(--primary)">${STATE.earnedBadges.length} / ${BADGES.length}</div><div style="color:var(--text2);font-size:13px;margin-top:5px">شارة</div></div><div class="badge-grid">${BADGES.map(b=>`<div class="badge-item-full ${STATE.earnedBadges.includes(b.id)?'earned':''}"><div class="badge-icon-full">${b.icon}</div><div class="badge-name-full">${b.name}</div><div class="badge-desc-full">${b.desc}</div></div>`).join('')}</div>`;
 }
 
-/* ============ Stats ============ */
-function renderStats() {
-    const c = document.getElementById('statsContent');
-    if(!c) return;
-    const totalLessons = LESSONS.length;
-    const doneLessons = STATE.completedLessons.length;
-    const totalChallenges = CHALLENGES.length;
-    const doneChallenges = STATE.completedChallenges.length;
-    c.innerHTML = `
-    <div class="stat-card"><div class="stat-big">${STATE.points.toLocaleString()}</div><div class="stat-label">إجمالي النقاط</div></div>
-    <div class="stat-card"><div class="stat-big">${doneLessons}/${totalLessons}</div><div class="stat-label">الدروس</div><div class="chart-bar"><div class="chart-bar-fill" style="width:${(doneLessons/totalLessons)*100}%"></div></div></div>
-    <div class="stat-card"><div class="stat-big">${doneChallenges}/${totalChallenges}</div><div class="stat-label">التحديات</div><div class="chart-bar"><div class="chart-bar-fill" style="width:${(doneChallenges/totalChallenges)*100}%"></div></div></div>
-    <div class="stat-card"><div class="stat-big">${STATE.earnedBadges.length}</div><div class="stat-label">الشارات</div></div>
-    <div class="stat-card"><div class="stat-big">${STATE.completedAI.length}</div><div class="stat-label">تحديات AI</div></div>
-    <div class="stat-card"><div class="stat-big">${STATE.completedQuizzes.length}</div><div class="stat-label">الاختبارات</div></div>
-    <div class="tool-box"><h3>📈 آخر النشاطات</h3>${STATE.activityLog.slice(-10).reverse().map(a => 
-        `<div style="padding:8px 0;border-bottom:1px solid var(--border);font-size:13px;color:var(--text2)">${a.t}</div>`
-    ).join('') || '<div style="color:var(--text3);text-align:center">لا يوجد</div>'}</div>`;
+function renderStats(){
+const c=document.getElementById('statsContent');if(!c)return;
+const totalLessons=LESSONS.length;const doneLessons=STATE.completedLessons.length;
+const totalChallenges=CHALLENGES.length;const doneChallenges=STATE.completedChallenges.length;
+c.innerHTML=`<div class="stat-card"><div class="stat-big">${STATE.points.toLocaleString()}</div><div class="stat-label">إجمالي النقاط</div></div><div class="stat-card"><div class="stat-big">${doneLessons}/${totalLessons}</div><div class="stat-label">الدروس</div><div class="chart-bar"><div class="chart-bar-fill" style="width:${(doneLessons/totalLessons)*100}%"></div></div></div><div class="stat-card"><div class="stat-big">${doneChallenges}/${totalChallenges}</div><div class="stat-label">التحديات</div><div class="chart-bar"><div class="chart-bar-fill" style="width:${(doneChallenges/totalChallenges)*100}%"></div></div></div><div class="stat-card"><div class="stat-big">${STATE.earnedBadges.length}</div><div class="stat-label">الشارات</div></div><div class="stat-card"><div class="stat-big">${STATE.completedAI.length}</div><div class="stat-label">تحديات AI</div></div><div class="stat-card"><div class="stat-big">${STATE.completedQuizzes.length}</div><div class="stat-label">الاختبارات</div></div><div class="tool-box"><h3>📈 آخر النشاطات</h3>${STATE.activityLog.slice(-10).reverse().map(a=>`<div style="padding:8px 0;border-bottom:1px solid var(--border);font-size:13px;color:var(--text2)">${a.t}</div>`).join('')||'<div style="color:var(--text3);text-align:center">لا يوجد</div>'}</div>`;
 }
 
-/* ============ Certs ============ */
-function renderCerts() {
-    const c = document.getElementById('certsContent');
-    if(!c) return;
-    const cats = ['🔐 الأساسيات', '🔐 كلمات المرور', '🎣 الفيشينغ', '🌐 الشبكات', '📱 الهاتف', '🔒 التشفير', '🕵️ الهندسة', '🚀 متقدم', '⭐ Pro'];
-    let html = '';
-    cats.forEach(cat => {
-        const catLessons = LESSONS.filter(l => l.cat === cat);
-        const done = catLessons.filter(l => STATE.completedLessons.includes(l.id)).length;
-        const complete = catLessons.length > 0 && done === catLessons.length;
-        if(complete) {
-            html += `<div class="cert-preview">
-                <div class="cert-title">🏆 شهادة إتمام</div>
-                <div class="cert-name">${STATE.userName}</div>
-                <div class="cert-text">أتم بنجاح قسم<br><strong style="color:#333">${cat}</strong></div>
-                <div class="cert-footer">${new Date().toLocaleDateString('ar-EG')}<br>تطوير: أنس خشان</div>
-            </div>
-            <button class="tool-btn" onclick="shareCert('${cat}')" style="margin-bottom:15px">📤 مشاركة الشهادة</button>`;
-        } else {
-            html += `<div class="tool-box" style="opacity:0.5"><h3>${cat}</h3><p style="color:var(--text2);font-size:13px">${done}/${catLessons.length} - أكمل القسم</p></div>`;
-        }
-    });
-    c.innerHTML = html;
+function renderCerts(){
+const c=document.getElementById('certsContent');if(!c)return;
+const cats=['🔐 الأساسيات','🔐 كلمات المرور','🎣 الفيشينغ','🌐 الشبكات','📱 الهاتف','🔒 التشفير','🕵️ الهندسة','🚀 متقدم','⭐ Pro'];
+let html='';
+cats.forEach(cat=>{
+const catLessons=LESSONS.filter(l=>l.cat===cat);
+const done=catLessons.filter(l=>STATE.completedLessons.includes(l.id)).length;
+const complete=catLessons.length>0&&done===catLessons.length;
+if(complete){
+html+=`<div class="cert-preview"><div class="cert-title">🏆 شهادة إتمام</div><div class="cert-name">${STATE.userName}</div><div class="cert-text">أتم بنجاح قسم<br><strong style="color:#333">${cat}</strong></div><div class="cert-footer">${new Date().toLocaleDateString('ar-EG')}<br>تطوير: أنس خشان</div></div><button class="tool-btn" onclick="shareCert('${cat}')" style="margin-bottom:15px">📤 مشاركة</button>`;
+}else{
+html+=`<div class="tool-box" style="opacity:0.5"><h3>${cat}</h3><p style="color:var(--text2);font-size:13px">${done}/${catLessons.length}</p></div>`;
+}
+});
+c.innerHTML=html;
 }
 
-function shareCert(cat) {
-    const txt = `🏆 حصلت على شهادة قسم ${cat}\nفي تطبيق الأمن السيبراني\nالمطور: أنس خشان\n📺 @amn_sirani`;
-    if(navigator.share) {
-        navigator.share({title: 'شهادة', text: txt});
-    } else if(navigator.clipboard) {
-        navigator.clipboard.writeText(txt);
-        showToast('📋 تم النسخ');
-    }
+function shareCert(cat){
+const txt=`🏆 حصلت على شهادة قسم ${cat}\nفي تطبيق الأمن السيبراني\nالمطور: أنس خشان\n📺 @amn_sirani`;
+if(navigator.share){navigator.share({title:'شهادة',text:txt});}
+else if(navigator.clipboard){navigator.clipboard.writeText(txt);showToast('📋 تم النسخ');}
 }
 
-/* ============ Leaderboard ============ */
 const LEADERBOARD = [
-    {name:'أحمد',points:12500},
-    {name:'فاطمة',points:10200},
-    {name:'محمد',points:9800},
-    {name:'سارة',points:8500},
-    {name:'يوسف',points:7200},
-    {name:'نور',points:6800},
-    {name:'عمر',points:5200},
-    {name:'ليلى',points:4900},
-    {name:'حسن',points:3400},
-    {name:'خالد',points:2900}
+{name:'أحمد',points:12500},{name:'فاطمة',points:10200},{name:'محمد',points:9800},
+{name:'سارة',points:8500},{name:'يوسف',points:7200},{name:'نور',points:6800},
+{name:'عمر',points:5200},{name:'ليلى',points:4900},{name:'حسن',points:3400},{name:'خالد',points:2900}
 ];
 
-function renderLeaderboard() {
-    const all = [...LEADERBOARD, {name: STATE.userName + ' (أنت)', points: STATE.points, isUser: true}]
-        .sort((a, b) => b.points - a.points);
-    const c = document.getElementById('leaderList');
-    if(!c) return;
-    c.innerHTML = all.map((u, i) => {
-        const cls = i === 0 ? 'top1' : i === 1 ? 'top2' : i === 2 ? 'top3' : '';
-        return `<div class="leader-item ${cls}">
-            <div class="leader-rank">${i + 1}</div>
-            <div class="leader-info">
-                <div class="leader-name">${u.name}</div>
-                <div class="leader-points">${u.points.toLocaleString()} نقطة</div>
-            </div>
-        </div>`;
-    }).join('');
+function renderLeaderboard(){
+const all=[...LEADERBOARD,{name:STATE.userName+' (أنت)',points:STATE.points,isUser:true}].sort((a,b)=>b.points-a.points);
+const c=document.getElementById('leaderList');if(!c)return;
+c.innerHTML=all.map((u,i)=>{
+const cls=i===0?'top1':i===1?'top2':i===2?'top3':'';
+return `<div class="leader-item ${cls}"><div class="leader-rank">${i+1}</div><div class="leader-info"><div class="leader-name">${u.name}</div><div class="leader-points">${u.points.toLocaleString()} نقطة</div></div></div>`;
+}).join('');
 }
 
-/* ============ AI Game (20) ============ */
 const AI_QUESTIONS = [
-{q:'هل هذه الرسالة فيشينغ؟\n\nمن: bank@secure-bank.tk\nالموضوع: حسابك سيُغلق!',a:['نعم فيشينغ','آمنة','لا أعرف','ربما'],c:0},
+{q:'هل هذه الرسالة فيشينغ؟\n\nمن: bank@secure-bank.tk',a:['نعم فيشينغ','آمنة','لا أعرف','ربما'],c:0},
 {q:'أفضل كلمة مرور؟',a:['123456','MyDog2020','K9@mN2#pL8$','password'],c:2},
-{q:'هل تثق بهذا الرابط؟\nbit.ly/win-money',a:['نعم','لا مشبوه','لا أعرف','ربما'],c:1},
+{q:'هل تثق بهذا الرابط؟ bit.ly/win-money',a:['نعم','لا مشبوه','لا أعرف','ربما'],c:1},
 {q:'خطوة عند الاختراق؟',a:['انتظر','اتصل بالبنك','أهمل','أخبر الجميع'],c:1},
 {q:'HTTPS يعني؟',a:['آمن','سريع','مجاني','قديم'],c:0},
 {q:'VPN لـ؟',a:['اللعب','التشفير','التصميم','الطباعة'],c:1},
 {q:'الهندسة؟',a:['بناء','خداع','برمجة','تصميم'],c:1},
-{q:'برنامج الفدية؟',a:['مجاني','يشفر ويطلب','لعبة','متصفح'],c:1},
+{q:'برنامج الفدية؟',a:['مجاني','يشفر','لعبة','متصفح'],c:1},
 {q:'آمن؟ Wi-Fi مفتوح',a:['نعم','لا','لا أعرف','ربما'],c:1},
 {q:'2FA الأفضل؟',a:['SMS','تطبيق','لا شيء','الكل'],c:1},
 {q:'WPA3 هو؟',a:['قديم','أحدث تشفير','لعبة','فيروس'],c:1},
-{q:'DDoS هو؟',a:['حجب الخدمة','لعبة','برنامج','موقع'],c:0},
-{q:'Ransomware؟',a:['لعبة','برنامج فدية','متصفح','خلفية'],c:1},
-{q:'Zero-Day؟',a:['ثغرة مجهولة','لعبة','يوم عادي','برنامج'],c:0},
-{q:'SOC هو؟',a:['مركز العمليات','لعبة','برنامج','موقع'],c:0},
-{q:'Penetration Testing؟',a:['اختبار اختراق','لعبة','برنامج','تصميم'],c:0},
-{q:'Malware هو؟',a:['برامج ضارة','لعبة','متصفح','خلفية'],c:0},
-{q:'Phishing هو؟',a:['صيد رسائل','لعبة','برنامج','تصميم'],c:0},
-{q:'Firewall هو؟',a:['جدار ناري','لعبة','برنامج','موقع'],c:0},
-{q:'VPN يعني؟',a:['شبكة افتراضية','لعبة','برنامج','موقع'],c:0}
+{q:'DDoS هو؟',a:['حجب','لعبة','برنامج','موقع'],c:0},
+{q:'Ransomware؟',a:['لعبة','فدية','متصفح','خلفية'],c:1},
+{q:'Zero-Day؟',a:['ثغرة','لعبة','يوم','برنامج'],c:0},
+{q:'SOC هو؟',a:['مركز','لعبة','برنامج','موقع'],c:0},
+{q:'PenTest؟',a:['اختبار','لعبة','برنامج','تصميم'],c:0},
+{q:'Malware هو؟',a:['ضار','لعبة','متصفح','خلفية'],c:0},
+{q:'Phishing هو؟',a:['صيد','لعبة','برنامج','تصميم'],c:0},
+{q:'Firewall هو؟',a:['جدار','لعبة','برنامج','موقع'],c:0},
+{q:'VPN يعني؟',a:['شبكة','لعبة','برنامج','موقع'],c:0}
 ];
 
-let aiIdx = 0, aiScore = 0;
+let aiIdx=0,aiScore=0;
 
-function renderAIGame() {
-    const c = document.getElementById('aiGameContent');
-    if(!c) return;
-    if(aiIdx >= AI_QUESTIONS.length) {
-        const pct = Math.round((aiScore / AI_QUESTIONS.length) * 100);
-        const pts = pct >= 80 ? 500 : pct >= 50 ? 250 : 100;
-        STATE.points += pts;
-        STATE.completedAI.push(new Date().toISOString());
-        saveState();
-        updateProfile();
-        c.innerHTML = `<div class="result-box">
-            <div class="result-score">${aiScore}/${AI_QUESTIONS.length}</div>
-            <div class="result-msg">${pct >= 80 ? '🏆 ممتاز!' : pct >= 50 ? '🎉 جيد' : '📚 تدرب'}</div>
-            <div class="result-points">+${pts}</div>
-            <button class="result-btn" onclick="aiIdx=0;aiScore=0;renderAIGame()">🔄 إعادة</button>
-        </div>`;
-        checkBadges();
-        return;
-    }
-    const q = AI_QUESTIONS[aiIdx];
-    c.innerHTML = `<div class="ai-question">
-        <div class="ai-icon">🤖</div>
-        <div class="ai-text">${q.q.replace(/\n/g, '<br>')}</div>
-        <div class="ai-answers">${q.a.map((a, i) => 
-            `<button class="ai-answer" onclick="answerAI(${i})">${a}</button>`
-        ).join('')}</div>
-    </div><div style="text-align:center;color:var(--text2);font-size:13px">سؤال ${aiIdx + 1} من ${AI_QUESTIONS.length}</div>`;
+function renderAIGame(){
+const c=document.getElementById('aiGameContent');if(!c)return;
+if(aiIdx>=AI_QUESTIONS.length){
+const pct=Math.round((aiScore/AI_QUESTIONS.length)*100);
+const pts=pct>=80?500:pct>=50?250:100;
+STATE.points+=pts;STATE.completedAI.push(new Date().toISOString());
+saveState();updateProfile();
+c.innerHTML=`<div class="result-box"><div class="result-score">${aiScore}/${AI_QUESTIONS.length}</div><div class="result-msg">${pct>=80?'🏆 ممتاز!':pct>=50?'🎉 جيد':'📚 تدرب'}</div><div class="result-points">+${pts}</div><button class="result-btn" onclick="aiIdx=0;aiScore=0;renderAIGame()">🔄 إعادة</button></div>`;
+checkBadges();return;
+}
+const q=AI_QUESTIONS[aiIdx];
+c.innerHTML=`<div class="ai-question"><div class="ai-icon">🤖</div><div class="ai-text">${q.q.replace(/\n/g,'<br>')}</div><div class="ai-answers">${q.a.map((a,i)=>`<button class="ai-answer" onclick="answerAI(${i})">${a}</button>`).join('')}</div></div><div style="text-align:center;color:var(--text2);font-size:13px">سؤال ${aiIdx+1} من ${AI_QUESTIONS.length}</div>`;
 }
 
-function answerAI(sel) {
-    const q = AI_QUESTIONS[aiIdx];
-    document.querySelectorAll('.ai-answer').forEach((b, i) => {
-        b.disabled = true;
-        if(i === q.c) b.classList.add('correct');
-        if(i === sel && sel !== q.c) b.classList.add('wrong');
-    });
-    if(sel === q.c) aiScore++;
-    setTimeout(() => { aiIdx++; renderAIGame(); }, 1200);
+function answerAI(sel){
+const q=AI_QUESTIONS[aiIdx];
+document.querySelectorAll('.ai-answer').forEach((b,i)=>{
+b.disabled=true;
+if(i===q.c)b.classList.add('correct');
+if(i===sel&&sel!==q.c)b.classList.add('wrong');
+});
+if(sel===q.c)aiScore++;
+setTimeout(()=>{aiIdx++;renderAIGame();},1200);
 }
 
-/* ============ Glossary ============ */
 const GLOSSARY = [
-    {t:'Phishing',d:'هجوم رسائل مزيفة'},
-    {t:'DDoS',d:'حجب الخدمة الموزع'},
-    {t:'Malware',d:'برامج ضارة'},
-    {t:'2FA',d:'تحقق بخطوتين'},
-    {t:'Encryption',d:'تشفير'},
-    {t:'Firewall',d:'جدار ناري'},
-    {t:'VPN',d:'شبكة افتراضية'},
-    {t:'Ransomware',d:'برامج فدية'},
-    {t:'Trojan',d:'حصان طروادة'},
-    {t:'Spyware',d:'برامج تجسس'},
-    {t:'Zero-Day',d:'ثغرة مجهولة'},
-    {t:'HTTPS',d:'HTTP مشفر'},
-    {t:'Brute Force',d:'تخمين شامل'},
-    {t:'Social Engineering',d:'هندسة اجتماعية'},
-    {t:'Botnet',d:'شبكة مصابة'},
-    {t:'Keylogger',d:'تسجيل مفاتيح'},
-    {t:'SQL Injection',d:'حقن SQL'},
-    {t:'XSS',d:'حقن JavaScript'},
-    {t:'MITM',d:'رجل في المنتصف'},
-    {t:'WPA3',d:'أحدث تشفير Wi-Fi'},
-    {t:'Rootkit',d:'برنامج خفي'},
-    {t:'Backdoor',d:'باب خلفي'},
-    {t:'Exploit',d:'استغلال ثغرة'},
-    {t:'Payload',d:'حمولة خبيثة'},
-    {t:'SOC',d:'مركز العمليات'},
-    {t:'PenTest',d:'اختبار اختراق'},
-    {t:'Vulnerability',d:'ثغرة أمنية'},
-    {t:'Patch',d:'تحديث أمني'},
-    {t:'Hash',d:'بصمة رقمية'},
-    {t:'Salt',d:'ملح التشفير'}
+{t:'Phishing',d:'هجوم رسائل مزيفة'},{t:'DDoS',d:'حجب الخدمة'},
+{t:'Malware',d:'برامج ضارة'},{t:'2FA',d:'تحقق بخطوتين'},
+{t:'Encryption',d:'تشفير'},{t:'Firewall',d:'جدار ناري'},
+{t:'VPN',d:'شبكة افتراضية'},{t:'Ransomware',d:'برامج فدية'},
+{t:'Trojan',d:'حصان طروادة'},{t:'Spyware',d:'برامج تجسس'},
+{t:'Zero-Day',d:'ثغرة مجهولة'},{t:'HTTPS',d:'HTTP مشفر'},
+{t:'Brute Force',d:'تخمين شامل'},{t:'Social Engineering',d:'هندسة اجتماعية'},
+{t:'Botnet',d:'شبكة مصابة'},{t:'Keylogger',d:'تسجيل مفاتيح'},
+{t:'SQL Injection',d:'حقن SQL'},{t:'XSS',d:'حقن JavaScript'},
+{t:'MITM',d:'رجل في المنتصف'},{t:'WPA3',d:'أحدث تشفير'},
+{t:'Rootkit',d:'برنامج خفي'},{t:'Backdoor',d:'باب خلفي'},
+{t:'Exploit',d:'استغلال ثغرة'},{t:'Payload',d:'حمولة خبيثة'},
+{t:'SOC',d:'مركز العمليات'},{t:'PenTest',d:'اختبار اختراق'},
+{t:'Vulnerability',d:'ثغرة أمنية'},{t:'Patch',d:'تحديث أمني'},
+{t:'Hash',d:'بصمة رقمية'},{t:'Salt',d:'ملح التشفير'}
 ];
 
-function renderGlossary() {
-    document.getElementById('glossaryList').innerHTML = GLOSSARY.map((g, i) => 
-        `<div class="glossary-item" onclick="toggleGlossary(${i})" id="gloss${i}">
-            <div class="glossary-term">${g.t}<span class="glossary-arrow">▶</span></div>
-            <div class="glossary-def">${g.d}</div>
-        </div>`
-    ).join('');
+function renderGlossary(){
+document.getElementById('glossaryList').innerHTML=GLOSSARY.map((g,i)=>`<div class="glossary-item" onclick="toggleGlossary(${i})" id="gloss${i}"><div class="glossary-term">${g.t}<span class="glossary-arrow">▶</span></div><div class="glossary-def">${g.d}</div></div>`).join('');
 }
 
-function toggleGlossary(i) {
-    document.getElementById('gloss' + i).classList.toggle('open');
+function toggleGlossary(i){document.getElementById('gloss'+i).classList.toggle('open');}
+
+function filterGlossary(){
+const q=document.getElementById('glossarySearch').value.toLowerCase();
+GLOSSARY.forEach((g,i)=>{
+const el=document.getElementById('gloss'+i);
+if(el)el.style.display=(g.t.toLowerCase().includes(q)||g.d.toLowerCase().includes(q))?'block':'none';
+});
 }
 
-function filterGlossary() {
-    const q = document.getElementById('glossarySearch').value.toLowerCase();
-    GLOSSARY.forEach((g, i) => {
-        const el = document.getElementById('gloss' + i);
-        if(el) el.style.display = (g.t.toLowerCase().includes(q) || g.d.toLowerCase().includes(q)) ? 'block' : 'none';
-    });
-}
-
-/* ============ Emergency ============ */
 const EMERGENCY = [
-    {t:'افصل الإنترنت',d:'اقطع الاتصال'},
-    {t:'غيّر كلمات المرور',d:'من جهاز آمن'},
-    {t:'فعّل 2FA',d:'في كل الحسابات'},
-    {t:'افحص الأجهزة',d:'وأزل المجهولة'},
-    {t:'اتصل بالبنك',d:'إذا سرقت بطاقتك'},
-    {t:'افحص الجهاز',d:'بمضاد فيروسات'},
-    {t:'أبلغ الجهات',d:'CERT'},
-    {t:'تعلم',d:'لتجنب التكرار'}
+{t:'افصل الإنترنت',d:'اقطع الاتصال'},
+{t:'غيّر كلمات المرور',d:'من جهاز آمن'},
+{t:'فعّل 2FA',d:'في كل الحسابات'},
+{t:'افحص الأجهزة',d:'وأزل المجهولة'},
+{t:'اتصل بالبنك',d:'إذا سرقت بطاقتك'},
+{t:'افحص الجهاز',d:'بمضاد فيروسات'},
+{t:'أبلغ الجهات',d:'CERT'},
+{t:'تعلم',d:'لتجنب التكرار'}
 ];
 
-function renderEmergency() {
-    document.getElementById('emergencyList').innerHTML = EMERGENCY.map((s, i) => 
-        `<div class="emergency-step">
-            <div class="emergency-num">${i + 1}</div>
-            <div><div style="font-weight:bold;margin-bottom:5px">${s.t}</div>
-            <div style="color:var(--text2);font-size:13px">${s.d}</div></div>
-        </div>`
-    ).join('');
+function renderEmergency(){
+document.getElementById('emergencyList').innerHTML=EMERGENCY.map((s,i)=>`<div class="emergency-step"><div class="emergency-num">${i+1}</div><div><div style="font-weight:bold;margin-bottom:5px">${s.t}</div><div style="color:var(--text2);font-size:13px">${s.d}</div></div></div>`).join('');
 }
 
-/* ============ Quiz ============ */
 const QUIZ = [
-    {q:'الأمن السيبراني؟',o:['حماية','لعبة','برنامج','تطبيق'],c:0},
-    {q:'أفضل كلمة مرور؟',o:['123456','اسمي','K9@mN2#pL8$','تاريخ'],c:2},
-    {q:'الفيشينغ؟',o:['سمك','رسائل مزيفة','مضاد','لعبة'],c:1},
-    {q:'HTTPS؟',o:['آمن','سريع','مجاني','قديم'],c:0},
-    {q:'2FA؟',o:['مزدوج','طبقة','فيروس','متصفح'],c:1},
-    {q:'طول المرور؟',o:['4','6','12+','لا'],c:2},
-    {q:'VPN؟',o:['تصميم','شبكة','لعبة','متجر'],c:1},
-    {q:'حماية؟',o:['Root','APK','تحديث','لا'],c:2},
-    {q:'الهندسة؟',o:['بناء','خداع','برمجة','تصميم'],c:1},
-    {q:'الفدية؟',o:['مجاني','يشفر','لعبة','متصفح'],c:1},
-    {q:'DDoS؟',o:['حجب','لعبة','برنامج','موقع'],c:0},
-    {q:'Malware؟',o:['ضار','لعبة','برنامج','خلفية'],c:0}
+{q:'الأمن السيبراني؟',o:['حماية','لعبة','برنامج','تطبيق'],c:0},
+{q:'أفضل كلمة مرور؟',o:['123456','اسمي','K9@mN2#pL8$','تاريخ'],c:2},
+{q:'الفيشينغ؟',o:['سمك','رسائل مزيفة','مضاد','لعبة'],c:1},
+{q:'HTTPS؟',o:['آمن','سريع','مجاني','قديم'],c:0},
+{q:'2FA؟',o:['مزدوج','طبقة','فيروس','متصفح'],c:1},
+{q:'طول المرور؟',o:['4','6','12+','لا'],c:2},
+{q:'VPN؟',o:['تصميم','شبكة','لعبة','متجر'],c:1},
+{q:'حماية؟',o:['Root','APK','تحديث','لا'],c:2},
+{q:'الهندسة؟',o:['بناء','خداع','برمجة','تصميم'],c:1},
+{q:'الفدية؟',o:['مجاني','يشفر','لعبة','متصفح'],c:1},
+{q:'DDoS؟',o:['حجب','لعبة','برنامج','موقع'],c:0},
+{q:'Malware؟',o:['ضار','لعبة','برنامج','خلفية'],c:0}
 ];
 
-let quizIdx = 0, quizScore = 0;
+let quizIdx=0,quizScore=0;
 
-function startQuiz() {
-    quizIdx = 0;
-    quizScore = 0;
-    renderQuestion();
+function startQuiz(){quizIdx=0;quizScore=0;renderQuestion();}
+
+function renderQuestion(){
+const c=document.getElementById('quizContainer');
+if(quizIdx>=QUIZ.length){
+const pct=Math.round((quizScore/QUIZ.length)*100);
+const msg=pct>=90?'🏆 ممتاز!':pct>=70?'🎉 جيد':pct>=50?'💪 لا بأس':'📚 راجع';
+const pts=pct===100?300:pct>=70?150:pct>=50?75:25;
+STATE.points+=pts;STATE.completedQuizzes.push(new Date().toISOString());
+saveState();updateProfile();
+c.innerHTML=`<div class="result-box"><div class="result-score">${quizScore}/${QUIZ.length}</div><div class="result-msg">${msg}</div><div class="result-points">+${pts}</div><button class="result-btn" onclick="startQuiz()">🔄 إعادة</button></div>`;
+if(pct===100)earnBadge('perfect_quiz');
+checkBadges();return;
+}
+const q=QUIZ[quizIdx];
+const progress=(quizIdx/QUIZ.length)*100;
+c.innerHTML=`<div class="quiz-box"><div class="quiz-progress"><div class="quiz-progress-bar" style="width:${progress}%"></div></div><div class="quiz-qnum">سؤال ${quizIdx+1}/${QUIZ.length}</div><div class="quiz-qtext">${q.q}</div>${q.o.map((o,i)=>`<button class="quiz-opt" onclick="answerQuiz(${i})">${o}</button>`).join('')}</div>`;
 }
 
-function renderQuestion() {
-    const c = document.getElementById('quizContainer');
-    if(quizIdx >= QUIZ.length) {
-        const pct = Math.round((quizScore / QUIZ.length) * 100);
-        const msg = pct >= 90 ? '🏆 ممتاز!' : pct >= 70 ? '🎉 جيد' : pct >= 50 ? '💪 لا بأس' : '📚 راجع';
-        const pts = pct === 100 ? 300 : pct >= 70 ? 150 : pct >= 50 ? 75 : 25;
-        STATE.points += pts;
-        STATE.completedQuizzes.push(new Date().toISOString());
-        saveState();
-        updateProfile();
-        c.innerHTML = `<div class="result-box">
-            <div class="result-score">${quizScore}/${QUIZ.length}</div>
-            <div class="result-msg">${msg}</div>
-            <div class="result-points">+${pts}</div>
-            <button class="result-btn" onclick="startQuiz()">🔄 إعادة</button>
-        </div>`;
-        if(pct === 100) earnBadge('perfect_quiz');
-        checkBadges();
-        return;
-    }
-    const q = QUIZ[quizIdx];
-    const progress = (quizIdx / QUIZ.length) * 100;
-    c.innerHTML = `<div class="quiz-box">
-        <div class="quiz-progress"><div class="quiz-progress-bar" style="width:${progress}%"></div></div>
-        <div class="quiz-qnum">سؤال ${quizIdx + 1}/${QUIZ.length}</div>
-        <div class="quiz-qtext">${q.q}</div>
-        ${q.o.map((o, i) => `<button class="quiz-opt" onclick="answerQuiz(${i})">${o}</button>`).join('')}
-    </div>`;
+function answerQuiz(sel){
+const q=QUIZ[quizIdx];
+document.querySelectorAll('.quiz-opt').forEach((b,i)=>{
+b.disabled=true;
+if(i===q.c)b.classList.add('correct');
+if(i===sel&&sel!==q.c)b.classList.add('wrong');
+});
+if(sel===q.c)quizScore++;
+setTimeout(()=>{quizIdx++;renderQuestion();},1000);
 }
 
-function answerQuiz(sel) {
-    const q = QUIZ[quizIdx];
-    document.querySelectorAll('.quiz-opt').forEach((b, i) => {
-        b.disabled = true;
-        if(i === q.c) b.classList.add('correct');
-        if(i === sel && sel !== q.c) b.classList.add('wrong');
-    });
-    if(sel === q.c) quizScore++;
-    setTimeout(() => { quizIdx++; renderQuestion(); }, 1000);
+function checkStrength(){
+const p=document.getElementById('passCheck').value;
+const r=document.getElementById('strengthResult');
+if(!p){r.classList.remove('show');return;}
+let s=0;
+if(p.length>=8)s++;if(p.length>=12)s++;if(p.length>=16)s++;
+if(/[a-z]/.test(p))s++;if(/[A-Z]/.test(p))s++;if(/[0-9]/.test(p))s++;if(/[^a-zA-Z0-9]/.test(p))s++;
+r.classList.add('show');r.classList.remove('weak','medium','strong');
+if(s<=3){r.classList.add('weak');r.textContent='🔴 ضعيفة';}
+else if(s<=5){r.classList.add('medium');r.textContent='🟡 متوسطة';}
+else{r.classList.add('strong');r.textContent='🟢 قوية جداً';}
 }
 
-/* ============ Tools ============ */
-function checkStrength() {
-    const p = document.getElementById('passCheck').value;
-    const r = document.getElementById('strengthResult');
-    if(!p) { r.classList.remove('show'); return; }
-    let s = 0;
-    if(p.length >= 8) s++;
-    if(p.length >= 12) s++;
-    if(p.length >= 16) s++;
-    if(/[a-z]/.test(p)) s++;
-    if(/[A-Z]/.test(p)) s++;
-    if(/[0-9]/.test(p)) s++;
-    if(/[^a-zA-Z0-9]/.test(p)) s++;
-    r.classList.add('show');
-    r.classList.remove('weak', 'medium', 'strong');
-    if(s <= 3) { r.classList.add('weak'); r.textContent = '🔴 ضعيفة'; }
-    else if(s <= 5) { r.classList.add('medium'); r.textContent = '🟡 متوسطة'; }
-    else { r.classList.add('strong'); r.textContent = '🟢 قوية جداً'; }
+function generatePassword(){
+const c='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*';
+let p='';for(let i=0;i<24;i++)p+=c.charAt(Math.floor(Math.random()*c.length));
+document.getElementById('generatedPass').textContent='🔑 '+p;
 }
 
-function generatePassword() {
-    const c = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*';
-    let p = '';
-    for(let i = 0; i < 24; i++) p += c.charAt(Math.floor(Math.random() * c.length));
-    document.getElementById('generatedPass').textContent = '🔑 ' + p;
+function execCmd(){
+const input=document.getElementById('terminalIn');const cmd=input.value.trim();if(!cmd)return;
+const out=document.getElementById('terminalOut');
+out.innerHTML+=`<div style="margin-top:8px">$ ${cmd}</div>`;
+out.innerHTML+=`<div style="color:#00BCD4">${runCmd(cmd)}</div>`;
+input.value='';out.scrollTop=out.scrollHeight;
 }
 
-function execCmd() {
-    const input = document.getElementById('terminalIn');
-    const cmd = input.value.trim();
-    if(!cmd) return;
-    const out = document.getElementById('terminalOut');
-    out.innerHTML += `<div style="margin-top:8px">$ ${cmd}</div>`;
-    out.innerHTML += `<div style="color:#00BCD4">${runCmd(cmd)}</div>`;
-    input.value = '';
-    out.scrollTop = out.scrollHeight;
+function runCmd(cmd){
+const c=cmd.toLowerCase();
+if(c==='help')return 'ls, pwd, whoami, date, clear';
+if(c==='ls')return 'Documents  Downloads  Pictures';
+if(c==='pwd')return '/home/user';
+if(c==='whoami')return 'u0_a123';
+if(c==='date')return new Date().toString();
+if(c==='clear'){document.getElementById('terminalOut').innerHTML='';return'';}
+return 'غير معروف: '+cmd;
 }
 
-function runCmd(cmd) {
-    const c = cmd.toLowerCase();
-    if(c === 'help') return 'ls, pwd, whoami, date, clear';
-    if(c === 'ls') return 'Documents  Downloads  Pictures';
-    if(c === 'pwd') return '/home/user';
-    if(c === 'whoami') return 'u0_a123';
-    if(c === 'date') return new Date().toString();
-    if(c === 'clear') { document.getElementById('terminalOut').innerHTML = ''; return ''; }
-    return 'غير معروف: ' + cmd;
+function scanUrl(){
+const url=document.getElementById('urlToScan').value.trim();
+const r=document.getElementById('scanResult');
+if(!url){showToast('❌ أدخل رابط','error');return;}
+r.classList.add('show');r.classList.remove('weak','medium','strong');
+const https=url.toLowerCase().startsWith('https://');
+const susp=/bit\.ly|tinyurl|free-money|win-|prize/i.test(url);
+if(susp){r.classList.add('weak');r.innerHTML='🔴 مشبوه!';}
+else if(!https){r.classList.add('medium');r.innerHTML='🟡 غير مشفر';}
+else{r.classList.add('strong');r.innerHTML='🟢 آمن';}
 }
 
-/* ============ Scanner ============ */
-function scanUrl() {
-    const url = document.getElementById('urlToScan').value.trim();
-    const r = document.getElementById('scanResult');
-    if(!url) { showToast('❌ أدخل رابط', 'error'); return; }
-    r.classList.add('show');
-    r.classList.remove('weak', 'medium', 'strong');
-    const https = url.toLowerCase().startsWith('https://');
-    const susp = /bit\.ly|tinyurl|free-money|win-|prize/i.test(url);
-    if(susp) { r.classList.add('weak'); r.innerHTML = '🔴 مشبوه!'; }
-    else if(!https) { r.classList.add('medium'); r.innerHTML = '🟡 غير مشفر'; }
-    else { r.classList.add('strong'); r.innerHTML = '🟢 آمن'; }
+function openVirusTotal(){
+const url=document.getElementById('urlToScan').value.trim();
+if(!url){showToast('❌ أدخل رابط','error');return;}
+window.open('https://www.virustotal.com/gui/home/url','_blank');
 }
 
-function openVirusTotal() {
-    const url = document.getElementById('urlToScan').value.trim();
-    if(!url) { showToast('❌ أدخل رابط', 'error'); return; }
-    window.open('https://www.virustotal.com/gui/home/url', '_blank');
-}
-
-/* ============ Map ============ */
 const MAP_NODES = [
-    {id:'m1',icon:'🌱',title:'المبتدئ',desc:'ابدأ هنا',lessons:['l1','l2','l3']},
-    {id:'m2',icon:'🔐',title:'كلمات المرور',desc:'أساسيات الحماية',lessons:['l4','l5','l6']},
-    {id:'m3',icon:'🎣',title:'الفيشينغ',desc:'تعرف على الخداع',lessons:['l7','l8']},
-    {id:'m4',icon:'🌐',title:'الشبكات',desc:'أساسيات الشبكات',lessons:['l9','l10','l11']},
-    {id:'m5',icon:'📱',title:'الهاتف',desc:'حماية جهازك',lessons:['l12','l13','l14']},
-    {id:'m6',icon:'🔒',title:'التشفير',desc:'علم التشفير',lessons:['l15','l16','l17']},
-    {id:'m7',icon:'🕵️',title:'الهندسة',desc:'الهندسة الاجتماعية',lessons:['l18','l19']},
-    {id:'m8',icon:'⭐',title:'Pro',desc:'محتوى متقدم',lessons:['l20','l21','l22','l23','l24'],pro:true},
-    {id:'m9',icon:'🚀',title:'متقدم',desc:'مواضيع متقدمة',lessons:['l25','l26','l27','l28','l29','l30']}
+{id:'m1',icon:'🌱',title:'المبتدئ',desc:'ابدأ هنا',lessons:['l1','l2','l3']},
+{id:'m2',icon:'🔐',title:'كلمات المرور',desc:'أساسيات',lessons:['l4','l5','l6']},
+{id:'m3',icon:'🎣',title:'الفيشينغ',desc:'تعرف على الخداع',lessons:['l7','l8']},
+{id:'m4',icon:'🌐',title:'الشبكات',desc:'أساسيات',lessons:['l9','l10','l11']},
+{id:'m5',icon:'📱',title:'الهاتف',desc:'حماية',lessons:['l12','l13','l14']},
+{id:'m6',icon:'🔒',title:'التشفير',desc:'علم',lessons:['l15','l16','l17']},
+{id:'m7',icon:'🕵️',title:'الهندسة',desc:'اجتماعية',lessons:['l18','l19']},
+{id:'m8',icon:'⭐',title:'Pro',desc:'متقدم',lessons:['l20','l21','l22','l23','l24'],pro:true},
+{id:'m9',icon:'🚀',title:'متقدم',desc:'مواضيع',lessons:['l25','l26','l27','l28','l29','l30']}
 ];
 
-function renderMap() {
-    const c = document.getElementById('mapContent');
-    if(!c) return;
-    let html = '';
-    MAP_NODES.forEach((node, idx) => {
-        const done = node.lessons.filter(l => STATE.completedLessons.includes(l)).length;
-        const total = node.lessons.length;
-        const complete = done === total;
-        const locked = node.pro && !STATE.isPro;
-        html += `<div class="map-node ${complete?'completed':''} ${locked?'locked':''}">
-            <div class="map-node-icon">${locked?'🔒':node.icon}</div>
-            <div class="map-node-info">
-                <div class="map-node-title">${node.title}</div>
-                <div class="map-node-desc">${node.desc} • ${done}/${total}</div>
-                <div class="map-node-progress"><div class="map-node-progress-fill" style="width:${(done/total)*100}%"></div></div>
-            </div>
-        </div>`;
-        if(idx < MAP_NODES.length - 1) {
-            html += `<div class="map-connector ${complete?'active':''}"></div>`;
-        }
-    });
-    c.innerHTML = html;
+function renderMap(){
+const c=document.getElementById('mapContent');if(!c)return;
+let html='';
+MAP_NODES.forEach((node,idx)=>{
+const done=node.lessons.filter(l=>STATE.completedLessons.includes(l)).length;
+const total=node.lessons.length;
+const complete=done===total;
+const locked=node.pro&&!STATE.isPro;
+html+=`<div class="map-node ${complete?'completed':''} ${locked?'locked':''}"><div class="map-node-icon">${locked?'🔒':node.icon}</div><div class="map-node-info"><div class="map-node-title">${node.title}</div><div class="map-node-desc">${node.desc} • ${done}/${total}</div><div class="map-node-progress"><div class="map-node-progress-fill" style="width:${(done/total)*100}%"></div></div></div></div>`;
+if(idx<MAP_NODES.length-1){html+=`<div class="map-connector ${complete?'active':''}"></div>`;}
+});
+c.innerHTML=html;
 }
 
-/* ============ Docs ============ */
 const DOCS = [
-    {t:'🚀 البدء',b:'<ul><li>وافق على الشروط</li><li>اختر النسخة</li><li>ابدأ بالدروس</li><li>جرّب المختبر</li></ul>'},
-    {t:'🧪 المختبر',b:'<p>بيئة آمنة ومعزولة للتدريب</p>'},
-    {t:'🎯 التحديات',b:'<ul><li>🥉 مبتدئ: 100-120</li><li>🥈 متوسط: 200-250</li><li>🥇 متقدم: 500-1000</li></ul>'},
-    {t:'⭐ Pro',b:'<p>ميزات إضافية. كود: 0000</p>'},
-    {t:'🗺️ خريطة التعلم',b:'<p>مسار مرئي للتعلم</p>'},
-    {t:'🏆 الشارات',b:'<p>25 شارة للإنجازات</p>'},
-    {t:'🎓 الشهادات',b:'<p>7 شهادات لأقسام مكتملة</p>'},
-    {t:'🛡️ الأمان',b:'<p>آمن تماماً</p>'},
-    {t:'🔒 الخصوصية',b:'<p>لا يجمع بيانات شخصية</p>'},
-    {t:'🐛 الأخطاء',b:'<ul><li>أعد التشغيل</li><li>امسح Cache</li></ul>'}
+{t:'🚀 البدء',b:'<ul><li>وافق على الشروط</li><li>اختر النسخة</li><li>ابدأ بالدروس</li></ul>'},
+{t:'🧪 المختبر',b:'<p>بيئة آمنة ومعزولة</p>'},
+{t:'🎯 التحديات',b:'<ul><li>🥉 مبتدئ: 100-120</li><li>🥈 متوسط: 200-250</li><li>🥇 متقدم: 500-1000</li></ul>'},
+{t:'⭐ Pro',b:'<p>كود: 0000</p>'},
+{t:'🗺️ خريطة التعلم',b:'<p>مسار مرئي</p>'},
+{t:'🏆 الشارات',b:'<p>25 شارة</p>'},
+{t:'🎓 الشهادات',b:'<p>9 شهادات</p>'},
+{t:'🛡️ الأمان',b:'<p>آمن تماماً</p>'},
+{t:'🔒 الخصوصية',b:'<p>لا يجمع بيانات</p>'},
+{t:'🐛 الأخطاء',b:'<ul><li>أعد التشغيل</li><li>امسح Cache</li></ul>'}
 ];
 
-function renderDocs() {
-    document.getElementById('docsList').innerHTML = DOCS.map((d, i) => 
-        `<div class="doc-section" onclick="toggleDoc(${i})" id="doc${i}">
-            <div class="doc-header"><h4>${d.t}</h4><span class="doc-arrow">▶</span></div>
-            <div class="doc-body">${d.b}</div>
-        </div>`
-    ).join('');
+function renderDocs(){
+document.getElementById('docsList').innerHTML=DOCS.map((d,i)=>`<div class="doc-section" onclick="toggleDoc(${i})" id="doc${i}"><div class="doc-header"><h4>${d.t}</h4><span class="doc-arrow">▶</span></div><div class="doc-body">${d.b}</div></div>`).join('');
 }
 
-function toggleDoc(i) {
-    document.getElementById('doc' + i).classList.toggle('open');
-}
+function toggleDoc(i){document.getElementById('doc'+i).classList.toggle('open');}
 
-/* ============ Changelog ============ */
 const CHANGELOG = [
-    {v:'1.7.0',d:'2025',l:['📚 30 درس (بدل 14)','🤖 20 سؤال AI (بدل 10)','🎯 15 تحدي (بدل 8)','🏆 25 شارة (بدل 12)','🗺️ خريطة تعلم','🎨 10 ثيمات','🎓 7 شهادات','🚀 إصدار ضخم']},
-    {v:'1.6.0',d:'2025',l:['🏆 12 شارة','📊 إحصائيات','🎓 شهادات','🤖 تحدي AI','🏅 متصدرون']},
-    {v:'1.5.0',d:'2025',l:['🧪 مختبر','📺 فيديوهات','🎯 8 تحديات','⭐ Pro']},
-    {v:'1.4.0',d:'2025',l:['🔍 بحث','🧪 اختبار','📖 قاموس']},
-    {v:'1.3.0',d:'2025',l:['💻 أوامر','🖥️ محاكي']},
-    {v:'1.0.0',d:'2025',l:['🎉 الإصدار الأول']}
+{v:'1.7.0',d:'2025',l:['📚 30 درس','🤖 20 AI','🎯 15 تحدي','🏆 25 شارة','🗺️ خريطة','🎨 10 ثيمات','🎓 9 شهادات']},
+{v:'1.6.0',d:'2025',l:['🏆 12 شارة','📊 إحصائيات','🎓 شهادات','🤖 AI','🏅 متصدرون']},
+{v:'1.5.0',d:'2025',l:['🧪 مختبر','📺 فيديوهات','🎯 8 تحديات','⭐ Pro']},
+{v:'1.4.0',d:'2025',l:['🔍 بحث','🧪 اختبار','📖 قاموس']},
+{v:'1.3.0',d:'2025',l:['💻 أوامر','🖥️ محاكي']},
+{v:'1.0.0',d:'2025',l:['🎉 الإصدار الأول']}
 ];
 
-function renderChangelog() {
-    document.getElementById('changelogList').innerHTML = CHANGELOG.map(c => 
-        `<div class="changelog-item">
-            <div class="changelog-version">الإصدار ${c.v}<span class="changelog-date">${c.d}</span></div>
-            <ul class="changelog-list">${c.l.map(x => `<li>${x}</li>`).join('')}</ul>
-        </div>`
-    ).join('');
+function renderChangelog(){
+document.getElementById('changelogList').innerHTML=CHANGELOG.map(c=>`<div class="changelog-item"><div class="changelog-version">الإصدار ${c.v}<span class="changelog-date">${c.d}</span></div><ul class="changelog-list">${c.l.map(x=>`<li>${x}</li>`).join('')}</ul></div>`).join('');
 }
 
-/* ============ Themes (10) ============ */
 const THEMES = [
-    {id:'default',name:'الافتراضي (أخضر)',color:'#4CAF50'},
-    {id:'blue',name:'أزرق',color:'#2196F3'},
-    {id:'purple',name:'بنفسجي',color:'#9C27B0'},
-    {id:'orange',name:'برتقالي',color:'#FF9800'},
-    {id:'red',name:'أحمر',color:'#f44336'},
-    {id:'pink',name:'وردي',color:'#E91E63'},
-    {id:'cyan',name:'سماوي',color:'#00BCD4'},
-    {id:'indigo',name:'نيلي',color:'#3F51B5'},
-    {id:'teal',name:'تركوازي',color:'#009688'},
-    {id:'amber',name:'عسلي',color:'#FFC107'}
+{id:'default',name:'الافتراضي (أخضر)',color:'#4CAF50'},
+{id:'blue',name:'أزرق',color:'#2196F3'},
+{id:'purple',name:'بنفسجي',color:'#9C27B0'},
+{id:'orange',name:'برتقالي',color:'#FF9800'},
+{id:'red',name:'أحمر',color:'#f44336'},
+{id:'pink',name:'وردي',color:'#E91E63'},
+{id:'cyan',name:'سماوي',color:'#00BCD4'},
+{id:'indigo',name:'نيلي',color:'#3F51B5'},
+{id:'teal',name:'تركوازي',color:'#009688'},
+{id:'amber',name:'عسلي',color:'#FFC107'}
 ];
 
-function renderThemes() {
-    const c = document.getElementById('themesList');
-    if(!c) return;
-    c.innerHTML = THEMES.map(t => 
-        `<div class="tool-box" onclick="setTheme('${t.id}')" style="cursor:pointer;display:flex;align-items:center;gap:15px">
-            <div style="width:45px;height:45px;border-radius:50%;background:${t.color};flex-shrink:0"></div>
-            <div style="flex:1"><div style="font-weight:bold">${t.name}</div>
-            <div style="color:var(--text2);font-size:12px">${STATE.theme===t.id?'✅ مفعّل':'اضغط للتطبيق'}</div></div>
-        </div>`
-    ).join('');
+function renderThemes(){
+const c=document.getElementById('themesList');if(!c)return;
+c.innerHTML=THEMES.map(t=>`<div class="tool-box" onclick="setTheme('${t.id}')" style="cursor:pointer;display:flex;align-items:center;gap:15px"><div style="width:45px;height:45px;border-radius:50%;background:${t.color};flex-shrink:0"></div><div style="flex:1"><div style="font-weight:bold">${t.name}</div><div style="color:var(--text2);font-size:12px">${STATE.theme===t.id?'✅ مفعّل':'اضغط'}</div></div></div>`).join('');
 }
 
-function setTheme(id) {
-    STATE.theme = id;
-    applyTheme();
-    saveState();
-    renderThemes();
-    showToast('🎨 تم تغيير الثيم', 'gold');
+function setTheme(id){
+STATE.theme=id;applyTheme();saveState();renderThemes();
+showToast('🎨 تم تغيير الثيم','gold');
 }
 
-function applyTheme() {
-    document.body.className = STATE.darkMode ? '' : 'light';
-    if(STATE.theme !== 'default') document.body.classList.add('theme-' + STATE.theme);
+function applyTheme(){
+document.body.className=STATE.darkMode?'':'light';
+if(STATE.theme!=='default')document.body.classList.add('theme-'+STATE.theme);
 }
 
-/* ============ Search ============ */
-function performSearch() {
-    const q = document.getElementById('searchInput').value.toLowerCase().trim();
-    const results = document.getElementById('searchResults');
-    if(!q) { results.classList.remove('show'); return; }
-    let items = [];
-    LESSONS.forEach(l => {
-        if(l.title.toLowerCase().includes(q) || l.cat.toLowerCase().includes(q))
-            items.push({i:'📚',t:l.title,d:'درس',a:`openLesson('${l.id}')`});
-    });
-    GLOSSARY.forEach(g => {
-        if(g.t.toLowerCase().includes(q))
-            items.push({i:'📖',t:g.t,d:'مصطلح',a:`openPage('glossaryPage')`});
-    });
-    CHALLENGES.forEach(c => {
-        if(c.title.toLowerCase().includes(q))
-            items.push({i:'🧪',t:c.title,d:'تحدي',a:`openChallenge('${c.id}')`});
-    });
-    if(items.length === 0) results.innerHTML = '<div class="search-empty">لا نتائج</div>';
-    else results.innerHTML = items.slice(0, 15).map(it => 
-        `<div class="search-item" onclick="${it.a};closeSearch()">
-            <div class="search-item-icon">${it.i}</div>
-            <div class="search-item-text">
-                <div class="search-item-title">${it.t}</div>
-                <div class="search-item-type">${it.d}</div>
-            </div>
-        </div>`
-    ).join('');
-    results.classList.add('show');
+function performSearch(){
+const q=document.getElementById('searchInput').value.toLowerCase().trim();
+const results=document.getElementById('searchResults');
+if(!q){results.classList.remove('show');return;}
+let items=[];
+LESSONS.forEach(l=>{if(l.title.toLowerCase().includes(q)||l.cat.toLowerCase().includes(q))items.push({i:'📚',t:l.title,d:'درس',a:`openLesson('${l.id}')`});});
+GLOSSARY.forEach(g=>{if(g.t.toLowerCase().includes(q))items.push({i:'📖',t:g.t,d:'مصطلح',a:`openPage('glossaryPage')`});});
+CHALLENGES.forEach(c=>{if(c.title.toLowerCase().includes(q))items.push({i:'🧪',t:c.title,d:'تحدي',a:`openChallenge('${c.id}')`});});
+if(items.length===0)results.innerHTML='<div class="search-empty">لا نتائج</div>';
+else results.innerHTML=items.slice(0,15).map(it=>`<div class="search-item" onclick="${it.a};closeSearch()"><div class="search-item-icon">${it.i}</div><div class="search-item-text"><div class="search-item-title">${it.t}</div><div class="search-item-type">${it.d}</div></div></div>`).join('');
+results.classList.add('show');
 }
 
-function closeSearch() {
-    document.getElementById('searchResults').classList.remove('show');
-    document.getElementById('searchInput').value = '';
+function closeSearch(){document.getElementById('searchResults').classList.remove('show');document.getElementById('searchInput').value='';}
+
+function openPage(id){document.getElementById(id).classList.add('active');logActivity('زار: '+id);}
+function closePage(id){document.getElementById(id).classList.remove('active');}
+
+function switchTab(tab,e){
+document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+if(e)e.currentTarget.classList.add('active');
+document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+if(tab==='home')return;
+if(tab==='learn'){openPage('lessonsPage');renderLessons();}
+else if(tab==='map'){openPage('mapPage');renderMap();}
+else if(tab==='lab')openLab();
+else if(tab==='profile'){openPage('profilePage');updateProfile();}
 }
 
-/* ============ Pages ============ */
-function openPage(id) {
-    document.getElementById(id).classList.add('active');
-    logActivity('زار: ' + id);
+function updateProfile(){
+let level='المستوى 1';
+if(STATE.points>=10000)level='المستوى 7';
+else if(STATE.points>=5000)level='المستوى 6';
+else if(STATE.points>=2000)level='المستوى 5';
+else if(STATE.points>=1000)level='المستوى 4';
+else if(STATE.points>=500)level='المستوى 3';
+else if(STATE.points>=200)level='المستوى 2';
+document.getElementById('profileLevel').textContent=(STATE.isPro?'⭐ Pro - ':'')+level;
+document.getElementById('statPoints').textContent=STATE.points;
+document.getElementById('statLessons').textContent=STATE.completedLessons.length;
+document.getElementById('statChallenges').textContent=STATE.completedChallenges.length;
+document.getElementById('statBadges').textContent=STATE.earnedBadges.length;
 }
 
-function closePage(id) {
-    document.getElementById(id).classList.remove('active');
+function toggleTheme(){
+STATE.darkMode=!STATE.darkMode;applyTheme();
+document.getElementById('themeBtn').textContent=STATE.darkMode?'🌙':'☀️';
+const ts=document.getElementById('themeStatus');
+if(ts)ts.textContent=STATE.darkMode?'مفعّل':'معطل';
+saveState();
 }
 
-function switchTab(tab, e) {
-    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-    if(e) e.currentTarget.classList.add('active');
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    if(tab === 'home') return;
-    if(tab === 'learn') { openPage('lessonsPage'); renderLessons(); }
-    else if(tab === 'map') { openPage('mapPage'); renderMap(); }
-    else if(tab === 'lab') openLab();
-    else if(tab === 'profile') { openPage('profilePage'); updateProfile(); }
+let tempRating=0;
+
+function setRating(n){
+tempRating=n;
+document.querySelectorAll('#starRating .star').forEach((s,i)=>s.classList.toggle('active',i<n));
+const texts=['','😞 سيء','😐','🙂','😊','🤩 ممتاز!'];
+document.getElementById('ratingText').textContent=texts[n];
 }
 
-function updateProfile() {
-    let level = 'المستوى 1';
-    if(STATE.points >= 10000) level = 'المستوى 7';
-    else if(STATE.points >= 5000) level = 'المستوى 6';
-    else if(STATE.points >= 2000) level = 'المستوى 5';
-    else if(STATE.points >= 1000) level = 'المستوى 4';
-    else if(STATE.points >= 500) level = 'المستوى 3';
-    else if(STATE.points >= 200) level = 'المستوى 2';
-    document.getElementById('profileLevel').textContent = (STATE.isPro ? '⭐ Pro - ' : '') + level;
-    document.getElementById('statPoints').textContent = STATE.points;
-    document.getElementById('statLessons').textContent = STATE.completedLessons.length;
-    document.getElementById('statChallenges').textContent = STATE.completedChallenges.length;
-    document.getElementById('statBadges').textContent = STATE.earnedBadges.length;
+function submitRating(){
+if(!tempRating){showToast('❌ اختر','error');return;}
+STATE.userRating=tempRating;saveState();updateProfile();checkBadges();
+showToast('✅ شكراً!','gold');setTimeout(()=>closePage('ratePage'),1500);
 }
 
-function toggleTheme() {
-    STATE.darkMode = !STATE.darkMode;
-    applyTheme();
-    document.getElementById('themeBtn').textContent = STATE.darkMode ? '🌙' : '☀️';
-    const ts = document.getElementById('themeStatus');
-    if(ts) ts.textContent = STATE.darkMode ? 'مفعّل' : 'معطل';
-    saveState();
+function openDevLogin(){
+document.getElementById('devModal').classList.add('active');
+document.getElementById('devPassword').value='';
+document.getElementById('devPassword').focus();
 }
 
-let tempRating = 0;
+function closeDevLogin(){document.getElementById('devModal').classList.remove('active');}
 
-function setRating(n) {
-    tempRating = n;
-    document.querySelectorAll('#starRating .star').forEach((s, i) => s.classList.toggle('active', i < n));
-    const texts = ['', '😞 سيء', '😐', '🙂', '😊', '🤩 ممتاز!'];
-    document.getElementById('ratingText').textContent = texts[n];
+function checkDevPassword(){
+if(document.getElementById('devPassword').value===CONFIG.devPassword){
+closeDevLogin();document.getElementById('devPanel').classList.add('active');
+renderDevTab('stats');showToast('🎉 مرحباً!','info');
+}else{showToast('❌ خطأ','error');}
 }
 
-function submitRating() {
-    if(!tempRating) { showToast('❌ اختر', 'error'); return; }
-    STATE.userRating = tempRating;
-    saveState();
-    updateProfile();
-    checkBadges();
-    showToast('✅ شكراً!', 'gold');
-    setTimeout(() => closePage('ratePage'), 1500);
+function closeDevPanel(){document.getElementById('devPanel').classList.remove('active');}
+
+function switchDevTab(tab,e){
+document.querySelectorAll('.dev-tab').forEach(t=>t.classList.remove('active'));
+if(e)e.currentTarget.classList.add('active');
+renderDevTab(tab);
 }
 
-/* ============ Dev ============ */
-function openDevLogin() {
-    document.getElementById('devModal').classList.add('active');
-    document.getElementById('devPassword').value = '';
-    document.getElementById('devPassword').focus();
+function renderDevTab(tab){
+const c=document.getElementById('devTabContent');
+if(tab==='stats'){
+c.innerHTML=`<div class="dev-stat-grid"><div class="dev-stat"><div class="dev-stat-icon">🏆</div><div class="dev-stat-value">${STATE.points}</div><div class="dev-stat-label">النقاط</div></div><div class="dev-stat"><div class="dev-stat-icon">📚</div><div class="dev-stat-value">${STATE.completedLessons.length}</div><div class="dev-stat-label">الدروس</div></div><div class="dev-stat"><div class="dev-stat-icon">🧪</div><div class="dev-stat-value">${STATE.completedChallenges.length}</div><div class="dev-stat-label">التحديات</div></div><div class="dev-stat"><div class="dev-stat-icon">🏆</div><div class="dev-stat-value">${STATE.earnedBadges.length}</div><div class="dev-stat-label">الشارات</div></div><div class="dev-stat"><div class="dev-stat-icon">🤖</div><div class="dev-stat-value">${STATE.completedAI.length}</div><div class="dev-stat-label">AI</div></div><div class="dev-stat"><div class="dev-stat-icon">📊</div><div class="dev-stat-value">${STATE.activityLog.length}</div><div class="dev-stat-label">نشاطات</div></div></div><div class="dev-action" onclick="exportData()"><div class="dev-action-icon">💾</div><div><div class="dev-action-title">تصدير</div></div></div><div class="dev-action" onclick="clearAllData()" style="background:rgba(244,67,54,0.1)"><div class="dev-action-icon">🗑️</div><div><div class="dev-action-title">مسح الكل</div></div></div>`;
+}else if(tab==='content'){
+c.innerHTML=`<div class="dev-stat-grid"><div class="dev-stat"><div class="dev-stat-icon">📚</div><div class="dev-stat-value">${LESSONS.length}</div><div class="dev-stat-label">دروس</div></div><div class="dev-stat"><div class="dev-stat-icon">🧪</div><div class="dev-stat-value">${CHALLENGES.length}</div><div class="dev-stat-label">تحديات</div></div><div class="dev-stat"><div class="dev-stat-icon">📖</div><div class="dev-stat-value">${GLOSSARY.length}</div><div class="dev-stat-label">مصطلحات</div></div><div class="dev-stat"><div class="dev-stat-icon">🏆</div><div class="dev-stat-value">${BADGES.length}</div><div class="dev-stat-label">شارات</div></div><div class="dev-stat"><div class="dev-stat-icon">🤖</div><div class="dev-stat-value">${AI_QUESTIONS.length}</div><div class="dev-stat-label">AI</div></div><div class="dev-stat"><div class="dev-stat-icon">📺</div><div class="dev-stat-value">${VIDEOS.length}</div><div class="dev-stat-label">فيديوهات</div></div></div>`;
+}else if(tab==='themes'){
+c.innerHTML=THEMES.map(t=>`<div class="dev-action" onclick="setTheme('${t.id}')"><div class="dev-action-icon" style="background:${t.color};width:30px;height:30px;border-radius:50%"></div><div><div class="dev-action-title">${t.name}</div></div></div>`).join('');
+}else if(tab==='backup'){
+c.innerHTML=`<div class="dev-action" onclick="exportData()"><div class="dev-action-icon">💾</div><div><div class="dev-action-title">تصدير JSON</div></div></div><div class="dev-action" onclick="clearAllData()" style="background:rgba(244,67,54,0.1)"><div class="dev-action-icon">🗑️</div><div><div class="dev-action-title">مسح الكل</div></div></div>`;
+}else if(tab==='settings'){
+c.innerHTML=`<div class="dev-action"><div class="dev-action-icon">⭐</div><div><div class="dev-action-title">Pro: ${STATE.isPro?'مفعّل':'معطّل'}</div></div></div><div class="dev-action" onclick="togglePro()"><div class="dev-action-icon">🔄</div><div><div class="dev-action-title">تبديل Pro</div></div></div><div class="dev-action" onclick="closeDevPanel()" style="background:linear-gradient(135deg,var(--danger),#c62828);color:#fff"><div class="dev-action-icon">🚪</div><div><div class="dev-action-title" style="color:#fff">خروج</div></div></div>`;
+}
 }
 
-function closeDevLogin() {
-    document.getElementById('devModal').classList.remove('active');
+function togglePro(){
+STATE.isPro=!STATE.isPro;saveState();
+document.getElementById('proBanner').style.display=STATE.isPro?'flex':'none';
+renderLessons();renderVideos();renderChallenges();renderMap();renderDevTab('settings');
+showToast(STATE.isPro?'⭐ Pro':'🆓','gold');
 }
 
-function checkDevPassword() {
-    if(document.getElementById('devPassword').value === CONFIG.devPassword) {
-        closeDevLogin();
-        document.getElementById('devPanel').classList.add('active');
-        renderDevTab('stats');
-        showToast('🎉 مرحباً!', 'info');
-    } else {
-        showToast('❌ خطأ', 'error');
-    }
+function exportData(){
+const data={...STATE,exportDate:new Date().toISOString(),version:CONFIG.version};
+const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+const url=URL.createObjectURL(blob);
+const a=document.createElement('a');a.href=url;a.download='cyber-backup-170.json';a.click();
+URL.revokeObjectURL(url);showToast('💾 تم','gold');
 }
 
-function closeDevPanel() {
-    document.getElementById('devPanel').classList.remove('active');
+function clearAllData(){
+confirmAction('⚠️ مسح','سيتم حذف كل شيء',function(){
+localStorage.clear();showToast('✅');setTimeout(()=>location.reload(),1500);
+});
 }
 
-function switchDevTab(tab, e) {
-    document.querySelectorAll('.dev-tab').forEach(t => t.classList.remove('active'));
-    if(e) e.currentTarget.classList.add('active');
-    renderDevTab(tab);
-}
-
-function renderDevTab(tab) {
-    const c = document.getElementById('devTabContent');
-    if(tab === 'stats') {
-        c.innerHTML = `<div class="dev-stat-grid">
-            <div class="dev-stat"><div class="dev-stat-icon">🏆</div><div class="dev-stat-value">${STATE.points}</div><div class="dev-stat-label">النقاط</div></div>
-            <div class="dev-stat"><div class="dev-stat-icon">📚</div><div class="dev-stat-value">${STATE.completedLessons.length}</div><div class="dev-stat-label">الدروس</div></div>
-            <div class="dev-stat"><div class="dev-stat-icon">🧪</div><div class="dev-stat-value">${STATE.completedChallenges.length}</div><div class="dev-stat-label">التحديات</div></div>
-            <div class="dev-stat"><div class="dev-stat-icon">🏆</div><div class="dev-stat-value">${STATE.earnedBadges.length}</div><div class="dev-stat-label">الشارات</div></div>
-            <div class="dev-stat"><div class="dev-stat-icon">🤖</div><div class="dev-stat-value">${STATE.completedAI.length}</div><div class="dev-stat-label">AI</div></div>
-            <div class="dev-stat"><div class="dev-stat-icon">📊</div><div class="dev-stat-value">${STATE.activityLog.length}</div><div class="dev-stat-label">نشاطات</div></div>
-        </div>
-        <div class="dev-action" onclick="exportData()"><div class="dev-action-icon">💾</div><div><div class="dev-action-title">تصدير البيانات</div></div></div>
-        <div class="dev-action" onclick="clearAllData()" style="background:rgba(244,67,54,0.1)"><div class="dev-action-icon">🗑️</div><div><div class="dev-action-title">مسح الكل</div></div></div>`;
-    } else if(tab === 'content') {
-        c.innerHTML = `<div class="dev-stat-grid">
-            <div class="dev-stat"><div class="dev-stat-icon">📚</div><div class="dev-stat-value">${LESSONS.length}</div><div class="dev-stat-label">دروس</div></div>
-            <div class="dev-stat"><div class="dev-stat-icon">🧪</div><div class="dev-stat-value">${CHALLENGES.length}</div><div class="dev-stat-label">تحديات</div></div>
-            <div class="dev-stat"><div class="dev-stat-icon">📖</div><div class="dev-stat-value">${GLOSSARY.length}</div><div class="dev-stat-label">مصطلحات</div></div>
-            <div class="dev-stat"><div class="dev-stat-icon">🏆</div><div class="dev-stat-value">${BADGES.length}</div><div class="dev-stat-label">شارات</div></div>
-            <div class="dev-stat"><div class="dev-stat-icon">🤖</div><div class="dev-stat-value">${AI_QUESTIONS.length}</div><div class="dev-stat-label">AI</div></div>
-            <div class="dev-stat"><div class="dev-stat-icon">📺</div><div class="dev-stat-value">${VIDEOS.length}</div><div class="dev-stat-label">فيديوهات</div></div>
-        </div>`;
-    } else if(tab === 'themes') {
-        c.innerHTML = THEMES.map(t => 
-            `<div class="dev-action" onclick="setTheme('${t.id}')"><div class="dev-action-icon" style="background:${t.color};width:30px;height:30px;border-radius:50%"></div><div><div class="dev-action-title">${t.name}</div></div></div>`
-        ).join('');
-    } else if(tab === 'backup') {
-        c.innerHTML = `<div class="dev-action" onclick="exportData()"><div class="dev-action-icon">💾</div><div><div class="dev-action-title">تصدير JSON</div></div></div>
-        <div class="dev-action" onclick="clearAllData()" style="background:rgba(244,67,54,0.1)"><div class="dev-action-icon">🗑️</div><div><div class="dev-action-title">مسح الكل</div></div></div>`;
-    } else if(tab === 'settings') {
-        c.innerHTML = `<div class="dev-action"><div class="dev-action-icon">⭐</div><div><div class="dev-action-title">Pro: ${STATE.isPro ? 'مفعّل' : 'معطّل'}</div></div></div>
-        <div class="dev-action" onclick="togglePro()"><div class="dev-action-icon">🔄</div><div><div class="dev-action-title">تبديل Pro</div></div></div>
-        <div class="dev-action" onclick="closeDevPanel()" style="background:linear-gradient(135deg,var(--danger),#c62828);color:#fff"><div class="dev-action-icon">🚪</div><div><div class="dev-action-title" style="color:#fff">خروج</div></div></div>`;
-    }
-}
-
-function togglePro() {
-    STATE.isPro = !STATE.isPro;
-    saveState();
-    document.getElementById('proBanner').style.display = STATE.isPro ? 'flex' : 'none';
-    renderLessons();
-    renderVideos();
-    renderChallenges();
-    renderMap();
-    renderDevTab('settings');
-    showToast(STATE.isPro ? '⭐ Pro' : '🆓', 'gold');
-}
-
-function exportData() {
-    const data = {...STATE, exportDate: new Date().toISOString(), version: CONFIG.version};
-    const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'cyber-backup-170.json';
-    a.click();
-    URL.revokeObjectURL(url);
-    showToast('💾 تم التصدير', 'gold');
-}
-
-function clearAllData() {
-    confirmAction('⚠️ مسح', 'سيتم حذف كل شيء', function() {
-        localStorage.clear();
-        showToast('✅');
-        setTimeout(() => location.reload(), 1500);
-    });
-}
-
-document.getElementById('devPassword').addEventListener('keypress', function(e) {
-    if(e.key === 'Enter') checkDevPassword();
+document.getElementById('devPassword').addEventListener('keypress',function(e){
+if(e.key==='Enter')checkDevPassword();
 });
 
-function confirmAction(title, text, action) {
-    document.getElementById('confirmTitle').textContent = title;
-    document.getElementById('confirmText').textContent = text;
-    document.getElementById('confirmModal').classList.add('active');
-    window._confirmAction = action;
+function confirmAction(title,text,action){
+document.getElementById('confirmTitle').textContent=title;
+document.getElementById('confirmText').textContent=text;
+document.getElementById('confirmModal').classList.add('active');
+window._confirmAction=action;
 }
 
-function closeConfirm() {
-    document.getElementById('confirmModal').classList.remove('active');
+function closeConfirm(){document.getElementById('confirmModal').classList.remove('active');}
+
+function executeConfirm(){
+if(window._confirmAction)window._confirmAction();
+closeConfirm();
 }
 
-function executeConfirm() {
-    if(window._confirmAction) window._confirmAction();
-    closeConfirm();
+function resetProgress(){
+confirmAction('🗑️ إعادة','سيتم حذف تقدمك',function(){
+STATE.points=0;STATE.completedLessons=[];STATE.completedChallenges=[];
+STATE.completedQuizzes=[];STATE.completedAI=[];STATE.earnedBadges=[];STATE.activityLog=[];
+saveState();renderLessons();renderChallenges();renderBadgesPage();
+renderStats();renderCerts();renderMap();updateProfile();showToast('✅');
+});
 }
 
-function resetProgress() {
-    confirmAction('🗑️ إعادة', 'سيتم حذف تقدمك', function() {
-        STATE.points = 0;
-        STATE.completedLessons = [];
-        STATE.completedChallenges = [];
-        STATE.completedQuizzes = [];
-        STATE.completedAI = [];
-        STATE.earnedBadges = [];
-        STATE.activityLog = [];
-        saveState();
-        renderLessons();
-        renderChallenges();
-        renderBadgesPage();
-        renderStats();
-        renderCerts();
-        renderMap();
-        updateProfile();
-        showToast('✅');
-    });
+function showToast(msg,type){
+const t=document.getElementById('toast');
+t.textContent=msg;t.className='toast';
+if(type)t.classList.add(type);
+t.classList.add('show');
+setTimeout(()=>t.classList.remove('show'),2500);
 }
 
-function showToast(msg, type) {
-    const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.className = 'toast';
-    if(type) t.classList.add(type);
-    t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 2500);
+history.pushState(null,null,location.href);
+window.onpopstate=function(){
+const pages=document.querySelectorAll('.page.active');
+if(pages.length>0){
+pages.forEach(p=>p.classList.remove('active'));
+document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+document.querySelectorAll('.nav-item')[0].classList.add('active');
 }
-
-history.pushState(null, null, location.href);
-window.onpopstate = function() {
-    const pages = document.querySelectorAll('.page.active');
-    if(pages.length > 0) {
-        pages.forEach(p => p.classList.remove('active'));
-        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-        document.querySelectorAll('.nav-item')[0].classList.add('active');
-    }
-    history.pushState(null, null, location.href);
+history.pushState(null,null,location.href);
 };
 
-console.log('%c🛡️ الأمن السيبراني 1.7.0', 'color:#4CAF50;font-size:20px;font-weight:bold');
-console.log('%c👨‍💻 أنس خشان', 'color:#4CAF50;font-size:14px');
-console.log('%c📺 @amn_sirani', 'color:#0088CC;font-size:14px');
-   </script>
+console.log('%c🛡️ الأمن السيبراني 1.7.0','color:#4CAF50;font-size:20px;font-weight:bold');
+console.log('%c👨‍💻 أنس خشان','color:#4CAF50;font-size:14px');
+console.log('%c📺 @amn_sirani','color:#0088CC;font-size:14px');
+</script>
+</body>
+   </html>
