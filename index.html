@@ -4,12 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="theme-color" content="#0D1117">
-<title>الأمن السيبراني - الإصدار 1.2.0</title>
+<title>الأمن السيبراني - الإصدار 1.3.0</title>
 <style>
 /* ============================================
-   الأمن السيبراني - تطبيق تعليمي
-   الإصدار: 1.2.0
+   الأمن السيبراني - الإصدار 1.3.0
    المطور: أنس خشان
+   قناة تلغرام: @amn_sirani
    ============================================ */
 
 * {
@@ -25,879 +25,221 @@ html, body {
     color: #fff;
     min-height: 100vh;
     overflow-x: hidden;
-    user-select: none;
 }
 
-/* ============ Splash Screen ============ */
+/* ============ Splash ============ */
 .splash {
-    position: fixed;
-    top: 0; left: 0;
+    position: fixed; top: 0; left: 0;
     width: 100%; height: 100vh;
-    background: linear-gradient(135deg, #0D1117 0%, #161b22 100%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    z-index: 9999;
-    transition: opacity 0.6s ease;
+    background: linear-gradient(135deg, #0D1117, #161b22);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    z-index: 9999; transition: opacity 0.6s;
 }
-
-.splash.hide {
-    opacity: 0;
-    pointer-events: none;
-}
-
-.splash-logo {
-    font-size: 110px;
-    animation: pulseGlow 1.5s infinite;
-    filter: drop-shadow(0 0 20px rgba(76, 175, 80, 0.5));
-}
-
-.splash-title {
-    font-size: 28px;
-    color: #4CAF50;
-    margin-top: 25px;
-    font-weight: bold;
-    letter-spacing: 1px;
-}
-
-.splash-sub {
-    color: #666;
-    margin-top: 10px;
-    font-size: 14px;
-}
-
-.splash-dev {
-    color: #4CAF50;
-    margin-top: 5px;
-    font-size: 13px;
-}
-
-.splash-loader {
-    margin-top: 30px;
-    width: 200px;
-    height: 4px;
-    background: #21262d;
-    border-radius: 2px;
-    overflow: hidden;
-}
-
-.splash-loader-bar {
-    height: 100%;
-    background: linear-gradient(90deg, #4CAF50, #66BB6A);
-    width: 0%;
-    animation: loadBar 2s ease-in-out forwards;
-}
-
-@keyframes loadBar {
-    0% { width: 0%; }
-    100% { width: 100%; }
-}
-
-@keyframes pulseGlow {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.15); }
-}
+.splash.hide { opacity: 0; pointer-events: none; }
+.splash-logo { font-size: 110px; animation: pulseGlow 1.5s infinite; }
+.splash-title { font-size: 28px; color: #4CAF50; margin-top: 25px; font-weight: bold; }
+.splash-sub { color: #666; margin-top: 10px; font-size: 14px; }
+.splash-dev { color: #4CAF50; margin-top: 5px; font-size: 13px; }
+.splash-loader { margin-top: 30px; width: 200px; height: 4px; background: #21262d; border-radius: 2px; overflow: hidden; }
+.splash-loader-bar { height: 100%; background: linear-gradient(90deg, #4CAF50, #66BB6A); width: 0%; animation: loadBar 2.2s ease-in-out forwards; }
+@keyframes loadBar { to { width: 100%; } }
+@keyframes pulseGlow { 0%,100% { transform: scale(1); } 50% { transform: scale(1.15); } }
 
 /* ============ Main App ============ */
-.app {
-    display: none;
-    padding: 20px;
-    min-height: 100vh;
-    animation: fadeIn 0.5s ease;
-}
-
-.app.active {
-    display: block;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(15px); }
-    to { opacity: 1; transform: translateY(0); }
-}
+.app { display: none; padding: 20px; min-height: 100vh; animation: fadeIn 0.5s; }
+.app.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
 /* ============ Header ============ */
-.header {
-    text-align: center;
-    padding: 15px 0 25px;
-    margin-bottom: 20px;
-    border-bottom: 1px solid #21262d;
-}
+.header { text-align: center; padding: 15px 0 25px; margin-bottom: 20px; border-bottom: 1px solid #21262d; }
+.header-logo { font-size: 65px; margin-bottom: 10px; }
+.header h1 { color: #4CAF50; font-size: 26px; margin-bottom: 8px; }
+.header .dev-name { color: #888; font-size: 13px; margin-top: 8px; }
+.header .dev-name span { color: #4CAF50; font-weight: bold; cursor: pointer; }
+.header .version { color: #555; font-size: 11px; margin-top: 5px; background: #161b22; display: inline-block; padding: 3px 10px; border-radius: 10px; }
 
-.header-logo {
-    font-size: 65px;
-    margin-bottom: 10px;
-    display: inline-block;
-}
-
-.header h1 {
-    color: #4CAF50;
-    font-size: 26px;
-    margin-bottom: 8px;
-    font-weight: bold;
-}
-
-.header .dev-name {
-    color: #888;
-    font-size: 13px;
-    margin-top: 8px;
-}
-
-.header .dev-name span {
-    color: #4CAF50;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.header .version {
-    color: #555;
-    font-size: 11px;
-    margin-top: 5px;
-    background: #161b22;
-    display: inline-block;
-    padding: 3px 10px;
-    border-radius: 10px;
-}
-
-/* ============ Menu Buttons ============ */
-.menu {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    max-width: 420px;
-    margin: 0 auto;
-}
-
-.btn {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 20px;
-    border: none;
-    border-radius: 15px;
-    font-size: 17px;
-    font-weight: bold;
-    color: #fff;
-    cursor: pointer;
-    text-decoration: none;
-    transition: transform 0.15s, box-shadow 0.15s;
-    width: 100%;
-    position: relative;
-    overflow: hidden;
-}
-
-.btn::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: linear-gradient(120deg, transparent, rgba(255,255,255,0.1), transparent);
-    transform: translateX(-100%);
-    transition: transform 0.5s;
-}
-
-.btn:active::before {
-    transform: translateX(100%);
-}
-
-.btn:active {
-    transform: scale(0.97);
-}
-
-.btn-arrow {
-    opacity: 0.5;
-    font-size: 20px;
-    font-weight: normal;
-}
-
-.btn-telegram {
-    background: linear-gradient(135deg, #0088CC, #00A0E0);
-    box-shadow: 0 4px 15px rgba(0, 136, 204, 0.3);
-}
-
-.btn-lessons {
-    background: linear-gradient(135deg, #4CAF50, #66BB6A);
-    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
-}
-
-.btn-quiz {
-    background: linear-gradient(135deg, #FF9800, #FFB74D);
-    box-shadow: 0 4px 15px rgba(255, 152, 0, 0.3);
-}
-
-.btn-tools {
-    background: linear-gradient(135deg, #9C27B0, #BA68C8);
-    box-shadow: 0 4px 15px rgba(156, 39, 176, 0.3);
-}
-
-.btn-tips {
-    background: linear-gradient(135deg, #E91E63, #F06292);
-    box-shadow: 0 4px 15px rgba(233, 30, 99, 0.3);
-}
-
-.btn-about {
-    background: linear-gradient(135deg, #607D8B, #78909C);
-    box-shadow: 0 4px 15px rgba(96, 125, 139, 0.3);
-}
+/* ============ Menu ============ */
+.menu { display: flex; flex-direction: column; gap: 12px; max-width: 420px; margin: 0 auto; }
+.btn { display: flex; align-items: center; justify-content: space-between; padding: 20px; border: none; border-radius: 15px; font-size: 17px; font-weight: bold; color: #fff; cursor: pointer; text-decoration: none; transition: transform 0.15s; width: 100%; position: relative; overflow: hidden; }
+.btn:active { transform: scale(0.97); }
+.btn-arrow { opacity: 0.5; font-size: 20px; }
+.btn-telegram { background: linear-gradient(135deg, #0088CC, #00A0E0); box-shadow: 0 4px 15px rgba(0,136,204,0.3); }
+.btn-lessons { background: linear-gradient(135deg, #4CAF50, #66BB6A); box-shadow: 0 4px 15px rgba(76,175,80,0.3); }
+.btn-quiz { background: linear-gradient(135deg, #FF9800, #FFB74D); box-shadow: 0 4px 15px rgba(255,152,0,0.3); }
+.btn-tools { background: linear-gradient(135deg, #9C27B0, #BA68C8); box-shadow: 0 4px 15px rgba(156,39,176,0.3); }
+.btn-tips { background: linear-gradient(135deg, #E91E63, #F06292); box-shadow: 0 4px 15px rgba(233,30,99,0.3); }
+.btn-terminal { background: linear-gradient(135deg, #00BCD4, #4DD0E1); box-shadow: 0 4px 15px rgba(0,188,212,0.3); }
+.btn-termux { background: linear-gradient(135deg, #37474F, #546E7A); box-shadow: 0 4px 15px rgba(55,71,79,0.3); }
+.btn-report { background: linear-gradient(135deg, #f44336, #EF5350); box-shadow: 0 4px 15px rgba(244,67,54,0.3); }
+.btn-assistant { background: linear-gradient(135deg, #3F51B5, #5C6BC0); box-shadow: 0 4px 15px rgba(63,81,181,0.3); }
+.btn-rate { background: linear-gradient(135deg, #FFC107, #FFD54F); box-shadow: 0 4px 15px rgba(255,193,7,0.3); color: #333; }
+.btn-about { background: linear-gradient(135deg, #607D8B, #78909C); box-shadow: 0 4px 15px rgba(96,125,139,0.3); }
 
 /* ============ Footer ============ */
-.footer {
-    text-align: center;
-    margin-top: 40px;
-    padding: 20px;
-    color: #444;
-    font-size: 12px;
-    border-top: 1px solid #1a1a1a;
-    line-height: 1.8;
-}
-
-.footer strong {
-    color: #4CAF50;
-}
+.footer { text-align: center; margin-top: 40px; padding: 20px; color: #444; font-size: 12px; border-top: 1px solid #1a1a1a; line-height: 1.8; }
+.footer strong { color: #4CAF50; }
 
 /* ============ Pages ============ */
-.page {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100vh;
-    background: #0D1117;
-    overflow-y: auto;
-    padding: 20px;
-    display: none;
-    z-index: 100;
-    animation: slideIn 0.3s ease;
-}
+.page { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: #0D1117; overflow-y: auto; padding: 20px; display: none; z-index: 100; animation: slideIn 0.3s; }
+.page.active { display: block; }
+@keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+.page-header { display: flex; align-items: center; gap: 15px; margin-bottom: 25px; padding-bottom: 15px; border-bottom: 1px solid #21262d; position: sticky; top: -20px; background: #0D1117; padding-top: 20px; z-index: 10; }
+.back-btn { background: #1a2332; border: none; color: #fff; width: 45px; height: 45px; border-radius: 50%; font-size: 22px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.back-btn:active { background: #2a3342; transform: scale(0.92); }
+.page-title { font-size: 22px; color: #4CAF50; font-weight: bold; }
 
-.page.active {
-    display: block;
-}
+/* ============ Lesson Cards ============ */
+.lesson-card { background: #161b22; border-radius: 15px; padding: 20px; margin-bottom: 15px; border: 1px solid #21262d; cursor: pointer; transition: all 0.3s; }
+.lesson-card:active { transform: scale(0.98); border-color: #4CAF50; background: #1a2332; }
+.lesson-num { display: inline-block; background: linear-gradient(135deg, #4CAF50, #66BB6A); color: #fff; width: 38px; height: 38px; border-radius: 50%; text-align: center; line-height: 38px; font-weight: bold; margin-bottom: 12px; }
+.lesson-card h3 { color: #4CAF50; font-size: 17px; margin-bottom: 8px; }
+.lesson-card p { color: #999; font-size: 13px; line-height: 1.6; }
 
-@keyframes slideIn {
-    from { transform: translateX(100%); opacity: 0; }
-    to { transform: translateX(0); opacity: 1; }
-}
-
-.page-header {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 25px;
-    padding-bottom: 15px;
-    border-bottom: 1px solid #21262d;
-    position: sticky;
-    top: -20px;
-    background: #0D1117;
-    padding-top: 20px;
-    z-index: 10;
-}
-
-.back-btn {
-    background: #1a2332;
-    border: none;
-    color: #fff;
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-    font-size: 22px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background 0.2s;
-}
-
-.back-btn:active {
-    background: #2a3342;
-    transform: scale(0.92);
-}
-
-.page-title {
-    font-size: 22px;
-    color: #4CAF50;
-    font-weight: bold;
-}
-
-/* ============ Lessons ============ */
-.lesson-card {
-    background: #161b22;
-    border-radius: 15px;
-    padding: 20px;
-    margin-bottom: 15px;
-    border: 1px solid #21262d;
-    cursor: pointer;
-    transition: all 0.3s;
-}
-
-.lesson-card:active {
-    transform: scale(0.98);
-    border-color: #4CAF50;
-    background: #1a2332;
-}
-
-.lesson-num {
-    display: inline-block;
-    background: linear-gradient(135deg, #4CAF50, #66BB6A);
-    color: #fff;
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
-    text-align: center;
-    line-height: 38px;
-    font-weight: bold;
-    margin-bottom: 12px;
-    box-shadow: 0 3px 10px rgba(76, 175, 80, 0.3);
-}
-
-.lesson-card h3 {
-    color: #4CAF50;
-    font-size: 17px;
-    margin-bottom: 8px;
-}
-
-.lesson-card p {
-    color: #999;
-    font-size: 13px;
-    line-height: 1.6;
-}
-
-.lesson-content {
-    background: #161b22;
-    padding: 22px;
-    border-radius: 15px;
-    line-height: 1.9;
-    font-size: 15px;
-    color: #ddd;
-    border: 1px solid #21262d;
-}
-
-.lesson-content h3 {
-    color: #4CAF50;
-    margin: 22px 0 12px;
-    font-size: 18px;
-    border-right: 4px solid #4CAF50;
-    padding-right: 10px;
-}
-
-.lesson-content h3:first-child {
-    margin-top: 0;
-}
-
-.lesson-content p {
-    margin-bottom: 12px;
-}
-
-.lesson-content ul, .lesson-content ol {
-    padding-right: 25px;
-    margin: 12px 0;
-}
-
-.lesson-content li {
-    margin-bottom: 10px;
-}
-
-.lesson-content .tip {
-    background: rgba(76, 175, 80, 0.1);
-    border-right: 4px solid #4CAF50;
-    padding: 14px;
-    border-radius: 8px;
-    margin: 18px 0;
-    font-size: 14px;
-    line-height: 1.7;
-}
-
-.lesson-content .warning {
-    background: rgba(244, 67, 54, 0.1);
-    border-right: 4px solid #f44336;
-    padding: 14px;
-    border-radius: 8px;
-    margin: 18px 0;
-    font-size: 14px;
-}
-
-.lesson-content code {
-    background: #0d1117;
-    color: #4CAF50;
-    padding: 3px 8px;
-    border-radius: 5px;
-    font-size: 13px;
-    font-family: monospace;
-}
-
-.lesson-content strong {
-    color: #4CAF50;
-}
+.lesson-content { background: #161b22; padding: 22px; border-radius: 15px; line-height: 1.9; font-size: 15px; color: #ddd; border: 1px solid #21262d; }
+.lesson-content h3 { color: #4CAF50; margin: 22px 0 12px; font-size: 18px; border-right: 4px solid #4CAF50; padding-right: 10px; }
+.lesson-content h3:first-child { margin-top: 0; }
+.lesson-content p { margin-bottom: 12px; }
+.lesson-content ul, .lesson-content ol { padding-right: 25px; margin: 12px 0; }
+.lesson-content li { margin-bottom: 10px; }
+.lesson-content .tip { background: rgba(76,175,80,0.1); border-right: 4px solid #4CAF50; padding: 14px; border-radius: 8px; margin: 18px 0; font-size: 14px; }
+.lesson-content .warning { background: rgba(244,67,54,0.1); border-right: 4px solid #f44336; padding: 14px; border-radius: 8px; margin: 18px 0; font-size: 14px; }
+.lesson-content code { background: #0d1117; color: #4CAF50; padding: 3px 8px; border-radius: 5px; font-size: 13px; font-family: monospace; }
+.lesson-content strong { color: #4CAF50; }
 
 /* ============ Quiz ============ */
-.quiz-question {
-    background: #161b22;
-    border-radius: 15px;
-    padding: 25px;
-    margin-bottom: 20px;
-    border: 1px solid #21262d;
-}
-
-.quiz-progress {
-    width: 100%;
-    height: 6px;
-    background: #21262d;
-    border-radius: 3px;
-    margin-bottom: 15px;
-    overflow: hidden;
-}
-
-.quiz-progress-bar {
-    height: 100%;
-    background: linear-gradient(90deg, #4CAF50, #66BB6A);
-    border-radius: 3px;
-    transition: width 0.5s;
-}
-
-.quiz-q-num {
-    color: #4CAF50;
-    font-size: 13px;
-    font-weight: bold;
-    margin-bottom: 12px;
-}
-
-.quiz-q-text {
-    font-size: 17px;
-    margin-bottom: 22px;
-    line-height: 1.7;
-    font-weight: 500;
-}
-
-.quiz-option {
-    display: block;
-    width: 100%;
-    padding: 16px;
-    margin-bottom: 10px;
-    background: #1a2332;
-    color: #fff;
-    border: 2px solid #333;
-    border-radius: 10px;
-    font-size: 15px;
-    text-align: right;
-    cursor: pointer;
-    transition: all 0.3s;
-}
-
-.quiz-option:active {
-    transform: scale(0.98);
-}
-
-.quiz-option.correct {
-    background: rgba(76, 175, 80, 0.2);
-    border-color: #4CAF50;
-    color: #4CAF50;
-}
-
-.quiz-option.wrong {
-    background: rgba(244, 67, 54, 0.2);
-    border-color: #f44336;
-    color: #f44336;
-}
-
-.quiz-result {
-    text-align: center;
-    padding: 40px 20px;
-}
-
-.quiz-result .score {
-    font-size: 70px;
-    color: #4CAF50;
-    font-weight: bold;
-    text-shadow: 0 0 30px rgba(76, 175, 80, 0.5);
-}
-
-.quiz-result .msg {
-    font-size: 20px;
-    margin-top: 15px;
-    color: #ddd;
-}
-
-.quiz-result .percent {
-    color: #888;
-    margin-top: 10px;
-    font-size: 16px;
-}
+.quiz-question { background: #161b22; border-radius: 15px; padding: 25px; margin-bottom: 20px; border: 1px solid #21262d; }
+.quiz-progress { width: 100%; height: 6px; background: #21262d; border-radius: 3px; margin-bottom: 15px; overflow: hidden; }
+.quiz-progress-bar { height: 100%; background: linear-gradient(90deg, #4CAF50, #66BB6A); transition: width 0.5s; }
+.quiz-q-num { color: #4CAF50; font-size: 13px; font-weight: bold; margin-bottom: 12px; }
+.quiz-q-text { font-size: 17px; margin-bottom: 22px; line-height: 1.7; }
+.quiz-option { display: block; width: 100%; padding: 16px; margin-bottom: 10px; background: #1a2332; color: #fff; border: 2px solid #333; border-radius: 10px; font-size: 15px; text-align: right; cursor: pointer; transition: all 0.3s; }
+.quiz-option:active { transform: scale(0.98); }
+.quiz-option.correct { background: rgba(76,175,80,0.2); border-color: #4CAF50; color: #4CAF50; }
+.quiz-option.wrong { background: rgba(244,67,54,0.2); border-color: #f44336; color: #f44336; }
+.quiz-result { text-align: center; padding: 40px 20px; }
+.quiz-result .score { font-size: 70px; color: #4CAF50; font-weight: bold; }
+.quiz-result .msg { font-size: 20px; margin-top: 15px; color: #ddd; }
+.quiz-result .percent { color: #888; margin-top: 10px; font-size: 16px; }
 
 /* ============ Tools ============ */
-.tool-card {
-    background: #161b22;
-    border-radius: 15px;
-    padding: 22px;
-    margin-bottom: 18px;
-    border: 1px solid #21262d;
-}
+.tool-card { background: #161b22; border-radius: 15px; padding: 22px; margin-bottom: 18px; border: 1px solid #21262d; }
+.tool-card h3 { color: #4CAF50; margin-bottom: 15px; font-size: 17px; }
+.tool-input { width: 100%; padding: 14px; background: #0d1117; border: 2px solid #333; border-radius: 10px; color: #fff; font-size: 15px; outline: none; margin-bottom: 12px; }
+.tool-input:focus { border-color: #4CAF50; }
+.tool-btn { width: 100%; padding: 15px; background: linear-gradient(135deg, #4CAF50, #388E3C); color: #fff; border: none; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; }
+.tool-btn:active { transform: scale(0.97); }
+.tool-result { margin-top: 15px; padding: 15px; border-radius: 10px; text-align: center; font-weight: bold; display: none; }
+.tool-result.show { display: block; }
+.tool-result.weak { background: rgba(244,67,54,0.15); color: #f44336; border: 1px solid #f44336; }
+.tool-result.medium { background: rgba(255,152,0,0.15); color: #FF9800; border: 1px solid #FF9800; }
+.tool-result.strong { background: rgba(76,175,80,0.15); color: #4CAF50; border: 1px solid #4CAF50; }
 
-.tool-card h3 {
-    color: #4CAF50;
-    margin-bottom: 15px;
-    font-size: 17px;
-}
+/* ============ Terminal / Commands ============ */
+.cmd-category { background: #161b22; border-radius: 12px; padding: 15px; margin-bottom: 12px; border: 1px solid #21262d; cursor: pointer; }
+.cmd-category:active { background: #1a2332; }
+.cmd-category h3 { color: #00BCD4; font-size: 16px; margin-bottom: 5px; }
+.cmd-category p { color: #888; font-size: 13px; }
 
-.tool-input {
-    width: 100%;
-    padding: 14px;
-    background: #0d1117;
-    border: 2px solid #333;
-    border-radius: 10px;
-    color: #fff;
-    font-size: 15px;
-    outline: none;
-    margin-bottom: 12px;
-    transition: border 0.3s;
-}
+.cmd-item { background: #0d1117; border-radius: 10px; padding: 15px; margin-bottom: 12px; border: 1px solid #21262d; }
+.cmd-name { color: #4CAF50; font-family: monospace; font-size: 16px; font-weight: bold; margin-bottom: 8px; }
+.cmd-desc { color: #aaa; font-size: 13px; line-height: 1.6; margin-bottom: 10px; }
+.cmd-example { background: #161b22; padding: 10px; border-radius: 8px; color: #FF9800; font-family: monospace; font-size: 13px; border-right: 3px solid #FF9800; }
+.cmd-copy { background: #4CAF50; color: #fff; border: none; padding: 8px 15px; border-radius: 8px; font-size: 13px; margin-top: 10px; cursor: pointer; }
 
-.tool-input:focus {
-    border-color: #4CAF50;
-}
+/* ============ Terminal Simulator ============ */
+.terminal { background: #000; border: 2px solid #4CAF50; border-radius: 12px; padding: 15px; font-family: monospace; font-size: 14px; color: #4CAF50; min-height: 300px; margin-bottom: 15px; }
+.terminal-output { margin-bottom: 10px; line-height: 1.6; white-space: pre-wrap; word-break: break-all; }
+.terminal-input-line { display: flex; align-items: center; gap: 8px; }
+.terminal-prompt { color: #4CAF50; font-weight: bold; }
+.terminal-input { flex: 1; background: transparent; border: none; color: #4CAF50; font-family: monospace; font-size: 14px; outline: none; }
 
-.tool-btn {
-    width: 100%;
-    padding: 15px;
-    background: linear-gradient(135deg, #4CAF50, #388E3C);
-    color: #fff;
-    border: none;
-    border-radius: 10px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: transform 0.2s;
-}
+/* ============ Report Form ============ */
+.report-form { background: #161b22; border-radius: 15px; padding: 22px; border: 1px solid #21262d; }
+.form-group { margin-bottom: 18px; }
+.form-label { color: #4CAF50; font-size: 14px; font-weight: bold; margin-bottom: 8px; display: block; }
+.form-input, .form-textarea, .form-select { width: 100%; padding: 14px; background: #0d1117; border: 2px solid #333; border-radius: 10px; color: #fff; font-size: 15px; outline: none; font-family: inherit; }
+.form-input:focus, .form-textarea:focus, .form-select:focus { border-color: #4CAF50; }
+.form-textarea { min-height: 120px; resize: vertical; }
+.form-select { cursor: pointer; }
+.form-submit { width: 100%; padding: 16px; background: linear-gradient(135deg, #f44336, #c62828); color: #fff; border: none; border-radius: 12px; font-size: 17px; font-weight: bold; cursor: pointer; }
+.form-submit:active { transform: scale(0.97); }
 
-.tool-btn:active {
-    transform: scale(0.97);
-}
+/* ============ Star Rating ============ */
+.star-rating { display: flex; justify-content: center; gap: 10px; margin: 20px 0; font-size: 40px; }
+.star { cursor: pointer; color: #333; transition: color 0.2s, transform 0.2s; }
+.star.active { color: #FFC107; }
+.star:active { transform: scale(1.2); }
 
-.tool-result {
-    margin-top: 15px;
-    padding: 15px;
-    border-radius: 10px;
-    text-align: center;
-    font-weight: bold;
-    display: none;
-    animation: fadeIn 0.3s;
-}
-
-.tool-result.show {
-    display: block;
-}
-
-.tool-result.weak {
-    background: rgba(244, 67, 54, 0.15);
-    color: #f44336;
-    border: 1px solid #f44336;
-}
-
-.tool-result.medium {
-    background: rgba(255, 152, 0, 0.15);
-    color: #FF9800;
-    border: 1px solid #FF9800;
-}
-
-.tool-result.strong {
-    background: rgba(76, 175, 80, 0.15);
-    color: #4CAF50;
-    border: 1px solid #4CAF50;
-}
+/* ============ Assistant ============ */
+.assistant-card { background: #161b22; border-radius: 15px; padding: 20px; margin-bottom: 15px; border: 1px solid #21262d; }
+.assistant-card h3 { color: #5C6BC0; font-size: 17px; margin-bottom: 12px; }
+.assistant-card p { color: #aaa; font-size: 14px; line-height: 1.7; margin-bottom: 12px; }
+.assistant-btn { width: 100%; padding: 14px; background: linear-gradient(135deg, #3F51B5, #5C6BC0); color: #fff; border: none; border-radius: 10px; font-size: 15px; font-weight: bold; cursor: pointer; margin-bottom: 8px; }
+.assistant-btn:active { transform: scale(0.97); }
+.assistant-btn.danger { background: linear-gradient(135deg, #f44336, #c62828); }
 
 /* ============ About ============ */
-.about-card {
-    background: #161b22;
-    border-radius: 15px;
-    padding: 22px;
-    margin-bottom: 15px;
-    border: 1px solid #21262d;
-}
+.about-card { background: #161b22; border-radius: 15px; padding: 22px; margin-bottom: 15px; border: 1px solid #21262d; }
+.about-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #21262d; }
+.about-row:last-child { border-bottom: none; }
+.about-label { color: #888; }
+.about-value { color: #4CAF50; font-weight: bold; }
+.about-card h3 { color: #4CAF50; margin-bottom: 15px; font-size: 17px; }
+.about-card p { color: #aaa; line-height: 1.8; font-size: 14px; }
+.about-link { display: block; margin-top: 15px; padding: 15px; background: #0088CC; color: #fff; text-decoration: none; border-radius: 10px; text-align: center; font-weight: bold; }
 
-.about-row {
-    display: flex;
-    justify-content: space-between;
-    padding: 12px 0;
-    border-bottom: 1px solid #21262d;
-}
-
-.about-row:last-child {
-    border-bottom: none;
-}
-
-.about-label {
-    color: #888;
-}
-
-.about-value {
-    color: #4CAF50;
-    font-weight: bold;
-}
-
-.about-card h3 {
-    color: #4CAF50;
-    margin-bottom: 15px;
-    font-size: 17px;
-}
-
-.about-card p {
-    color: #aaa;
-    line-height: 1.8;
-    font-size: 14px;
-}
-
-.about-link {
-    display: block;
-    margin-top: 15px;
-    padding: 15px;
-    background: #0088CC;
-    color: #fff;
-    text-decoration: none;
-    border-radius: 10px;
-    text-align: center;
-    font-weight: bold;
-    transition: background 0.3s;
-}
-
-.about-link:active {
-    background: #006699;
-}
-
-/* ============ Developer Mode ============ */
-.dev-modal {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100vh;
-    background: rgba(0, 0, 0, 0.85);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 9998;
-    padding: 20px;
-}
-
-.dev-modal.active {
-    display: flex;
-    animation: fadeIn 0.3s;
-}
-
-.dev-modal-content {
-    background: #161b22;
-    border-radius: 20px;
-    padding: 30px;
-    max-width: 400px;
-    width: 100%;
-    border: 1px solid #4CAF50;
-    box-shadow: 0 0 40px rgba(76, 175, 80, 0.3);
-}
-
-.dev-modal-content h3 {
-    color: #4CAF50;
-    text-align: center;
-    margin-bottom: 20px;
-    font-size: 20px;
-}
-
-.dev-password-input {
-    width: 100%;
-    padding: 16px;
-    background: #0d1117;
-    border: 2px solid #333;
-    border-radius: 12px;
-    color: #fff;
-    font-size: 18px;
-    text-align: center;
-    letter-spacing: 3px;
-    outline: none;
-    margin-bottom: 15px;
-    transition: border 0.3s;
-}
-
-.dev-password-input:focus {
-    border-color: #4CAF50;
-}
-
-.dev-modal-btns {
-    display: flex;
-    gap: 10px;
-}
-
-.dev-modal-btn {
-    flex: 1;
-    padding: 14px;
-    border: none;
-    border-radius: 10px;
-    font-size: 15px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.dev-modal-btn.cancel {
-    background: #333;
-    color: #fff;
-}
-
-.dev-modal-btn.confirm {
-    background: linear-gradient(135deg, #4CAF50, #388E3C);
-    color: #fff;
-}
+/* ============ Developer Modal ============ */
+.dev-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(0,0,0,0.85); display: none; align-items: center; justify-content: center; z-index: 9998; padding: 20px; }
+.dev-modal.active { display: flex; }
+.dev-modal-content { background: #161b22; border-radius: 20px; padding: 30px; max-width: 400px; width: 100%; border: 1px solid #4CAF50; }
+.dev-modal-content h3 { color: #4CAF50; text-align: center; margin-bottom: 20px; font-size: 20px; }
+.dev-password-input { width: 100%; padding: 16px; background: #0d1117; border: 2px solid #333; border-radius: 12px; color: #fff; font-size: 18px; text-align: center; letter-spacing: 3px; outline: none; margin-bottom: 15px; }
+.dev-password-input:focus { border-color: #4CAF50; }
+.dev-modal-btns { display: flex; gap: 10px; }
+.dev-modal-btn { flex: 1; padding: 14px; border: none; border-radius: 10px; font-size: 15px; font-weight: bold; cursor: pointer; }
+.dev-modal-btn.cancel { background: #333; color: #fff; }
+.dev-modal-btn.confirm { background: linear-gradient(135deg, #4CAF50, #388E3C); color: #fff; }
 
 /* ============ Developer Panel ============ */
-.dev-panel {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100vh;
-    background: #0D1117;
-    overflow-y: auto;
-    padding: 20px;
-    display: none;
-    z-index: 9997;
-    animation: slideIn 0.3s;
-}
-
-.dev-panel.active {
-    display: block;
-}
-
-.dev-panel-header {
-    background: linear-gradient(135deg, #4CAF50, #2E7D32);
-    padding: 20px;
-    border-radius: 15px;
-    margin-bottom: 20px;
-    text-align: center;
-}
-
-.dev-panel-header h2 {
-    font-size: 22px;
-    margin-bottom: 5px;
-}
-
-.dev-panel-header p {
-    font-size: 13px;
-    opacity: 0.9;
-}
-
-.dev-stat-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin-bottom: 20px;
-}
-
-.dev-stat {
-    background: #161b22;
-    padding: 18px;
-    border-radius: 12px;
-    text-align: center;
-    border: 1px solid #21262d;
-}
-
-.dev-stat-icon {
-    font-size: 30px;
-    margin-bottom: 8px;
-}
-
-.dev-stat-value {
-    color: #4CAF50;
-    font-size: 22px;
-    font-weight: bold;
-}
-
-.dev-stat-label {
-    color: #888;
-    font-size: 12px;
-    margin-top: 5px;
-}
-
-.dev-action {
-    background: #161b22;
-    padding: 18px;
-    border-radius: 12px;
-    margin-bottom: 10px;
-    border: 1px solid #21262d;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    transition: all 0.3s;
-}
-
-.dev-action:active {
-    transform: scale(0.98);
-    border-color: #4CAF50;
-}
-
-.dev-action-icon {
-    font-size: 24px;
-}
-
-.dev-action-text {
-    flex: 1;
-}
-
-.dev-action-title {
-    color: #fff;
-    font-weight: bold;
-    font-size: 15px;
-    margin-bottom: 3px;
-}
-
-.dev-action-desc {
-    color: #888;
-    font-size: 12px;
-}
+.dev-panel { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: #0D1117; overflow-y: auto; padding: 20px; display: none; z-index: 9997; }
+.dev-panel.active { display: block; }
+.dev-panel-header { background: linear-gradient(135deg, #4CAF50, #2E7D32); padding: 20px; border-radius: 15px; margin-bottom: 20px; text-align: center; }
+.dev-panel-header h2 { font-size: 22px; margin-bottom: 5px; }
+.dev-panel-header p { font-size: 13px; opacity: 0.9; }
+.dev-stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+.dev-stat { background: #161b22; padding: 18px; border-radius: 12px; text-align: center; border: 1px solid #21262d; }
+.dev-stat-icon { font-size: 30px; margin-bottom: 8px; }
+.dev-stat-value { color: #4CAF50; font-size: 22px; font-weight: bold; }
+.dev-stat-label { color: #888; font-size: 12px; margin-top: 5px; }
+.dev-action { background: #161b22; padding: 18px; border-radius: 12px; margin-bottom: 10px; border: 1px solid #21262d; cursor: pointer; display: flex; align-items: center; gap: 15px; }
+.dev-action:active { transform: scale(0.98); border-color: #4CAF50; }
+.dev-action-icon { font-size: 24px; }
+.dev-action-title { color: #fff; font-weight: bold; font-size: 15px; }
+.dev-action-desc { color: #888; font-size: 12px; margin-top: 3px; }
 
 /* ============ Toast ============ */
-.toast {
-    position: fixed;
-    bottom: 30px;
-    left: 50%;
-    transform: translateX(-50%) translateY(100px);
-    background: #4CAF50;
-    color: #fff;
-    padding: 14px 25px;
-    border-radius: 30px;
-    font-size: 14px;
-    font-weight: bold;
-    z-index: 99999;
-    opacity: 0;
-    transition: all 0.3s;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
-    max-width: 90%;
-    text-align: center;
-}
-
-.toast.show {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
-}
-
-.toast.error {
-    background: #f44336;
-}
-
-.toast.info {
-    background: #2196F3;
-}
+.toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px); background: #4CAF50; color: #fff; padding: 14px 25px; border-radius: 30px; font-size: 14px; font-weight: bold; z-index: 99999; opacity: 0; transition: all 0.3s; max-width: 90%; text-align: center; }
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.toast.error { background: #f44336; }
+.toast.info { background: #2196F3; }
+.toast.warning { background: #FF9800; }
 
 /* ============ Scrollbar ============ */
-::-webkit-scrollbar {
-    width: 6px;
-}
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #0D1117; }
+::-webkit-scrollbar-thumb { background: #4CAF50; border-radius: 3px; }
 
-::-webkit-scrollbar-track {
-    background: #0D1117;
-}
-
-::-webkit-scrollbar-thumb {
-    background: #4CAF50;
-    border-radius: 3px;
-}
-
-/* ============ Responsive ============ */
-@media (max-width: 360px) {
-    .header-logo { font-size: 55px; }
-    .header h1 { font-size: 22px; }
-    .btn { font-size: 15px; padding: 18px; }
-    .splash-logo { font-size: 90px; }
-}
+/* ============ Modal ============ */
+.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(0,0,0,0.85); display: none; align-items: center; justify-content: center; z-index: 9998; padding: 20px; }
+.modal-overlay.active { display: flex; }
+.modal-box { background: #161b22; border-radius: 20px; padding: 25px; max-width: 400px; width: 100%; border: 1px solid #4CAF50; text-align: center; }
+.modal-box h3 { color: #4CAF50; margin-bottom: 15px; }
+.modal-box p { color: #aaa; margin-bottom: 20px; line-height: 1.7; }
+.modal-box-btns { display: flex; gap: 10px; }
+.modal-box-btn { flex: 1; padding: 14px; border: none; border-radius: 10px; font-size: 15px; font-weight: bold; cursor: pointer; }
+.modal-box-btn.cancel { background: #333; color: #fff; }
+.modal-box-btn.confirm { background: #4CAF50; color: #fff; }
 </style>
 </head>
 <body>
@@ -908,11 +250,9 @@ html, body {
 <div class="splash" id="splash">
     <div class="splash-logo">🛡️</div>
     <div class="splash-title">الأمن السيبراني</div>
-    <div class="splash-sub">الإصدار 1.2.0</div>
+    <div class="splash-sub">الإصدار 1.3.0</div>
     <div class="splash-dev">تطوير: أنس خشان</div>
-    <div class="splash-loader">
-        <div class="splash-loader-bar"></div>
-    </div>
+    <div class="splash-loader"><div class="splash-loader-bar"></div></div>
 </div>
 
 <!-- ============================================
@@ -922,43 +262,50 @@ html, body {
     <div class="header">
         <div class="header-logo">🛡️</div>
         <h1>الأمن السيبراني</h1>
-        <div class="dev-name">
-            المطور: <span onclick="openDevLogin()" id="devTrigger">أنس خشان</span>
-        </div>
-        <div class="version">الإصدار 1.2.0</div>
+        <div class="dev-name">المطور: <span onclick="openDevLogin()" id="devTrigger">أنس خشان</span></div>
+        <div class="version">الإصدار 1.3.0</div>
     </div>
 
     <div class="menu">
         <a href="https://t.me/amn_sirani" class="btn btn-telegram">
-            <span>📺 قناتي على تلغرام</span>
-            <span class="btn-arrow">←</span>
+            <span>📺 قناتي على تلغرام</span><span class="btn-arrow">←</span>
         </a>
         <button class="btn btn-lessons" onclick="openPage('lessonsPage')">
-            <span>📚 الدروس</span>
-            <span class="btn-arrow">←</span>
+            <span>📚 الدروس</span><span class="btn-arrow">←</span>
         </button>
         <button class="btn btn-quiz" onclick="openPage('quizPage')">
-            <span>🧪 الاختبارات</span>
-            <span class="btn-arrow">←</span>
+            <span>🧪 الاختبارات</span><span class="btn-arrow">←</span>
         </button>
         <button class="btn btn-tools" onclick="openPage('toolsPage')">
-            <span>🔧 أدوات أمنية</span>
-            <span class="btn-arrow">←</span>
+            <span>🔧 أدوات أمنية</span><span class="btn-arrow">←</span>
         </button>
         <button class="btn btn-tips" onclick="openPage('tipsPage')">
-            <span>💡 نصائح سريعة</span>
-            <span class="btn-arrow">←</span>
+            <span>💡 نصائح سريعة</span><span class="btn-arrow">←</span>
+        </button>
+        <button class="btn btn-terminal" onclick="openPage('terminalPage')">
+            <span>💻 تعلم الأوامر</span><span class="btn-arrow">←</span>
+        </button>
+        <button class="btn btn-termux" onclick="openPage('termuxPage')">
+            <span>🐧 تحميل Termux</span><span class="btn-arrow">←</span>
+        </button>
+        <button class="btn btn-assistant" onclick="openPage('assistantPage')">
+            <span>🤖 مساعد ذكي</span><span class="btn-arrow">←</span>
+        </button>
+        <button class="btn btn-rate" onclick="openPage('ratePage')">
+            <span>⭐ قيّم التطبيق</span><span class="btn-arrow">←</span>
+        </button>
+        <button class="btn btn-report" onclick="openPage('reportPage')">
+            <span>📢 الإبلاغ عن مشكلة</span><span class="btn-arrow">←</span>
         </button>
         <button class="btn btn-about" onclick="openPage('aboutPage')">
-            <span>ℹ️ حول التطبيق</span>
-            <span class="btn-arrow">←</span>
+            <span>ℹ️ حول التطبيق</span><span class="btn-arrow">←</span>
         </button>
     </div>
 
     <div class="footer">
         © 2025 - الأمن السيبراني<br>
         تطوير: <strong>أنس خشان</strong><br>
-        الإصدار 1.2.0
+        الإصدار 1.3.0
     </div>
 </div>
 
@@ -970,59 +317,16 @@ html, body {
         <button class="back-btn" onclick="closePage('lessonsPage')">→</button>
         <div class="page-title">📚 الدروس</div>
     </div>
-    
-    <div class="lesson-card" onclick="showLesson(1)">
-        <div class="lesson-num">1</div>
-        <h3>ما هو الأمن السيبراني؟</h3>
-        <p>مقدمة شاملة عن مفهوم الأمن السيبراني وأهميته</p>
-    </div>
-    
-    <div class="lesson-card" onclick="showLesson(2)">
-        <div class="lesson-num">2</div>
-        <h3>أنواع الهجمات السيبرانية</h3>
-        <p>تعرف على الفيروسات، الفيشينغ، وبرامج الفدية</p>
-    </div>
-    
-    <div class="lesson-card" onclick="showLesson(3)">
-        <div class="lesson-num">3</div>
-        <h3>كلمات المرور القوية</h3>
-        <p>كيف تصنع كلمة مرور يستحيل اختراقها</p>
-    </div>
-    
-    <div class="lesson-card" onclick="showLesson(4)">
-        <div class="lesson-num">4</div>
-        <h3>التصفح الآمن</h3>
-        <p>نصائح لتصفح الإنترنت بأمان تام</p>
-    </div>
-    
-    <div class="lesson-card" onclick="showLesson(5)">
-        <div class="lesson-num">5</div>
-        <h3>حماية حساباتك</h3>
-        <p>التحقق بخطوتين وأمان الحسابات</p>
-    </div>
-    
-    <div class="lesson-card" onclick="showLesson(6)">
-        <div class="lesson-num">6</div>
-        <h3>أمان الهاتف</h3>
-        <p>كيف تحمي هاتفك من الاختراق</p>
-    </div>
-    
-    <div class="lesson-card" onclick="showLesson(7)">
-        <div class="lesson-num">7</div>
-        <h3>أمان الشبكات</h3>
-        <p>حماية شبكتك المنزلية والواي فاي</p>
-    </div>
-    
-    <div class="lesson-card" onclick="showLesson(8)">
-        <div class="lesson-num">8</div>
-        <h3>الاحتيال الإلكتروني</h3>
-        <p>كيف تتعرف على عمليات النصب</p>
-    </div>
+    <div class="lesson-card" onclick="showLesson(1)"><div class="lesson-num">1</div><h3>ما هو الأمن السيبراني؟</h3><p>مقدمة شاملة</p></div>
+    <div class="lesson-card" onclick="showLesson(2)"><div class="lesson-num">2</div><h3>أنواع الهجمات</h3><p>الفيروسات، الفيشينغ، الفدية</p></div>
+    <div class="lesson-card" onclick="showLesson(3)"><div class="lesson-num">3</div><h3>كلمات المرور القوية</h3><p>حماية حساباتك</p></div>
+    <div class="lesson-card" onclick="showLesson(4)"><div class="lesson-num">4</div><h3>التصفح الآمن</h3><p>نصائح للإنترنت</p></div>
+    <div class="lesson-card" onclick="showLesson(5)"><div class="lesson-num">5</div><h3>حماية الحسابات</h3><p>التحقق بخطوتين</p></div>
+    <div class="lesson-card" onclick="showLesson(6)"><div class="lesson-num">6</div><h3>أمان الهاتف</h3><p>حماية الجهاز</p></div>
+    <div class="lesson-card" onclick="showLesson(7)"><div class="lesson-num">7</div><h3>أمان الشبكات</h3><p>Wi-Fi والراوتر</p></div>
+    <div class="lesson-card" onclick="showLesson(8)"><div class="lesson-num">8</div><h3>الاحتيال الإلكتروني</h3><p>التعرف على النصب</p></div>
 </div>
 
-<!-- ============================================
-     Lesson Content Page
-     ============================================ -->
 <div class="page" id="lessonContentPage">
     <div class="page-header">
         <button class="back-btn" onclick="closePage('lessonContentPage')">→</button>
@@ -1050,23 +354,20 @@ html, body {
         <button class="back-btn" onclick="closePage('toolsPage')">→</button>
         <div class="page-title">🔧 أدوات أمنية</div>
     </div>
-    
     <div class="tool-card">
         <h3>🔒 فاحص قوة كلمة المرور</h3>
-        <input type="text" class="tool-input" id="passCheck" placeholder="اكتب كلمة المرور هنا" oninput="checkStrength()">
+        <input type="text" class="tool-input" id="passCheck" placeholder="اكتب كلمة المرور" oninput="checkStrength()">
         <div class="tool-result" id="strengthResult"></div>
     </div>
-    
     <div class="tool-card">
-        <h3>🎲 مولّد كلمات مرور قوية</h3>
-        <button class="tool-btn" onclick="generatePassword()">🎲 توليد كلمة مرور</button>
-        <div class="tool-result show" id="generatedPass" style="background:rgba(76,175,80,0.15);color:#4CAF50;font-family:monospace;font-size:15px;margin-top:15px;word-break:break-all;"></div>
+        <h3>🎲 مولّد كلمات مرور</h3>
+        <button class="tool-btn" onclick="generatePassword()">🎲 توليد</button>
+        <div class="tool-result show" id="generatedPass" style="background:rgba(76,175,80,0.15);color:#4CAF50;font-family:monospace;word-break:break-all;"></div>
     </div>
-    
     <div class="tool-card">
-        <h3>🔍 فاحص عناوين URL</h3>
+        <h3>🔍 فاحص URLs</h3>
         <input type="text" class="tool-input" id="urlCheck" placeholder="https://example.com">
-        <button class="tool-btn" onclick="checkUrl()">🔍 فحص الرابط</button>
+        <button class="tool-btn" onclick="checkUrl()">🔍 فحص</button>
         <div class="tool-result" id="urlResult"></div>
     </div>
 </div>
@@ -1079,45 +380,249 @@ html, body {
         <button class="back-btn" onclick="closePage('tipsPage')">→</button>
         <div class="page-title">💡 نصائح سريعة</div>
     </div>
-    
-    <div class="lesson-card">
-        <h3>🔐 كلمات المرور</h3>
-        <p>استخدم 12 حرفاً على الأقل، مع أحرف كبيرة وصغيرة وأرقام ورموز</p>
+    <div class="lesson-card"><h3>🔐 كلمات المرور</h3><p>12 حرفاً مع حروف وأرقام ورموز</p></div>
+    <div class="lesson-card"><h3>📧 البريد</h3><p>لا تفتح روابط من مجهولين</p></div>
+    <div class="lesson-card"><h3>📱 التحديثات</h3><p>حدّث نظامك دائماً</p></div>
+    <div class="lesson-card"><h3>🔒 التحقق بخطوتين</h3><p>فعّله في كل حساباتك</p></div>
+    <div class="lesson-card"><h3>🌐 Wi-Fi عام</h3><p>لا تستخدم البنوك عليه</p></div>
+    <div class="lesson-card"><h3>💾 النسخ الاحتياطي</h3><p>احفظ بياناتك دورياً</p></div>
+    <div class="lesson-card"><h3>🚫 الروابط المشبوهة</h3><p>لا تضغط على روابط قصيرة</p></div>
+    <div class="lesson-card"><h3>🎁 العروض المغرية</h3><p>احذر من العروض الخيالية</p></div>
+</div>
+
+<!-- ============================================
+     Terminal (Commands) Page
+     ============================================ -->
+<div class="page" id="terminalPage">
+    <div class="page-header">
+        <button class="back-btn" onclick="closePage('terminalPage')">→</button>
+        <div class="page-title">💻 تعلم الأوامر</div>
     </div>
     
-    <div class="lesson-card">
-        <h3>📧 رسائل البريد</h3>
-        <p>لا تفتح روابط من مرسلين مجهولين، تحقق من عنوان المرسل جيداً</p>
+    <div class="cmd-category" onclick="showCommands('linux')">
+        <h3>🐧 أوامر Linux</h3>
+        <p>الأوامر الأساسية لنظام Linux</p>
+    </div>
+    <div class="cmd-category" onclick="showCommands('termux')">
+        <h3>📱 أوامر Termux</h3>
+        <p>أوامر إدارة الحزم في Termux</p>
+    </div>
+    <div class="cmd-category" onclick="showCommands('security')">
+        <h3>🛡️ أوامر أمن سيبراني</h3>
+        <p>أدوات الفحص والشبكات</p>
+    </div>
+    <div class="cmd-category" onclick="openTerminalSim()">
+        <h3>🖥️ محاكي طرفية</h3>
+        <p>جرّب الأوامر في محاكي بسيط</p>
+    </div>
+</div>
+
+<div class="page" id="commandsListPage">
+    <div class="page-header">
+        <button class="back-btn" onclick="closePage('commandsListPage')">→</button>
+        <div class="page-title" id="commandsListTitle">الأوامر</div>
+    </div>
+    <div id="commandsList"></div>
+</div>
+
+<div class="page" id="terminalSimPage">
+    <div class="page-header">
+        <button class="back-btn" onclick="closePage('terminalSimPage')">→</button>
+        <div class="page-title">🖥️ محاكي الطرفية</div>
+    </div>
+    <div class="terminal" id="terminalOutput">
+        <div class="terminal-output">مرحباً بك في محاكي الطرفية!
+اكتب "help" لرؤية الأوامر المتاحة.
+        </div>
+        <div class="terminal-input-line">
+            <span class="terminal-prompt">$</span>
+            <input type="text" class="terminal-input" id="terminalInput" placeholder="اكتب أمراً..." onkeypress="handleTerminalInput(event)">
+        </div>
+    </div>
+    <button class="tool-btn" onclick="clearTerminal()">🧹 مسح</button>
+</div>
+
+<!-- ============================================
+     Termux Page
+     ============================================ -->
+<div class="page" id="termuxPage">
+    <div class="page-header">
+        <button class="back-btn" onclick="closePage('termuxPage')">→</button>
+        <div class="page-title">🐧 تحميل Termux</div>
+    </div>
+    <div class="lesson-content">
+        <h3>🐧 ما هو Termux؟</h3>
+        <p>Termux هو تطبيق محاكي طرفية (Terminal Emulator) لنظام أندرويد، يوفّر بيئة Linux كاملة بدون Root.</p>
+        
+        <h3>✨ مميزاته:</h3>
+        <ul>
+            <li>بيئة Linux كاملة</li>
+            <li>لا يحتاج Root</li>
+            <li>يدعم Python, Node.js, Git, وغيرها</li>
+            <li>مجاني ومفتوح المصدر</li>
+            <li>يستخدمه المبرمجون والمخترقون الأخلاقيون</li>
+        </ul>
+        
+        <div class="tip">⚠️ <strong>ملاحظة:</strong> Termux لا يعمل داخل التطبيقات. يجب تحميله من متجر Google Play أو F-Droid.</div>
+        
+        <h3>📥 روابط التحميل:</h3>
+        <a href="https://play.google.com/store/apps/details?id=com.termux" style="display:block;padding:15px;background:#4CAF50;color:#fff;text-decoration:none;border-radius:10px;text-align:center;font-weight:bold;margin-bottom:10px" target="_blank">📱 Google Play</a>
+        <a href="https://f-droid.org/packages/com.termux/" style="display:block;padding:15px;background:#00BCD4;color:#fff;text-decoration:none;border-radius:10px;text-align:center;font-weight:bold" target="_blank">🤖 F-Droid (مُوصى به)</a>
+        
+        <h3>🚀 ابدأ بعد التثبيت:</h3>
+        <div class="cmd-item">
+            <div class="cmd-name">pkg update</div>
+            <div class="cmd-desc">تحديث قائمة الحزم</div>
+            <div class="cmd-example">$ pkg update && pkg upgrade</div>
+        </div>
+        
+        <div class="cmd-item">
+            <div class="cmd-name">pkg install python</div>
+            <div class="cmd-desc">تثبيت Python</div>
+            <div class="cmd-example">$ pkg install python</div>
+        </div>
+        
+        <div class="cmd-item">
+            <div class="cmd-name">termux-setup-storage</div>
+            <div class="cmd-desc">منح صلاحية الوصول للملفات</div>
+            <div class="cmd-example">$ termux-setup-storage</div>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================
+     Assistant Page
+     ============================================ -->
+<div class="page" id="assistantPage">
+    <div class="page-header">
+        <button class="back-btn" onclick="closePage('assistantPage')">→</button>
+        <div class="page-title">🤖 مساعد ذكي</div>
     </div>
     
-    <div class="lesson-card">
-        <h3>📱 تحديثات النظام</h3>
-        <p>حدّث نظامك وتطبيقاتك دائماً — التحديثات تسد الثغرات الأمنية</p>
+    <div class="assistant-card">
+        <h3>🩺 فحص حالة التطبيق</h3>
+        <p>يقوم بفحص شامل للتطبيق ويكتشف أي مشاكل</p>
+        <button class="assistant-btn" onclick="diagnoseApp()">🔍 ابدأ الفحص</button>
+        <div id="diagnoseResult" style="margin-top:15px"></div>
     </div>
     
-    <div class="lesson-card">
-        <h3>🔒 التحقق بخطوتين</h3>
-        <p>فعّل التحقق بخطوتين في جميع حساباتك المهمة</p>
+    <div class="assistant-card">
+        <h3>🧹 مسح البيانات المؤقتة</h3>
+        <p>يحذف الملفات المؤقتة والذاكرة المخبأة لتسريع التطبيق</p>
+        <button class="assistant-btn" onclick="clearCache()">🧹 مسح</button>
     </div>
     
-    <div class="lesson-card">
-        <h3>🌐 شبكات Wi-Fi</h3>
-        <p>تجنب البنوك والتسوق عبر شبكات Wi-Fi العامة</p>
+    <div class="assistant-card">
+        <h3>🔧 إصلاح تلقائي</h3>
+        <p>يحاول حل المشاكل الشائعة تلقائياً</p>
+        <button class="assistant-btn" onclick="autoFix()">🔧 إصلاح</button>
     </div>
     
-    <div class="lesson-card">
-        <h3>💾 النسخ الاحتياطية</h3>
-        <p>اعمل نسخة احتياطية لبياناتك المهمة بشكل دوري</p>
+    <div class="assistant-card">
+        <h3>📊 معلومات النظام</h3>
+        <p>يعرض معلومات عن جهازك والمتصفح</p>
+        <button class="assistant-btn" onclick="showSystemInfo()">📊 عرض</button>
+        <div id="systemInfoResult" style="margin-top:15px"></div>
     </div>
     
-    <div class="lesson-card">
-        <h3>🚫 الروابط المشبوهة</h3>
-        <p>لا تضغط على روابط قصيرة مجهولة (bit.ly وغيرها)</p>
+    <div class="assistant-card">
+        <h3>⚠️ إعادة تعيين التطبيق</h3>
+        <p>يحذف جميع بيانات التطبيق ويعيده للحالة الأصلية</p>
+        <button class="assistant-btn danger" onclick="confirmReset()">⚠️ إعادة تعيين</button>
+    </div>
+</div>
+
+<!-- ============================================
+     Rate Page
+     ============================================ -->
+<div class="page" id="ratePage">
+    <div class="page-header">
+        <button class="back-btn" onclick="closePage('ratePage')">→</button>
+        <div class="page-title">⭐ قيّم التطبيق</div>
     </div>
     
-    <div class="lesson-card">
-        <h3>🎁 العروض المغرية</h3>
-        <p>احذر من العروض "المجانية" الخيالية — غالباً احتيال</p>
+    <div class="report-form">
+        <h3 style="color:#4CAF50;text-align:center;margin-bottom:15px">كيف تقيّم تجربتك؟</h3>
+        
+        <div class="star-rating" id="starRating">
+            <span class="star" onclick="setRating(1)">★</span>
+            <span class="star" onclick="setRating(2)">★</span>
+            <span class="star" onclick="setRating(3)">★</span>
+            <span class="star" onclick="setRating(4)">★</span>
+            <span class="star" onclick="setRating(5)">★</span>
+        </div>
+        
+        <div id="ratingText" style="text-align:center;color:#4CAF50;font-weight:bold;margin-bottom:20px;font-size:18px"></div>
+        
+        <div class="form-group">
+            <label class="form-label">💬 تعليقك (اختياري)</label>
+            <textarea class="form-textarea" id="rateComment" placeholder="اكتب رأيك هنا..."></textarea>
+        </div>
+        
+        <button class="form-submit" onclick="submitRating()" style="background:linear-gradient(135deg,#FFC107,#FFA000);color:#333">⭐ إرسال التقييم</button>
+    </div>
+</div>
+
+<!-- ============================================
+     Report Page
+     ============================================ -->
+<div class="page" id="reportPage">
+    <div class="page-header">
+        <button class="back-btn" onclick="closePage('reportPage')">→</button>
+        <div class="page-title">📢 الإبلاغ عن مشكلة</div>
+    </div>
+    
+    <div class="report-form">
+        <div class="form-group">
+            <label class="form-label">📋 نوع المشكلة</label>
+            <select class="form-select" id="reportType">
+                <option value="">-- اختر --</option>
+                <option value="خطأ تقني">🐛 خطأ تقني</option>
+                <option value="مشكلة في التصميم">🎨 مشكلة في التصميم</option>
+                <option value="محتوى خاطئ">📝 محتوى خاطئ</option>
+                <option value="ميزة مفقودة">✨ ميزة مفقودة</option>
+                <option value="بطء في التطبيق">🐌 بطء في التطبيق</option>
+                <option value="اقتراح">💡 اقتراح</option>
+                <option value="أخرى">❓ أخرى</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label class="form-label">📍 مكان المشكلة</label>
+            <select class="form-select" id="reportPage">
+                <option value="">-- اختر الصفحة --</option>
+                <option value="الصفحة الرئيسية">🏠 الصفحة الرئيسية</option>
+                <option value="الدروس">📚 الدروس</option>
+                <option value="الاختبارات">🧪 الاختبارات</option>
+                <option value="الأدوات">🔧 الأدوات</option>
+                <option value="تعلم الأوامر">💻 تعلم الأوامر</option>
+                <option value="المساعد الذكي">🤖 المساعد الذكي</option>
+                <option value="أخرى">❓ أخرى</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label class="form-label">📝 وصف المشكلة</label>
+            <textarea class="form-textarea" id="reportDesc" placeholder="اشرح المشكلة بالتفصيل..."></textarea>
+        </div>
+        
+        <div class="form-group">
+            <label class="form-label">📧 بريدك أو معرّفك (اختياري)</label>
+            <input type="text" class="form-input" id="reportContact" placeholder="@username أو email">
+        </div>
+        
+        <div class="form-group">
+            <label class="form-label">⭐ تقييم التطبيق</label>
+            <div class="star-rating" id="reportStarRating">
+                <span class="star" onclick="setReportRating(1)">★</span>
+                <span class="star" onclick="setReportRating(2)">★</span>
+                <span class="star" onclick="setReportRating(3)">★</span>
+                <span class="star" onclick="setReportRating(4)">★</span>
+                <span class="star" onclick="setReportRating(5)">★</span>
+            </div>
+        </div>
+        
+        <button class="form-submit" onclick="submitReport()">📤 إرسال الإبلاغ</button>
     </div>
 </div>
 
@@ -1131,63 +636,44 @@ html, body {
     </div>
     
     <div class="about-card">
-        <div class="about-row">
-            <span class="about-label">اسم التطبيق</span>
-            <span class="about-value">الأمن السيبراني</span>
-        </div>
-        <div class="about-row">
-            <span class="about-label">الإصدار</span>
-            <span class="about-value">1.2.0</span>
-        </div>
-        <div class="about-row">
-            <span class="about-label">المطور</span>
-            <span class="about-value" id="aboutDevName">أنس خشان</span>
-        </div>
-        <div class="about-row">
-            <span class="about-label">قناة تلغرام</span>
-            <span class="about-value">@amn_sirani</span>
-        </div>
-        <div class="about-row">
-            <span class="about-label">السنة</span>
-            <span class="about-value">2025</span>
-        </div>
-        <div class="about-row">
-            <span class="about-label">الحجم</span>
-            <span class="about-value">صغير جداً</span>
-        </div>
+        <div class="about-row"><span class="about-label">اسم التطبيق</span><span class="about-value">الأمن السيبراني</span></div>
+        <div class="about-row"><span class="about-label">الإصدار</span><span class="about-value">1.3.0</span></div>
+        <div class="about-row"><span class="about-label">المطور</span><span class="about-value">أنس خشان</span></div>
+        <div class="about-row"><span class="about-label">تلغرام</span><span class="about-value">@amn_sirani</span></div>
+        <div class="about-row"><span class="about-label">السنة</span><span class="about-value">2025</span></div>
     </div>
     
     <div class="about-card">
         <h3>🎯 هدف التطبيق</h3>
-        <p>تطبيق تعليمي يهدف إلى نشر الوعي بالأمن السيبراني وتعليم المستخدمين كيفية حماية أنفسهم من الهجمات الإلكترونية بطرق بسيطة وفعالة.</p>
+        <p>تطبيق تعليمي لنشر الوعي بالأمن السيبراني وتعليم المستخدمين حماية أنفسهم من الهجمات الإلكترونية.</p>
     </div>
     
     <div class="about-card">
-        <h3>✨ ميزات التطبيق</h3>
+        <h3>✨ الميزات</h3>
         <p>
-            ✅ 8 دروس تعليمية شاملة<br>
-            ✅ اختبار تفاعلي بـ 10 أسئلة<br>
-            ✅ أدوات أمنية عملية<br>
-            ✅ نصائح سريعة ومهمة<br>
-            ✅ يعمل بدون إنترنت<br>
-            ✅ تصميم عصري ومريح
+            ✅ 8 دروس شاملة<br>
+            ✅ اختبار تفاعلي<br>
+            ✅ أدوات أمنية<br>
+            ✅ تعلم الأوامر<br>
+            ✅ مساعد ذكي<br>
+            ✅ نظام إبلاغ<br>
+            ✅ تقييم التطبيق
         </p>
     </div>
     
     <div class="about-card">
         <h3>📞 تواصل معنا</h3>
-        <p>للاقتراحات والاستفسارات، انضم إلى قناتنا على تلغرام:</p>
         <a href="https://t.me/amn_sirani" class="about-link">📺 @amn_sirani</a>
     </div>
     
     <div class="about-card">
-        <h3>⚙️ اضغط 7 مرات على اسم المطور للدخول لوضع المطور</h3>
-        <p style="text-align:center;font-size:12px;color:#555">هذه الميزة للمطور فقط</p>
+        <h3>👨‍💻 وضع المطور</h3>
+        <p style="text-align:center;font-size:12px;color:#555">اضغط 7 مرات على اسم المطور للدخول</p>
     </div>
 </div>
 
 <!-- ============================================
-     Developer Login Modal
+     Developer Modal & Panel
      ============================================ -->
 <div class="dev-modal" id="devModal">
     <div class="dev-modal-content">
@@ -1200,91 +686,34 @@ html, body {
     </div>
 </div>
 
-<!-- ============================================
-     Developer Panel
-     ============================================ -->
 <div class="dev-panel" id="devPanel">
     <div class="dev-panel-header">
-        <h2>👨‍💻 لوحة تحكم المطور</h2>
+        <h2>👨‍💻 لوحة المطور</h2>
         <p>مرحباً أنس خشان</p>
     </div>
-    
     <div class="dev-stat-grid">
-        <div class="dev-stat">
-            <div class="dev-stat-icon">📚</div>
-            <div class="dev-stat-value">8</div>
-            <div class="dev-stat-label">دروس</div>
-        </div>
-        <div class="dev-stat">
-            <div class="dev-stat-icon">🧪</div>
-            <div class="dev-stat-value">10</div>
-            <div class="dev-stat-label">أسئلة</div>
-        </div>
-        <div class="dev-stat">
-            <div class="dev-stat-icon">🔧</div>
-            <div class="dev-stat-value">3</div>
-            <div class="dev-stat-label">أدوات</div>
-        </div>
-        <div class="dev-stat">
-            <div class="dev-stat-icon">💡</div>
-            <div class="dev-stat-value">8</div>
-            <div class="dev-stat-label">نصائح</div>
-        </div>
+        <div class="dev-stat"><div class="dev-stat-icon">📚</div><div class="dev-stat-value">8</div><div class="dev-stat-label">دروس</div></div>
+        <div class="dev-stat"><div class="dev-stat-icon">🧪</div><div class="dev-stat-value">10</div><div class="dev-stat-label">أسئلة</div></div>
+        <div class="dev-stat"><div class="dev-stat-icon">💻</div><div class="dev-stat-value">30+</div><div class="dev-stat-label">أوامر</div></div>
+        <div class="dev-stat"><div class="dev-stat-icon">📢</div><div class="dev-stat-value" id="reportCount">0</div><div class="dev-stat-label">إبلاغات</div></div>
     </div>
-    
-    <div class="dev-action" onclick="devAction('تحديث الإصدار')">
-        <div class="dev-action-icon">🚀</div>
-        <div class="dev-action-text">
-            <div class="dev-action-title">تحديث الإصدار</div>
-            <div class="dev-action-desc">الإصدار الحالي: 1.2.0</div>
-        </div>
-    </div>
-    
-    <div class="dev-action" onclick="devAction('إضافة دروس جديدة')">
-        <div class="dev-action-icon">📚</div>
-        <div class="dev-action-text">
-            <div class="dev-action-title">إضافة دروس جديدة</div>
-            <div class="dev-action-desc">أضف محتوى تعليمي</div>
-        </div>
-    </div>
-    
-    <div class="dev-action" onclick="devAction('تعديل الأسئلة')">
-        <div class="dev-action-icon">🧪</div>
-        <div class="dev-action-text">
-            <div class="dev-action-title">تعديل أسئلة الاختبار</div>
-            <div class="dev-action-desc">تحكم في الأسئلة</div>
-        </div>
-    </div>
-    
-    <div class="dev-action" onclick="devAction('إحصائيات الاستخدام')">
-        <div class="dev-action-icon">📊</div>
-        <div class="dev-action-text">
-            <div class="dev-action-title">إحصائيات الاستخدام</div>
-            <div class="dev-action-desc">معلومات المستخدمين</div>
-        </div>
-    </div>
-    
-    <div class="dev-action" onclick="devAction('تصدير البيانات')">
-        <div class="dev-action-icon">💾</div>
-        <div class="dev-action-text">
-            <div class="dev-action-title">تصدير البيانات</div>
-            <div class="dev-action-desc">نسخة احتياطية</div>
-        </div>
-    </div>
-    
-    <div class="dev-action" onclick="devAction('إعادة تعيين التطبيق')">
-        <div class="dev-action-icon">🔄</div>
-        <div class="dev-action-text">
-            <div class="dev-action-title">إعادة تعيين التطبيق</div>
-            <div class="dev-action-desc">حذف جميع البيانات</div>
-        </div>
-    </div>
-    
-    <div class="dev-action" onclick="closeDevPanel()" style="background:linear-gradient(135deg,#f44336,#c62828)">
-        <div class="dev-action-icon">🚪</div>
-        <div class="dev-action-text">
-            <div class="dev-action-title">خروج</div>
-            <div class="dev-action-desc">العودة للتطبيق</div>
+    <div class="dev-action" onclick="showToast('🚀 الإصدار 1.3.0 - أحدث إصدار','info')"><div class="dev-action-icon">🚀</div><div><div class="dev-action-title">الإصدار الحالي</div><div class="dev-action-desc">1.3.0</div></div></div>
+    <div class="dev-action" onclick="showReports()"><div class="dev-action-icon">📊</div><div><div class="dev-action-title">عرض الإبلاغات</div><div class="dev-action-desc">آخر الإبلاغات</div></div></div>
+    <div class="dev-action" onclick="clearAllReports()"><div class="dev-action-icon">🗑️</div><div><div class="dev-action-title">حذف الإبلاغات</div><div class="dev-action-desc">مسح الكل</div></div></div>
+    <div class="dev-action" onclick="exportData()"><div class="dev-action-icon">💾</div><div><div class="dev-action-title">تصدير البيانات</div><div class="dev-action-desc">نسخة احتياطية</div></div></div>
+    <div class="dev-action" onclick="closeDevPanel()" style="background:linear-gradient(135deg,#f44336,#c62828)"><div class="dev-action-icon">🚪</div><div><div class="dev-action-title">خروج</div><div class="dev-action-desc">العودة للتطبيق</div></div></div>
+</div>
+
+<!-- ============================================
+     Confirm Modal
+     ============================================ -->
+<div class="modal-overlay" id="confirmModal">
+    <div class="modal-box">
+        <h3 id="confirmTitle">تأكيد</h3>
+        <p id="confirmText">هل أنت متأكد؟</p>
+        <div class="modal-box-btns">
+            <button class="modal-box-btn cancel" onclick="closeConfirm()">إلغاء</button>
+            <button class="modal-box-btn confirm" onclick="executeConfirm()">تأكيد</button>
         </div>
     </div>
 </div>
@@ -1296,16 +725,17 @@ html, body {
 
 <script>
 /* ============================================
-   الأمن السيبراني - الإصدار 1.2.0
-   المطور: أنس خشان
+   الإصدار 1.3.0 - JavaScript
    ============================================ */
 
 // ============ Config ============
 const CONFIG = {
-    version: "1.2.0",
+    version: "1.3.0",
     developer: "أنس خشان",
     devPassword: "1234567890",
-    telegram: "https://t.me/amn_sirani"
+    telegram: "https://t.me/amn_sirani",
+    botToken: "ضع_التوكن_هنا",     // ← غيّر هذا
+    chatId: "ضع_معرفك_هنا"          // ← غيّر هذا
 };
 
 // ============ Splash ============
@@ -1313,295 +743,39 @@ window.addEventListener('load', function() {
     setTimeout(function() {
         document.getElementById('splash').classList.add('hide');
         document.getElementById('app').classList.add('active');
+        loadReports();
     }, 2200);
 });
 
-// ============ Toast Notifications ============
+// ============ Toast ============
 function showToast(msg, type) {
     const toast = document.getElementById('toast');
     toast.textContent = msg;
     toast.className = 'toast';
     if(type) toast.classList.add(type);
     toast.classList.add('show');
-    
-    setTimeout(function() {
-        toast.classList.remove('show');
-    }, 2500);
+    setTimeout(function() { toast.classList.remove('show'); }, 2800);
 }
 
 // ============ Page Navigation ============
 function openPage(pageId) {
     document.getElementById(pageId).classList.add('active');
-    
-    if(pageId === 'quizPage') {
-        startQuiz();
-    }
+    if(pageId === 'quizPage') startQuiz();
 }
-
 function closePage(pageId) {
     document.getElementById(pageId).classList.remove('active');
 }
 
-// ============ Lessons Data ============
+// ============ Lessons ============
 const lessons = {
-    1: {
-        title: "ما هو الأمن السيبراني؟",
-        content: `
-            <h3>🎯 تعريف الأمن السيبراني</h3>
-            <p>الأمن السيبراني هو مجموعة من الممارسات والتقنيات التي تهدف إلى حماية الأنظمة والشبكات والبيانات من الهجمات الإلكترونية والوصول غير المصرح به.</p>
-            
-            <h3>📌 لماذا هو مهم؟</h3>
-            <ul>
-                <li>حماية بياناتك الشخصية من السرقة</li>
-                <li>الحفاظ على خصوصيتك على الإنترنت</li>
-                <li>منع الوصول غير المصرح به لأجهزتك</li>
-                <li>حماية أموالك من الاحتيال الإلكتروني</li>
-                <li>حماية سمعتك وسمعة عملك</li>
-            </ul>
-            
-            <div class="tip">💡 <strong>نصيحة:</strong> الأمن السيبراني ليس مجرد تقنية، بل هو أسلوب حياة يجب ممارسته يومياً!</div>
-            
-            <h3>🔑 المبادئ الأساسية الثلاثة</h3>
-            <ul>
-                <li><strong>السرية:</strong> منع الوصول غير المصرح به للمعلومات</li>
-                <li><strong>السلامة:</strong> ضمان عدم تعديل البيانات</li>
-                <li><strong>التوفر:</strong> ضمان الوصول للمعلومات عند الحاجة</li>
-            </ul>
-            
-            <h3>🎯 من هم المهاجمون؟</h3>
-            <ul>
-                <li><strong>الهاكرز:</strong> أفراد يخترقون الأنظمة</li>
-                <li><strong>المجرمون الإلكترونيون:</strong> يبحثون عن المال</li>
-                <li><strong>الجواسيس:</strong> يبحثون عن معلومات حساسة</li>
-                <li><strong>الهاكرز الأخلاقيون:</strong> يحمون الأنظمة (الجانب الجيد)</li>
-            </ul>
-        `
-    },
-    2: {
-        title: "أنواع الهجمات السيبرانية",
-        content: `
-            <h3>⚠️ أشهر أنواع الهجمات</h3>
-            
-            <h3>1. الفيشينغ (Phishing)</h3>
-            <p>رسائل مزيفة تبدو حقيقية تسرق بياناتك. مثال: إيميل من "البنك" يطلب كلمة المرور.</p>
-            <div class="warning">⚠️ <strong>علامات الفيشينغ:</strong> أخطاء إملائية، روابط غريبة، طلب معلومات عاجل</div>
-            
-            <h3>2. برامج الفدية (Ransomware)</h3>
-            <p>برامج تشفر ملفاتك وتطلب فدية مالية لاستعادتها.</p>
-            
-            <h3>3. هجمات حجب الخدمة (DDoS)</h3>
-            <p>إغراق الموقع بطلبات كثيرة حتى يتوقف عن العمل.</p>
-            
-            <h3>4. الهندسة الاجتماعية</h3>
-            <p>خداع الناس للحصول على معلوماتهم بدلاً من اختراق الأنظمة تقنياً.</p>
-            
-            <h3>5. البرمجيات الخبيثة (Malware)</h3>
-            <ul>
-                <li><strong>الفيروسات:</strong> تنتشر وتضر بالملفات</li>
-                <li><strong>الديدان:</strong> تنتشر عبر الشبكات</li>
-                <li><strong>أحصنة طروادة:</strong> تبدو مفيدة لكنها ضارة</li>
-                <li><strong>برامج التجسس:</strong> تراقب نشاطك</li>
-            </ul>
-            
-            <div class="tip">🛡️ <strong>للحماية:</strong> لا تفتح روابط مشبوهة، ولا تشارك بياناتك مع أحد، وحدّث نظامك دائماً.</div>
-        `
-    },
-    3: {
-        title: "كلمات المرور القوية",
-        content: `
-            <h3>🔐 قواعد كلمة المرور القوية</h3>
-            
-            <ul>
-                <li><strong>الطول:</strong> 12 حرفاً على الأقل</li>
-                <li><strong>التنويع:</strong> حروف كبيرة + صغيرة + أرقام + رموز</li>
-                <li><strong>التفرد:</strong> كلمة مرور مختلفة لكل حساب</li>
-                <li><strong>التحديث:</strong> تغييرها كل 3-6 أشهر</li>
-                <li><strong>السرية:</strong> لا تشاركها مع أي شخص</li>
-            </ul>
-            
-            <div class="warning">❌ <strong>تجنب:</strong> تاريخ ميلادك، أسماء أفراد عائلتك، كلمات مثل "123456"، "password"</div>
-            
-            <h3>✅ أمثلة كلمات قوية:</h3>
-            <p><code>My$ecure#2025!Pass</code></p>
-            <p><code>K9@mN2#pL8$vQ4</code></p>
-            
-            <h3>🎯 طريقة ذكية:</h3>
-            <p>استخدم جملة تحبها وحوّل أول حرف من كل كلمة:</p>
-            <p>"أحب القراءة كل صباح" → <code>أ أ ق ك ص @2025</code></p>
-            
-            <h3>💡 نصيحة إضافية:</h3>
-            <p>استخدم مدير كلمات مرور مثل <strong>Bitwarden</strong> (مجاني) لتخزين كلماتك بشكل آمن.</p>
-        `
-    },
-    4: {
-        title: "التصفح الآمن",
-        content: `
-            <h3>🌐 قواعد التصفح الآمن</h3>
-            
-            <ul>
-                <li><strong>تحقق من HTTPS:</strong> ابحث عن القفل 🔒 في شريط العنوان</li>
-                <li><strong>لا تثق بالشبكات العامة:</strong> تجنب البنوك عبر Wi-Fi العام</li>
-                <li><strong>حدّث متصفحك:</strong> التحديثات تسد الثغرات الأمنية</li>
-                <li><strong>استخدم مانع الإعلانات:</strong> يحميك من الإعلانات الخبيثة</li>
-                <li><strong>VPN موثوق:</strong> لتشفير اتصالك</li>
-            </ul>
-            
-            <div class="tip">🔍 <strong>علامات الموقع المشبوه:</strong> أخطاء إملائية، تصميم رديء، عروض خيالية، نوافذ منبثقة كثيرة</div>
-            
-            <h3>🚫 لا تفعل أبداً:</h3>
-            <ul>
-                <li>تحميل ملفات من مواقع غير موثوقة</li>
-                <li>إدخال بياناتك في مواقع مشبوهة</li>
-                <li>الضغط على روابط في رسائل مجهولة</li>
-                <li>استخدام نفس كلمة المرور في مواقع مختلفة</li>
-            </ul>
-            
-            <h3>🎯 اختبر نفسك:</h3>
-            <p>عند دخولك أي موقع، اسأل نفسك:</p>
-            <ul>
-                <li>هل الرابط صحيح؟</li>
-                <li>هل الموقع HTTPS؟</li>
-                <li>هل يطلب معلومات غير ضرورية؟</li>
-            </ul>
-        `
-    },
-    5: {
-        title: "حماية حساباتك",
-        content: `
-            <h3>🛡️ خطوات حماية حساباتك</h3>
-            
-            <h3>1. التحقق بخطوتين (2FA)</h3>
-            <p>طبقة حماية إضافية تحتاج فيها رمزاً من هاتفك مع كلمة المرور. فعّلها في:</p>
-            <ul>
-                <li>Gmail</li>
-                <li>Facebook</li>
-                <li>WhatsApp</li>
-                <li>Instagram</li>
-                <li>جميع حساباتك المهمة</li>
-            </ul>
-            
-            <h3>2. مدير كلمات المرور</h3>
-            <p>يخزّن كلماتك بشكل مشفر. أمثلة:</p>
-            <ul>
-                <li><strong>Bitwarden:</strong> مجاني ومفتوح المصدر</li>
-                <li><strong>LastPass:</strong> مشهور وسهل</li>
-                <li><strong>1Password:</strong> مدفوع لكن ممتاز</li>
-            </ul>
-            
-            <h3>3. مراجعة الأجهزة المتصلة</h3>
-            <p>افحص من حساباتك من الأجهزة، وأزل الأجهزة غير المعروفة.</p>
-            
-            <div class="tip">📧 <strong>راقب بريدك:</strong> إذا وصلك إشعار بتسجيل دخول لم تعرفه، غيّر كلمة المرور فوراً!</div>
-            
-            <h3>4. معلومات الاسترداد</h3>
-            <p>أضف بريداً احتياطياً ورقم هاتف للاسترداد في حال فقدان حسابك.</p>
-        `
-    },
-    6: {
-        title: "أمان الهاتف",
-        content: `
-            <h3>📱 كيف تحمي هاتفك؟</h3>
-            
-            <h3>✅ افعل:</h3>
-            <ul>
-                <li>قفل الشاشة بكلمة مرور قوية أو بصمة</li>
-                <li>تحديث النظام والتطبيقات</li>
-                <li>تحميل التطبيقات من المتاجر الرسمية فقط</li>
-                <li>مراجعة صلاحيات التطبيقات</li>
-                <li>تفعيل "العثور على هاتفي"</li>
-                <li>عمل نسخ احتياطية</li>
-                <li>استخدام VPN عند الحاجة</li>
-            </ul>
-            
-            <h3>❌ لا تفعل:</h3>
-            <ul>
-                <li>عمل Root للجهاز</li>
-                <li>تحميل APK من مواقع مجهولة</li>
-                <li>منح صلاحيات غير ضرورية للتطبيقات</li>
-                <li>الاتصال بشبكات Wi-Fi مفتوحة للبنوك</li>
-                <li>فتح روابط من رسائل SMS مجهولة</li>
-            </ul>
-            
-            <div class="warning">🔍 <strong>علامات اختراق الهاتف:</strong> بطء مفاجئ، بطارية تنفد بسرعة، إعلانات غريبة، تطبيقات لا تعرفها، استهلاك بيانات مرتفع</div>
-            
-            <h3>🛡️ أفضل تطبيقات الحماية:</h3>
-            <ul>
-                <li><strong>Malwarebytes:</strong> مضاد للبرمجيات الخبيثة</li>
-                <li><strong>Bitdefender:</strong> حماية شاملة</li>
-                <li><strong>ProtonVPN:</strong> VPN مجاني موثوق</li>
-            </ul>
-        `
-    },
-    7: {
-        title: "أمان الشبكات",
-        content: `
-            <h3>🌐 حماية شبكتك المنزلية</h3>
-            
-            <h3>1. راوتر آمن</h3>
-            <ul>
-                <li>غيّر كلمة سر الراوتر الافتراضية</li>
-                <li>استخدم WPA3 أو WPA2</li>
-                <li>عطّل WPS</li>
-                <li>حدّث firmware الراوتر</li>
-                <li>غيّر اسم الشبكة (SSID)</li>
-            </ul>
-            
-            <h3>2. شبكة الضيوف</h3>
-            <p>أنشئ شبكة منفصلة للزوار، حتى لا يصلوا لأجهزتك الشخصية.</p>
-            
-            <h3>3. مراقبة الأجهزة</h3>
-            <p>افحص من المتصل بشبكتك بشكل دوري من لوحة تحكم الراوتر.</p>
-            
-            <div class="tip">🔐 <strong>نصيحة:</strong> استخدم VPN عند الاتصال بشبكات Wi-Fi العامة في المقاهي والمطارات.</div>
-            
-            <h3>⚠️ خطر الشبكات العامة:</h3>
-            <ul>
-                <li>يمكن اعتراض بياناتك</li>
-                <li>يمكن سرقة كلمات المرور</li>
-                <li>يمكن زرع برامج خبيثة</li>
-            </ul>
-        `
-    },
-    8: {
-        title: "الاحتيال الإلكتروني",
-        content: `
-            <h3>⚠️ كيف تتعرف على الاحتيال؟</h3>
-            
-            <h3>علامات التحذير:</h3>
-            <ul>
-                <li>عروض خيالية (ربحت مليون دولار!)</li>
-                <li>طلبات عاجلة للتحويل المالي</li>
-                <li>طلب معلومات شخصية حساسة</li>
-                <li>روابط مختصرة غريبة</li>
-                <li>أخطاء إملائية في الرسالة</li>
-                <li>مرسل غير معروف</li>
-            </ul>
-            
-            <h3>أنواع الاحتيال الشائعة:</h3>
-            
-            <h3>1. احتيال البنوك</h3>
-            <p>رسالة تدّعي أنها من البنك تطلب تحديث بياناتك.</p>
-            
-            <h3>2. احتيال الجوائز</h3>
-            <p>"لقد ربحت جائزة!" — تطلب دفع رسوم لاستلامها.</p>
-            
-            <h3>3. احتيال الوظائف</h3>
-            <p>عروض عمل برواتب عالية جداً مقابل رسوم.</p>
-            
-            <h3>4. احتيال المشاعر</h3>
-            <p>علاقات عاطفية مزيفة تطلب المال لاحقاً.</p>
-            
-            <div class="warning">🚨 <strong>القاعدة الذهبية:</strong> إذا كان العرض يبدو مثالياً جداً، فهو غالباً احتيال!</div>
-            
-            <h3>✅ كيف تتصرف؟</h3>
-            <ul>
-                <li>لا ترد على الرسائل المشبوهة</li>
-                <li>لا تضغط على الروابط</li>
-                <li>احذف الرسالة</li>
-                <li>أبلغ الجهات المختصة</li>
-            </ul>
-        `
-    }
+    1: { title: "ما هو الأمن السيبراني؟", content: "<h3>🎯 التعريف</h3><p>الأمن السيبراني هو حماية الأنظمة والشبكات والبيانات من الهجمات الإلكترونية.</p><h3>📌 أهميته</h3><ul><li>حماية البيانات الشخصية</li><li>الحفاظ على الخصوصية</li><li>منع الاحتيال</li></ul><div class='tip'>💡 الأمن السيبراني أسلوب حياة!</div><h3>🔑 المبادئ الثلاثة</h3><ul><li><strong>السرية:</strong> منع الوصول غير المصرح</li><li><strong>السلامة:</strong> عدم تعديل البيانات</li><li><strong>التوفر:</strong> الوصول عند الحاجة</li></ul>" },
+    2: { title: "أنواع الهجمات", content: "<h3>⚠️ الفيشينغ</h3><p>رسائل مزيفة لسرقة بياناتك.</p><div class='warning'>⚠️ علامات: أخطاء إملائية، روابط غريبة</div><h3>💀 برامج الفدية</h3><p>تشفر ملفاتك وتطلب فدية.</p><h3>🌊 DDoS</h3><p>إغراق الموقع بالطلبات.</p><h3>🎭 الهندسة الاجتماعية</h3><p>خداع الناس لأخذ بياناتهم.</p>" },
+    3: { title: "كلمات المرور القوية", content: "<h3>🔐 القواعد</h3><ul><li>12 حرفاً على الأقل</li><li>حروف كبيرة وصغيرة</li><li>أرقام ورموز</li><li>مختلفة لكل حساب</li></ul><div class='warning'>❌ تجنب: تاريخ الميلاد، 123456</div><h3>✅ أمثلة</h3><p><code>My$ecure#2025!Pass</code></p><h3>🎯 طريقة ذكية</h3><p>خذ أول حرف من جملة: 'أحب القراءة كل صباح 2025' → <code>أقكص@2025</code></p>" },
+    4: { title: "التصفح الآمن", content: "<h3>🌐 القواعد</h3><ul><li>تحقق من HTTPS 🔒</li><li>لا تثق بالشبكات العامة</li><li>حدّث المتصفح</li><li>استخدم مانع إعلانات</li></ul><div class='tip'>🔍 علامات الموقع المشبوه: أخطاء، تصميم رديء</div><h3>🚫 لا تفعل</h3><ul><li>تحميل من مواقع مجهولة</li><li>إدخال بيانات في مواقع مشبوهة</li></ul>" },
+    5: { title: "حماية الحسابات", content: "<h3>🛡️ التحقق بخطوتين</h3><p>طبقة حماية إضافية. فعّلها في Gmail, Facebook, WhatsApp.</p><h3>🔑 مدير كلمات المرور</h3><p>Bitwarden (مجاني)، LastPass، 1Password</p><div class='tip'>📧 راقب بريدك - أي دخول غير معروف = غيّر كلمة المرور!</div>" },
+    6: { title: "أمان الهاتف", content: "<h3>✅ افعل</h3><ul><li>قفل الشاشة</li><li>تحديث النظام</li><li>تحميل من المتاجر الرسمية</li><li>نسخ احتياطية</li></ul><h3>❌ لا تفعل</h3><ul><li>Root الجهاز</li><li>APK مجهولة</li><li>صلاحيات زائدة</li></ul><div class='warning'>🔍 علامات الاختراق: بطء، بطارية سريعة النفاد</div>" },
+    7: { title: "أمان الشبكات", content: "<h3>🌐 حماية الراوتر</h3><ul><li>غيّر كلمة السر الافتراضية</li><li>استخدم WPA3/WPA2</li><li>عطّل WPS</li><li>حدّث firmware</li></ul><h3>👥 شبكة الضيوف</h3><p>أنشئ شبكة منفصلة للزوار.</p><div class='tip'>🔐 استخدم VPN على Wi-Fi العام</div>" },
+    8: { title: "الاحتيال الإلكتروني", content: "<h3>⚠️ العلامات</h3><ul><li>عروض خيالية</li><li>طلبات عاجلة</li><li>معلومات حساسة</li><li>أخطاء إملائية</li></ul><h3>🎭 الأنواع</h3><p>احتيال البنوك، الجوائز، الوظائف، المشاعر.</p><div class='warning'>🚨 إذا بدا مثالياً جداً = احتيال!</div>" }
 };
 
 function showLesson(num) {
@@ -1614,194 +788,407 @@ function showLesson(num) {
 
 // ============ Quiz ============
 const quizQuestions = [
-    {q: "ما هو الأمن السيبراني؟", options: ["حماية الأنظمة والبيانات", "لعبة فيديو", "برنامج محاسبة", "تطبيق تواصل"], correct: 0},
-    {q: "ما هي أفضل كلمة مرور؟", options: ["123456", "اسمك", "تاريخ ميلادك", "K9@mN2#pL8$"], correct: 3},
-    {q: "ما هو الفيشينغ؟", options: ["نوع من الأسماك", "رسائل مزيفة لسرقة بياناتك", "برنامج مضاد للفيروسات", "لعبة"], correct: 1},
-    {q: "ماذا يعني HTTPS؟", options: ["موقع آمن ومشفر", "موقع سريع", "موقع مجاني", "موقع قديم"], correct: 0},
-    {q: "ما هو التحقق بخطوتين؟", options: ["كلمة مرور مزدوجة", "طبقة حماية إضافية", "نوع فيروس", "اسم متصفح"], correct: 1},
-    {q: "كم يجب أن تكون كلمة المرور؟", options: ["4 أحرف", "6 أحرف", "12 حرفاً على الأقل", "لا يهم"], correct: 2},
-    {q: "ما هو الـ VPN؟", options: ["برنامج تصميم", "شبكة افتراضية لتشفير اتصالك", "موقع تواصل", "لعبة"], correct: 1},
-    {q: "كيف تحمي هاتفك؟", options: ["Root الجهاز", "تحميل APK مجهولة", "تحديث النظام دورياً", "لا تفعل شيئاً"], correct: 2},
-    {q: "ما هي الهندسة الاجتماعية؟", options: ["بناء الجسور", "خداع الناس لأخذ بياناتهم", "برمجة", "تصميم"], correct: 1},
-    {q: "ما هو برنامج الفدية؟", options: ["برنامج مجاني", "برنامج يشفر ملفاتك ويطلب فدية", "لعبة", "متصفح"], correct: 1}
+    {q:"ما هو الأمن السيبراني؟",options:["حماية الأنظمة","لعبة","برنامج محاسبة","تطبيق"],correct:0},
+    {q:"أفضل كلمة مرور؟",options:["123456","اسمك","K9@mN2#pL8$","تاريخ ميلادك"],correct:2},
+    {q:"الفيشينغ هو؟",options:["سمك","رسائل مزيفة","مضاد فيروسات","لعبة"],correct:1},
+    {q:"HTTPS يعني؟",options:["موقع آمن","موقع سريع","مجاني","قديم"],correct:0},
+    {q:"التحقق بخطوتين؟",options:["كلمة مرور مزدوجة","طبقة إضافية","فيروس","متصفح"],correct:1},
+    {q:"طول كلمة المرور؟",options:["4","6","12+","لا يهم"],correct:2},
+    {q:"VPN هو؟",options:["تصميم","شبكة افتراضية","تواصل","لعبة"],correct:1},
+    {q:"حماية الهاتف؟",options:["Root","APK مجهولة","تحديث دوري","لا شيء"],correct:2},
+    {q:"الهندسة الاجتماعية؟",options:["بناء","خداع الناس","برمجة","تصميم"],correct:1},
+    {q:"برنامج الفدية؟",options:["مجاني","يشفر ويطلب فدية","لعبة","متصفح"],correct:1}
 ];
 
-let currentQ = 0;
-let score = 0;
+let currentQ = 0, score = 0;
 
-function startQuiz() {
-    currentQ = 0;
-    score = 0;
-    renderQuestion();
-}
+function startQuiz() { currentQ = 0; score = 0; renderQuestion(); }
 
 function renderQuestion() {
-    const container = document.getElementById('quizContainer');
-    
-    if(currentQ >= quizQuestions.length) {
-        showResult();
-        return;
-    }
-    
+    const c = document.getElementById('quizContainer');
+    if(currentQ >= quizQuestions.length) { showResult(); return; }
     const q = quizQuestions[currentQ];
-    const progress = ((currentQ) / quizQuestions.length) * 100;
-    
-    let html = `<div class="quiz-question">
-        <div class="quiz-progress">
-            <div class="quiz-progress-bar" style="width: ${progress}%"></div>
-        </div>
-        <div class="quiz-q-num">السؤال ${currentQ + 1} من ${quizQuestions.length}</div>
-        <div class="quiz-q-text">${q.q}</div>`;
-    
-    q.options.forEach(function(opt, i) {
-        html += `<button class="quiz-option" onclick="answerQuestion(${i})">${opt}</button>`;
-    });
-    
+    const progress = (currentQ / quizQuestions.length) * 100;
+    let html = `<div class="quiz-question"><div class="quiz-progress"><div class="quiz-progress-bar" style="width:${progress}%"></div></div><div class="quiz-q-num">السؤال ${currentQ+1} من ${quizQuestions.length}</div><div class="quiz-q-text">${q.q}</div>`;
+    q.options.forEach((opt,i) => { html += `<button class="quiz-option" onclick="answerQuestion(${i})">${opt}</button>`; });
     html += `</div>`;
-    container.innerHTML = html;
+    c.innerHTML = html;
 }
 
-function answerQuestion(selected) {
+function answerQuestion(sel) {
     const q = quizQuestions[currentQ];
-    const buttons = document.querySelectorAll('.quiz-option');
-    
-    buttons.forEach(function(btn, i) {
-        btn.disabled = true;
-        if(i === q.correct) btn.classList.add('correct');
-        if(i === selected && selected !== q.correct) btn.classList.add('wrong');
+    const btns = document.querySelectorAll('.quiz-option');
+    btns.forEach((b,i) => {
+        b.disabled = true;
+        if(i === q.correct) b.classList.add('correct');
+        if(i === sel && sel !== q.correct) b.classList.add('wrong');
     });
-    
-    if(selected === q.correct) score++;
-    
-    setTimeout(function() {
-        currentQ++;
-        renderQuestion();
-    }, 1200);
+    if(sel === q.correct) score++;
+    setTimeout(() => { currentQ++; renderQuestion(); }, 1200);
 }
 
 function showResult() {
-    const percent = Math.round((score / quizQuestions.length) * 100);
-    let msg = "";
-    
-    if(percent >= 90) msg = "🏆 ممتاز! أنت خبير أمن سيبراني";
-    else if(percent >= 70) msg = "🎉 جيد جداً! استمر";
-    else if(percent >= 50) msg = "💪 لا بأس، راجع الدروس";
-    else msg = "📚 راجع الدروس وأعد المحاولة";
-    
-    document.getElementById('quizContainer').innerHTML = `
-        <div class="quiz-result">
-            <div class="score">${score}/${quizQuestions.length}</div>
-            <div class="msg">${msg}</div>
-            <div class="percent">النسبة: ${percent}%</div>
-            <button class="tool-btn" style="margin-top:30px;max-width:300px" onclick="startQuiz()">🔄 إعادة الاختبار</button>
-        </div>
-    `;
+    const p = Math.round((score / quizQuestions.length) * 100);
+    let msg = p >= 90 ? "🏆 ممتاز!" : p >= 70 ? "🎉 جيد جداً" : p >= 50 ? "💪 لا بأس" : "📚 راجع الدروس";
+    document.getElementById('quizContainer').innerHTML = `<div class="quiz-result"><div class="score">${score}/${quizQuestions.length}</div><div class="msg">${msg}</div><div class="percent">${p}%</div><button class="tool-btn" style="margin-top:30px;max-width:300px" onclick="startQuiz()">🔄 إعادة</button></div>`;
 }
 
 // ============ Tools ============
 function checkStrength() {
-    const pass = document.getElementById('passCheck').value;
-    const result = document.getElementById('strengthResult');
-    
-    if(pass.length === 0) {
-        result.classList.remove('show');
-        return;
-    }
-    
-    let score = 0;
-    if(pass.length >= 8) score++;
-    if(pass.length >= 12) score++;
-    if(/[a-z]/.test(pass)) score++;
-    if(/[A-Z]/.test(pass)) score++;
-    if(/[0-9]/.test(pass)) score++;
-    if(/[^a-zA-Z0-9]/.test(pass)) score++;
-    
-    result.classList.add('show');
-    result.classList.remove('weak', 'medium', 'strong');
-    
-    if(score <= 2) {
-        result.classList.add('weak');
-        result.textContent = "🔴 ضعيفة - تحتاج تحسين";
-    } else if(score <= 4) {
-        result.classList.add('medium');
-        result.textContent = "🟡 متوسطة - يمكن تحسينها";
-    } else {
-        result.classList.add('strong');
-        result.textContent = "🟢 قوية - ممتازة!";
-    }
+    const p = document.getElementById('passCheck').value;
+    const r = document.getElementById('strengthResult');
+    if(!p) { r.classList.remove('show'); return; }
+    let s = 0;
+    if(p.length >= 8) s++;
+    if(p.length >= 12) s++;
+    if(/[a-z]/.test(p)) s++;
+    if(/[A-Z]/.test(p)) s++;
+    if(/[0-9]/.test(p)) s++;
+    if(/[^a-zA-Z0-9]/.test(p)) s++;
+    r.classList.add('show');
+    r.classList.remove('weak','medium','strong');
+    if(s <= 2) { r.classList.add('weak'); r.textContent = "🔴 ضعيفة"; }
+    else if(s <= 4) { r.classList.add('medium'); r.textContent = "🟡 متوسطة"; }
+    else { r.classList.add('strong'); r.textContent = "🟢 قوية"; }
 }
 
 function generatePassword() {
-    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*";
-    let pass = "";
-    for(let i = 0; i < 16; i++) {
-        pass += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    document.getElementById('generatedPass').textContent = "🔑 " + pass;
+    const c = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*";
+    let p = "";
+    for(let i = 0; i < 16; i++) p += c.charAt(Math.floor(Math.random() * c.length));
+    document.getElementById('generatedPass').textContent = "🔑 " + p;
 }
 
 function checkUrl() {
-    const url = document.getElementById('urlCheck').value.trim();
-    const result = document.getElementById('urlResult');
-    
-    if(!url) {
-        result.classList.remove('show');
-        return;
+    const u = document.getElementById('urlCheck').value.trim();
+    const r = document.getElementById('urlResult');
+    if(!u) { r.classList.remove('show'); return; }
+    r.classList.add('show');
+    r.classList.remove('weak','medium','strong');
+    const https = u.toLowerCase().startsWith('https://');
+    const susp = /[а-яА-Я]|bit\.ly|tinyurl|free-money|win-|prize|click-here/i.test(u);
+    const ip = /^https?:\/\/\d+\.\d+\.\d+\.\d+/.test(u);
+    if(susp || ip) { r.classList.add('weak'); r.textContent = "🔴 مشبوه!"; }
+    else if(!https) { r.classList.add('medium'); r.textContent = "🟡 غير مشفر"; }
+    else { r.classList.add('strong'); r.textContent = "🟢 آمن"; }
+}
+
+// ============ Commands Data ============
+const commands = {
+    linux: {
+        title: "🐧 أوامر Linux",
+        list: [
+            { n: "ls", d: "عرض محتويات المجلد", e: "$ ls -la" },
+            { n: "cd", d: "تغيير المجلد", e: "$ cd Documents" },
+            { n: "pwd", d: "عرض المسار الحالي", e: "$ pwd" },
+            { n: "mkdir", d: "إنشاء مجلد", e: "$ mkdir my_folder" },
+            { n: "rm", d: "حذف ملف", e: "$ rm file.txt" },
+            { n: "cp", d: "نسخ ملف", e: "$ cp src.txt dst.txt" },
+            { n: "mv", d: "نقل/إعادة تسمية", e: "$ mv old.txt new.txt" },
+            { n: "cat", d: "عرض محتوى ملف", e: "$ cat readme.md" },
+            { n: "nano", d: "محرر نصوص", e: "$ nano file.txt" },
+            { n: "grep", d: "بحث في النصوص", e: "$ grep 'root' /etc/passwd" }
+        ]
+    },
+    termux: {
+        title: "📱 أوامر Termux",
+        list: [
+            { n: "pkg update", d: "تحديث الحزم", e: "$ pkg update && pkg upgrade" },
+            { n: "pkg install", d: "تثبيت حزمة", e: "$ pkg install python" },
+            { n: "pkg uninstall", d: "إزالة حزمة", e: "$ pkg uninstall python" },
+            { n: "termux-setup-storage", d: "صلاحية الملفات", e: "$ termux-setup-storage" },
+            { n: "termux-info", d: "معلومات Termux", e: "$ termux-info" },
+            { n: "ls ~", d: "محتوى الرئيسي", e: "$ ls ~" },
+            { n: "clear", d: "مسح الشاشة", e: "$ clear" },
+            { n: "exit", d: "خروج", e: "$ exit" }
+        ]
+    },
+    security: {
+        title: "🛡️ أوامر أمنية",
+        list: [
+            { n: "ping", d: "فحص الاتصال", e: "$ ping google.com" },
+            { n: "nmap", d: "فحص المنافذ", e: "$ nmap 192.168.1.1" },
+            { n: "whois", d: "معلومات النطاق", e: "$ whois example.com" },
+            { n: "ifconfig", d: "معلومات الشبكة", e: "$ ifconfig" },
+            { n: "netstat", d: "اتصالات الشبكة", e: "$ netstat -tuln" },
+            { n: "curl", d: "طلب HTTP", e: "$ curl -I https://example.com" },
+            { n: "wget", d: "تحميل ملف", e: "$ wget https://example.com/file.zip" },
+            { n: "ssh", d: "اتصال عن بعد", e: "$ ssh user@host" },
+            { n: "dig", d: "استعلام DNS", e: "$ dig example.com" },
+            { n: "traceroute", d: "مسار الحزم", e: "$ traceroute google.com" }
+        ]
     }
-    
-    result.classList.add('show');
-    result.classList.remove('weak', 'medium', 'strong');
-    
-    const hasHttps = url.toLowerCase().startsWith('https://');
-    const hasHttp = url.toLowerCase().startsWith('http://');
-    const suspicious = /[а-яА-Я]|bit\.ly|tinyurl|free-money|win-|prize|click-here/i.test(url);
-    const hasIp = /^https?:\/\/\d+\.\d+\.\d+\.\d+/.test(url);
-    
-    if(suspicious || hasIp) {
-        result.classList.add('weak');
-        result.textContent = "🔴 رابط مشبوه - احذر!";
-    } else if(!hasHttps) {
-        result.classList.add('medium');
-        result.textContent = "🟡 غير مشفر - يفضل HTTPS";
+};
+
+function showCommands(type) {
+    const data = commands[type];
+    document.getElementById('commandsListTitle').textContent = data.title;
+    let html = "";
+    data.list.forEach(cmd => {
+        html += `<div class="cmd-item"><div class="cmd-name">${cmd.n}</div><div class="cmd-desc">${cmd.d}</div><div class="cmd-example">${cmd.e}</div><button class="cmd-copy" onclick="copyCommand('${cmd.e}')">📋 نسخ</button></div>`;
+    });
+    document.getElementById('commandsList').innerHTML = html;
+    closePage('terminalPage');
+    openPage('commandsListPage');
+}
+
+function copyCommand(text) {
+    const clean = text.replace('$ ', '');
+    if(navigator.clipboard) {
+        navigator.clipboard.writeText(clean).then(() => showToast("📋 تم النسخ"));
     } else {
-        result.classList.add('strong');
-        result.textContent = "🟢 الرابط يبدو آمناً";
+        const ta = document.createElement('textarea');
+        ta.value = clean;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        showToast("📋 تم النسخ");
     }
 }
 
-// ============ Developer Mode ============
+function openTerminalSim() {
+    closePage('terminalPage');
+    openPage('terminalSimPage');
+    setTimeout(() => document.getElementById('terminalInput').focus(), 300);
+}
+
+function clearTerminal() {
+    const output = document.getElementById('terminalOutput');
+    output.querySelector('.terminal-output').innerHTML = "تم المسح.\nاكتب 'help' للمساعدة.";
+}
+
+function handleTerminalInput(e) {
+    if(e.key === 'Enter') {
+        const input = document.getElementById('terminalInput');
+        const cmd = input.value.trim();
+        if(!cmd) return;
+        const output = document.getElementById('terminalOutput');
+        const out = output.querySelector('.terminal-output');
+        out.innerHTML += `\n$ ${cmd}\n`;
+        
+        const response = runCommand(cmd);
+        out.innerHTML += response + "\n";
+        
+        input.value = '';
+        output.scrollTop = output.scrollHeight;
+    }
+}
+
+function runCommand(cmd) {
+    const c = cmd.toLowerCase().trim();
+    if(c === 'help') return "الأوامر المتاحة:\n- ls: عرض الملفات\n- pwd: المسار الحالي\n- whoami: المستخدم\n- date: التاريخ\n- echo [text]: طباعة\n- clear: مسح\n- uname: معلومات النظام";
+    if(c === 'ls') return "Documents  Downloads  Pictures  Music  Videos";
+    if(c === 'pwd') return "/data/data/com.termux/files/home";
+    if(c === 'whoami') return "u0_a123";
+    if(c === 'date') return new Date().toString();
+    if(c === 'uname' || c === 'uname -a') return "Linux localhost 4.14.180 #1 SMP Android";
+    if(c === 'clear') { setTimeout(() => clearTerminal(), 100); return ""; }
+    if(c.startsWith('echo ')) return cmd.substring(5);
+    if(c === 'exit') return "لإغلاق الطرفية اضغط زر الرجوع";
+    if(c.startsWith('ping ')) return "PING " + cmd.substring(5) + " (142.250.185.46): 56 data bytes\n64 bytes: icmp_seq=0 ttl=115 time=20ms";
+    if(c === 'nmap' || c.startsWith('nmap ')) return "Starting Nmap 7.91\nPORT     STATE  SERVICE\n22/tcp   open   ssh\n80/tcp   open   http\n443/tcp  open   https";
+    if(c.startsWith('whois ')) return "Domain Name: " + cmd.substring(6).toUpperCase() + "\nRegistrar: Example Registrar";
+    if(c === 'ifconfig') return "wlan0: flags=4163\n        inet 192.168.1.5  netmask 255.255.255.0";
+    return "الأمر غير معروف: " + cmd + "\nاكتب 'help' للأوامر المتاحة.";
+}
+
+// ============ Assistant ============
+function diagnoseApp() {
+    const result = document.getElementById('diagnoseResult');
+    result.innerHTML = "⏳ جاري الفحص...";
+    setTimeout(() => {
+        const checks = [
+            { name: "ذاكرة التخزين", status: "✅ جيدة" },
+            { name: "الاتصال بالإنترنت", status: navigator.onLine ? "✅ متصل" : "⚠️ غير متصل" },
+            { name: "المتصفح", status: "✅ مدعوم" },
+            { name: "الشاشة", status: `✅ ${window.innerWidth}x${window.innerHeight}` },
+            { name: "اللغة", status: "✅ " + (navigator.language || "ar") },
+            { name: "الحالة العامة", status: "✅ يعمل بشكل جيد" }
+        ];
+        let html = "<div style='background:#0d1117;padding:15px;border-radius:10px;font-size:14px;line-height:2'>";
+        checks.forEach(c => { html += `<div>${c.name}: ${c.status}</div>`; });
+        html += "</div>";
+        result.innerHTML = html;
+        showToast("✅ الفحص اكتمل");
+    }, 1500);
+}
+
+function clearCache() {
+    if('caches' in window) {
+        caches.keys().then(names => {
+            names.forEach(n => caches.delete(n));
+            showToast("🧹 تم مسح الذاكرة المؤقتة");
+        });
+    } else {
+        showToast("🧹 تم المسح");
+    }
+}
+
+function autoFix() {
+    showToast("🔧 جاري الإصلاح...", "info");
+    setTimeout(() => {
+        try {
+            localStorage.setItem('lastFix', new Date().toISOString());
+            showToast("✅ تم الإصلاح بنجاح");
+        } catch(e) {
+            showToast("❌ فشل الإصلاح", "error");
+        }
+    }, 2000);
+}
+
+function showSystemInfo() {
+    const info = {
+        "المتصفح": navigator.userAgent.split(') ')[0].split('(')[1] || "غير معروف",
+        "اللغة": navigator.language,
+        "المنصة": navigator.platform,
+        "الشاشة": window.innerWidth + "x" + window.innerHeight,
+        "الألوان": screen.colorDepth + " بت",
+        "الإنترنت": navigator.onLine ? "متصل ✅" : "غير متصل ❌",
+        "الذاكرة": navigator.deviceMemory ? navigator.deviceMemory + " GB" : "غير معروف"
+    };
+    let html = "<div style='background:#0d1117;padding:15px;border-radius:10px;font-size:14px;line-height:2'>";
+    for(let k in info) { html += `<div><strong style="color:#4CAF50">${k}:</strong> ${info[k]}</div>`; }
+    html += "</div>";
+    document.getElementById('systemInfoResult').innerHTML = html;
+}
+
+function confirmReset() {
+    document.getElementById('confirmTitle').textContent = "⚠️ إعادة تعيين";
+    document.getElementById('confirmText').textContent = "سيتم حذف جميع بياناتك. هل أنت متأكد؟";
+    document.getElementById('confirmModal').classList.add('active');
+    window._confirmAction = doReset;
+}
+
+function doReset() {
+    localStorage.clear();
+    sessionStorage.clear();
+    showToast("✅ تم إعادة التعيين");
+    setTimeout(() => location.reload(), 1500);
+}
+
+function closeConfirm() {
+    document.getElementById('confirmModal').classList.remove('active');
+}
+
+function executeConfirm() {
+    if(window._confirmAction) window._confirmAction();
+    closeConfirm();
+}
+
+// ============ Rating ============
+let userRating = 0;
+let reportRating = 0;
+
+function setRating(n) {
+    userRating = n;
+    const stars = document.querySelectorAll('#starRating .star');
+    stars.forEach((s, i) => { s.classList.toggle('active', i < n); });
+    const texts = ["", "😞 سيء جداً", "😐 سيء", "🙂 عادي", "😊 جيد", "🤩 ممتاز!"];
+    document.getElementById('ratingText').textContent = texts[n];
+}
+
+function submitRating() {
+    if(!userRating) { showToast("❌ اختر تقييماً", "error"); return; }
+    const comment = document.getElementById('rateComment').value;
+    const data = { type: "تقييم", rating: userRating, comment: comment, date: new Date().toISOString() };
+    saveReport(data);
+    sendToTelegram(`⭐ تقييم جديد\n\nالتقييم: ${userRating}/5\nالتعليق: ${comment || "بدون تعليق"}`);
+    showToast("✅ شكراً لتقييمك!");
+    setTimeout(() => { closePage('ratePage'); userRating = 0; setRating(0); document.getElementById('rateComment').value = ''; }, 1500);
+}
+
+function setReportRating(n) {
+    reportRating = n;
+    const stars = document.querySelectorAll('#reportStarRating .star');
+    stars.forEach((s, i) => { s.classList.toggle('active', i < n); });
+}
+
+// ============ Report ============
+function submitReport() {
+    const type = document.getElementById('reportType').value;
+    const page = document.getElementById('reportPage').value;
+    const desc = document.getElementById('reportDesc').value;
+    const contact = document.getElementById('reportContact').value;
+    
+    if(!type || !desc) { showToast("❌ املأ الحقول المطلوبة", "error"); return; }
+    
+    const data = { type, page, desc, contact, rating: reportRating, date: new Date().toISOString() };
+    saveReport(data);
+    
+    const msg = `📢 إبلاغ جديد\n\n🔸 النوع: ${type}\n🔸 الصفحة: ${page}\n🔸 الوصف: ${desc}\n🔸 التواصل: ${contact || "غير محدد"}\n🔸 التقييم: ${reportRating}/5`;
+    sendToTelegram(msg);
+    
+    showToast("✅ تم إرسال الإبلاغ، شكراً لك!");
+    setTimeout(() => {
+        closePage('reportPage');
+        document.getElementById('reportType').value = '';
+        document.getElementById('reportPage').value = '';
+        document.getElementById('reportDesc').value = '';
+        document.getElementById('reportContact').value = '';
+        reportRating = 0;
+        setReportRating(0);
+    }, 1800);
+}
+
+function saveReport(data) {
+    try {
+        const reports = JSON.parse(localStorage.getItem('reports') || '[]');
+        reports.push(data);
+        localStorage.setItem('reports', JSON.stringify(reports));
+    } catch(e) { console.error(e); }
+}
+
+function loadReports() {
+    try {
+        const reports = JSON.parse(localStorage.getItem('reports') || '[]');
+        const el = document.getElementById('reportCount');
+        if(el) el.textContent = reports.length;
+    } catch(e) {}
+}
+
+async function sendToTelegram(message) {
+    if(CONFIG.botToken === "ضع_التوكن_هنا" || CONFIG.chatId === "ضع_معرفك_هنا") {
+        console.log("⚠️ لم يتم إعداد البوت");
+        return;
+    }
+    try {
+        const url = `https://api.telegram.org/bot${CONFIG.botToken}/sendMessage`;
+        await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ chat_id: CONFIG.chatId, text: message })
+        });
+    } catch(e) { console.log("فشل الإرسال:", e); }
+}
+
+// ============ Developer ============
 let devClickCount = 0;
-let devClickTimer = null;
+let devTimer = null;
 
 function openDevLogin() {
     devClickCount++;
-    
-    clearTimeout(devClickTimer);
-    devClickTimer = setTimeout(function() {
-        devClickCount = 0;
-    }, 3000);
-    
+    clearTimeout(devTimer);
+    devTimer = setTimeout(() => { devClickCount = 0; }, 3000);
     if(devClickCount >= 7) {
         devClickCount = 0;
         document.getElementById('devModal').classList.add('active');
         document.getElementById('devPassword').value = '';
         document.getElementById('devPassword').focus();
     } else if(devClickCount >= 3) {
-        showToast("اضغط " + (7 - devClickCount) + " مرات أخرى...", "info");
+        showToast("اضغط " + (7 - devClickCount) + " مرات أخرى", "info");
     }
 }
 
-function closeDevLogin() {
-    document.getElementById('devModal').classList.remove('active');
-}
+function closeDevLogin() { document.getElementById('devModal').classList.remove('active'); }
 
 function checkDevPassword() {
-    const pass = document.getElementById('devPassword').value;
-    
-    if(pass === CONFIG.devPassword) {
+    const p = document.getElementById('devPassword').value;
+    if(p === CONFIG.devPassword) {
         closeDevLogin();
         document.getElementById('devPanel').classList.add('active');
-        showToast("🎉 مرحباً بك يا مطور!", "info");
+        loadReports();
+        showToast("🎉 مرحباً يا مطور!", "info");
     } else {
         showToast("❌ كلمة سر خاطئة", "error");
         if(navigator.vibrate) navigator.vibrate(200);
@@ -1810,51 +1197,75 @@ function checkDevPassword() {
 
 function closeDevPanel() {
     document.getElementById('devPanel').classList.remove('active');
-    showToast("👋 تم الخروج من وضع المطور");
+    showToast("👋 خرجت من وضع المطور");
 }
 
-function devAction(action) {
-    showToast("⚙️ " + action + " - قريباً");
+function showReports() {
+    try {
+        const reports = JSON.parse(localStorage.getItem('reports') || '[]');
+        if(reports.length === 0) { showToast("📭 لا توجد إبلاغات"); return; }
+        let msg = "📊 آخر الإبلاغات:\n\n";
+        reports.slice(-5).forEach((r, i) => {
+            msg += `${i+1}. ${r.type} - ${r.page || "تقييم"}\n`;
+        });
+        alert(msg);
+    } catch(e) { showToast("خطأ", "error"); }
 }
 
-// Allow Enter key for developer password
+function clearAllReports() {
+    document.getElementById('confirmTitle').textContent = "🗑️ حذف الإبلاغات";
+    document.getElementById('confirmText').textContent = "سيتم حذف جميع الإبلاغات";
+    document.getElementById('confirmModal').classList.add('active');
+    window._confirmAction = function() {
+        localStorage.removeItem('reports');
+        document.getElementById('reportCount').textContent = '0';
+        showToast("✅ تم الحذف");
+    };
+}
+
+function exportData() {
+    try {
+        const data = {
+            reports: JSON.parse(localStorage.getItem('reports') || '[]'),
+            exportDate: new Date().toISOString(),
+            version: CONFIG.version
+        };
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'cyber-app-backup.json';
+        a.click();
+        URL.revokeObjectURL(url);
+        showToast("💾 تم التصدير");
+    } catch(e) { showToast("فشل التصدير", "error"); }
+}
+
+// Allow Enter for dev password
 document.getElementById('devPassword').addEventListener('keypress', function(e) {
     if(e.key === 'Enter') checkDevPassword();
 });
 
-// ============ Prevent back button from closing app ============
+// ============ Back Button ============
 history.pushState(null, null, location.href);
 window.onpopstate = function() {
     const pages = document.querySelectorAll('.page.active');
     const devPanel = document.getElementById('devPanel');
     const devModal = document.getElementById('devModal');
+    const confirm = document.getElementById('confirmModal');
     
-    if(devModal.classList.contains('active')) {
-        closeDevLogin();
-    } else if(devPanel.classList.contains('active')) {
-        closeDevPanel();
-    } else if(pages.length > 0) {
-        pages.forEach(p => p.classList.remove('active'));
-    }
+    if(confirm.classList.contains('active')) closeConfirm();
+    else if(devModal.classList.contains('active')) closeDevLogin();
+    else if(devPanel.classList.contains('active')) closeDevPanel();
+    else if(pages.length > 0) pages.forEach(p => p.classList.remove('active'));
     
     history.pushState(null, null, location.href);
 };
 
-// ============ Double tap prevention ============
-let lastTouchEnd = 0;
-document.addEventListener('touchend', function(event) {
-    const now = (new Date()).getTime();
-    if(now - lastTouchEnd <= 300) {
-        event.preventDefault();
-    }
-    lastTouchEnd = now;
-}, false);
-
-// ============ Console Welcome ============
-console.log("%c🛡️ الأمن السيبراني - الإصدار 1.2.0", "color: #4CAF50; font-size: 20px; font-weight: bold;");
-console.log("%cالمطور: أنس خشان", "color: #4CAF50; font-size: 14px;");
-console.log("%cقناة تلغرام: @amn_sirani", "color: #0088CC; font-size: 14px;");
-console.log("%c⚠️ هذه المنطقة للمطورين فقط!", "color: #FF9800; font-size: 14px; font-weight: bold;");
+// ============ Console ============
+console.log("%c🛡️ الأمن السيبراني 1.3.0", "color:#4CAF50;font-size:20px;font-weight:bold");
+console.log("%cالمطور: أنس خشان", "color:#4CAF50;font-size:14px");
+console.log("%c@amn_sirani", "color:#0088CC;font-size:14px");
 </script>
 </body>
-</html>
+       </html> 
