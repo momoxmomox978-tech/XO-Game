@@ -20,6 +20,7 @@ html,body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hid
 .splash-title{font-size:30px;color:#4CAF50;margin-top:25px;font-weight:bold}
 .splash-sub{color:#666;margin-top:10px;font-size:14px}
 .splash-dev{color:#4CAF50;margin-top:5px;font-size:13px}
+.splash-status{color:#4CAF50;margin-top:15px;font-size:12px}
 .splash-loader{margin-top:35px;width:220px;height:4px;background:#21262d;border-radius:2px;overflow:hidden}
 .splash-loader-bar{height:100%;background:linear-gradient(90deg,#4CAF50,#66BB6A);width:0%;animation:loadBar 2.5s forwards}
 @keyframes loadBar{to{width:100%}}
@@ -81,6 +82,9 @@ html,body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hid
 .header-btn{width:42px;height:42px;border-radius:50%;background:var(--bg2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;position:relative}
 .header-btn:active{transform:scale(0.9);background:var(--bg3)}
 .header-badge{position:absolute;top:-3px;left:-3px;background:var(--gold);color:#333;font-size:10px;font-weight:bold;padding:2px 6px;border-radius:10px}
+.server-status{position:fixed;top:10px;left:10px;background:rgba(76,175,80,0.9);color:#fff;padding:5px 12px;border-radius:20px;font-size:11px;font-weight:bold;z-index:9999;display:none}
+.server-status.show{display:block}
+.server-status.offline{background:rgba(244,67,54,0.9)}
 .pro-banner{background:linear-gradient(135deg,rgba(255,215,0,0.15),rgba(255,215,0,0.05));border:1px solid var(--gold);border-radius:15px;padding:15px;margin-bottom:15px;display:flex;align-items:center;gap:15px}
 .pro-banner-icon{font-size:35px}
 .pro-banner-content{flex:1}
@@ -107,16 +111,15 @@ html,body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hid
 .btn-videos{background:linear-gradient(135deg,#E91E63,#F06292)}
 .btn-quiz{background:linear-gradient(135deg,#FF9800,#FFB74D)}
 .btn-lab{background:linear-gradient(135deg,#673AB7,#9575CD)}
-.btn-glossary{background:linear-gradient(135deg,#00BCD4,#4DD0E1)}
-.btn-scanner{background:linear-gradient(135deg,#9C27B0,#BA68C8)}
-.btn-emergency{background:linear-gradient(135deg,#f44336,#EF5350)}
-.btn-tools{background:linear-gradient(135deg,#607D8B,#78909C)}
 .btn-badges{background:linear-gradient(135deg,#FFD700,#FFA000);color:#333}
 .btn-stats{background:linear-gradient(135deg,#3F51B5,#5C6BC0)}
 .btn-certs{background:linear-gradient(135deg,#009688,#4DB6AC)}
 .btn-leaderboard{background:linear-gradient(135deg,#FF5722,#FF8A65)}
 .btn-aigame{background:linear-gradient(135deg,#00E5FF,#00B8D4)}
-.btn-tips{background:linear-gradient(135deg,#607D8B,#90A4AE)}
+.btn-glossary{background:linear-gradient(135deg,#00BCD4,#4DD0E1)}
+.btn-scanner{background:linear-gradient(135deg,#9C27B0,#BA68C8)}
+.btn-emergency{background:linear-gradient(135deg,#f44336,#EF5350)}
+.btn-tools{background:linear-gradient(135deg,#607D8B,#78909C)}
 .btn-docs{background:linear-gradient(135deg,#009688,#4DB6AC)}
 .btn-changelog{background:linear-gradient(135deg,#795548,#A1887F)}
 .btn-rate{background:linear-gradient(135deg,#FFC107,#FFD54F);color:#333}
@@ -194,6 +197,7 @@ html,body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hid
 .tool-result.weak{background:rgba(244,67,54,0.15);color:var(--danger);border:1px solid var(--danger)}
 .tool-result.medium{background:rgba(255,152,0,0.15);color:var(--warning);border:1px solid var(--warning)}
 .tool-result.strong{background:rgba(76,175,80,0.15);color:var(--primary);border:1px solid var(--primary)}
+.tool-result.info{background:rgba(33,150,243,0.15);color:var(--info);border:1px solid var(--info)}
 .glossary-item{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:10px;cursor:pointer}
 .glossary-term{color:var(--primary);font-size:16px;font-weight:bold;display:flex;justify-content:space-between;align-items:center}
 .glossary-arrow{transition:transform 0.3s}
@@ -296,7 +300,9 @@ html,body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hid
 </head>
 <body>
 
-<div class="splash" id="splash"><div class="splash-logo">🛡️</div><div class="splash-title">الأمن السيبراني</div><div class="splash-sub">الإصدار 1.6.0</div><div class="splash-dev">تطوير: أنس خشان</div><div class="splash-loader"><div class="splash-loader-bar"></div></div></div>
+<div class="server-status" id="serverStatus">🟢 متصل بالسيرفر</div>
+
+<div class="splash" id="splash"><div class="splash-logo">🛡️</div><div class="splash-title">الأمن السيبراني</div><div class="splash-sub">الإصدار 1.6.0</div><div class="splash-dev">تطوير: أنس خشان</div><div class="splash-status" id="splashStatus">جاري الاتصال بالسيرفر...</div><div class="splash-loader"><div class="splash-loader-bar"></div></div></div>
 
 <div class="welcome" id="welcomeScreen">
 <div class="welcome-avatar">👨‍💻</div>
@@ -311,12 +317,11 @@ html,body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hid
 <div class="terms-header"><h2>📋 شروط الاستخدام</h2><p>يرجى قراءة والموافقة</p></div>
 <div class="terms-body">
 <h3>1. القبول</h3><p>باستخدامك التطبيق، أنت توافق على جميع الشروط.</p>
-<h3>2. الاستخدام المسموح</h3><ul><li>الاستخدام التعليمي فقط</li><li>لا تستخدم المهارات لأذى الآخرين</li><li>احترم الخصوصية</li></ul>
-<h3>3. المختبر المعزول</h3><p>جميع التجارب في بيئة آمنة ومعزولة.</p>
-<h3>4. المسؤولية</h3><p>المطور غير مسؤول عن أي سوء استخدام.</p>
-<h3>5. الخصوصية</h3><p>نحترم خصوصيتك ولا نجمع بيانات شخصية.</p>
+<h3>2. الاستخدام المسموح</h3><ul><li>الاستخدام التعليمي فقط</li><li>لا تستخدم المهارات لأذى الآخرين</li></ul>
+<h3>3. المختبر المعزول</h3><p>جميع التجارب آمنة ومعزولة.</p>
+<h3>4. الخصوصية</h3><p>نجمع إحصائيات مجهولة لتحسين التطبيق (عدد المستخدمين، الأحداث).</p>
 </div>
-<div class="terms-check" id="termsCheck" onclick="toggleTerms()"><div class="terms-checkbox"></div><div class="terms-check-label">أوافق على جميع الشروط والأحكام</div></div>
+<div class="terms-check" id="termsCheck" onclick="toggleTerms()"><div class="terms-checkbox"></div><div class="terms-check-label">أوافق على الشروط</div></div>
 <button class="terms-btn" id="termsBtn" onclick="showVersionChoice()">التالي ←</button>
 </div>
 
@@ -324,8 +329,8 @@ html,body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hid
 <div class="version-title">🎯 اختر النسخة</div>
 <div class="version-sub">يمكنك الترقية لاحقاً</div>
 <div class="version-cards">
-<div class="version-card free" onclick="selectVersion('free')"><div class="version-card-icon">🆓</div><div class="version-card-title">النسخة العادية</div><div class="version-card-desc">دروس، اختبارات، أدوات، قاموس، مختبر أساسي</div><div class="version-card-price">مجاني للأبد ✓</div></div>
-<div class="version-card pro" onclick="selectVersion('pro')"><div class="version-card-icon">⭐</div><div class="version-card-title">النسخة Pro</div><div class="version-card-desc">كل الميزات + مختبرات متقدمة + تحديات حصرية + شهادات</div><div class="version-card-price">كود التفعيل: 0000</div></div>
+<div class="version-card free" onclick="selectVersion('free')"><div class="version-card-icon">🆓</div><div class="version-card-title">النسخة العادية</div><div class="version-card-desc">دروس، اختبارات، أدوات، قاموس</div><div class="version-card-price">مجاني للأبد ✓</div></div>
+<div class="version-card pro" onclick="selectVersion('pro')"><div class="version-card-icon">⭐</div><div class="version-card-title">النسخة Pro</div><div class="version-card-desc">كل الميزات + مختبرات متقدمة + شهادات</div><div class="version-card-price">كود: 0000</div></div>
 </div>
 </div>
 
@@ -350,7 +355,7 @@ html,body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hid
 </div>
 </div>
 
-<div class="pro-banner" id="proBanner" style="display:none"><div class="pro-banner-icon">⭐</div><div class="pro-banner-content"><div class="pro-banner-title">النسخة Pro مفعّلة</div><div class="pro-banner-desc">استمتع بكل الميزات المتقدمة</div></div></div>
+<div class="pro-banner" id="proBanner" style="display:none"><div class="pro-banner-icon">⭐</div><div class="pro-banner-content"><div class="pro-banner-title">النسخة Pro مفعّلة</div><div class="pro-banner-desc">استمتع بكل الميزات</div></div></div>
 
 <div class="search-box">
 <input type="text" class="search-input" id="searchInput" placeholder="🔍 ابحث عن درس، مصطلح، أداة..." oninput="performSearch()">
@@ -382,89 +387,37 @@ html,body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hid
 </div>
 
 <div class="page" id="lessonsPage"><div class="page-header"><button class="back-btn" onclick="closePage('lessonsPage')">→</button><div class="page-title">📚 الدروس</div></div><div id="lessonsList"></div></div>
-
 <div class="page" id="lessonContentPage"><div class="page-header"><button class="back-btn" onclick="closePage('lessonContentPage')">→</button><div class="page-title" id="lessonTitle">الدرس</div></div><div class="lesson-content" id="lessonBody"></div><button class="complete-btn" id="completeBtn" onclick="completeLesson()">✅ إكمال الدرس</button></div>
-
-<div class="page" id="videosPage"><div class="page-header"><button class="back-btn" onclick="closePage('videosPage')">→</button><div class="page-title">📺 الفيديوهات</div></div><div class="tool-box" style="background:rgba(233,30,99,0.1);border-color:#E91E63"><h3 style="color:#E91E63">🎬 دروس فيديو</h3><p style="color:var(--text2);font-size:13px">شاهد ودعّم تعلمك</p></div><div id="videosList"></div></div>
-
-<div class="page" id="quizPage"><div class="page-header"><button class="back-btn" onclick="closePage('quizPage')">→</button><div class="page-title">🧪 اختبار تفاعلي</div></div><div id="quizContainer"></div></div>
-
-<div class="page" id="labPage"><div class="page-header"><button class="back-btn" onclick="closePage('labPage')">→</button><div class="page-title">🧪 المختبر المعزول</div></div><div class="lab-zone"><div class="lab-status"><div class="lab-status-dot"></div><div class="lab-status-text">البيئة نشطة - معزولة</div></div><p style="color:var(--text2);font-size:13px;line-height:1.7">جميع التجارب آمنة. يتم إعادة ضبط البيئة تلقائياً.</p><button class="tool-btn" style="margin-top:15px;background:linear-gradient(135deg,#f44336,#c62828)" onclick="resetLab()">🛡️ إعادة ضبط</button></div><div id="challengesList"></div></div>
-
-<div class="page" id="challengeDetailPage"><div class="page-header"><button class="back-btn" onclick="closePage('challengeDetailPage')">→</button><div class="page-title" id="challengeTitle">التحدي</div></div><div class="lesson-content" id="challengeBody"></div><div class="terminal-lab" id="challengeTerminal"><div class="terminal-lab-line">🔒 المختبر جاهز...</div><div class="terminal-lab-line">$ اكتب help</div></div><input type="text" class="terminal-lab-input" id="challengeInput" placeholder="اكتب الأمر..." onkeypress="if(event.key==='Enter')execChallengeCmd()"><button class="complete-btn" id="challengeCompleteBtn" onclick="completeChallenge()" style="background:linear-gradient(135deg,#673AB7,#9575CD)">✅ إكمال التحدي</button></div>
-
+<div class="page" id="videosPage"><div class="page-header"><button class="back-btn" onclick="closePage('videosPage')">→</button><div class="page-title">📺 الفيديوهات</div></div><div id="videosList"></div></div>
+<div class="page" id="quizPage"><div class="page-header"><button class="back-btn" onclick="closePage('quizPage')">→</button><div class="page-title">🧪 اختبار</div></div><div id="quizContainer"></div></div>
+<div class="page" id="labPage"><div class="page-header"><button class="back-btn" onclick="closePage('labPage')">→</button><div class="page-title">🧪 المختبر المعزول</div></div><div class="lab-zone"><div class="lab-status"><div class="lab-status-dot"></div><div class="lab-status-text">البيئة نشطة - معزولة</div></div><p style="color:var(--text2);font-size:13px;line-height:1.7">جميع التجارب آمنة. يتم إعادة الضبط تلقائياً.</p><button class="tool-btn" style="margin-top:15px;background:linear-gradient(135deg,#f44336,#c62828)" onclick="resetLab()">🛡️ إعادة ضبط</button></div><div id="challengesList"></div></div>
+<div class="page" id="challengeDetailPage"><div class="page-header"><button class="back-btn" onclick="closePage('challengeDetailPage')">→</button><div class="page-title" id="challengeTitle">التحدي</div></div><div class="lesson-content" id="challengeBody"></div><div class="terminal-lab" id="challengeTerminal"><div class="terminal-lab-line">🔒 جاهز...</div><div class="terminal-lab-line">$ help</div></div><input type="text" class="terminal-lab-input" id="challengeInput" placeholder="الأمر..." onkeypress="if(event.key==='Enter')execChallengeCmd()"><button class="complete-btn" id="challengeCompleteBtn" onclick="completeChallenge()" style="background:linear-gradient(135deg,#673AB7,#9575CD)">✅ إكمال</button></div>
 <div class="page" id="badgesPage"><div class="page-header"><button class="back-btn" onclick="closePage('badgesPage')">→</button><div class="page-title">🏆 الشارات</div></div><div id="badgesPageContent"></div></div>
-
 <div class="page" id="statsPage"><div class="page-header"><button class="back-btn" onclick="closePage('statsPage')">→</button><div class="page-title">📊 إحصائياتي</div></div><div id="statsContent"></div></div>
-
 <div class="page" id="certsPage"><div class="page-header"><button class="back-btn" onclick="closePage('certsPage')">→</button><div class="page-title">🎓 شهاداتي</div></div><div id="certsContent"></div></div>
-
 <div class="page" id="leaderPage"><div class="page-header"><button class="back-btn" onclick="closePage('leaderPage')">→</button><div class="page-title">🏅 المتصدرون</div></div><div id="leaderList"></div></div>
-
 <div class="page" id="aiGamePage"><div class="page-header"><button class="back-btn" onclick="closePage('aiGamePage')">→</button><div class="page-title">🤖 تحدي AI</div></div><div id="aiGameContent"></div></div>
-
 <div class="page" id="glossaryPage"><div class="page-header"><button class="back-btn" onclick="closePage('glossaryPage')">→</button><div class="page-title">📖 القاموس</div></div><input type="text" class="tool-input" id="glossarySearch" placeholder="🔍 ابحث..." oninput="filterGlossary()"><div id="glossaryList"></div></div>
-
-<div class="page" id="scannerPage"><div class="page-header"><button class="back-btn" onclick="closePage('scannerPage')">→</button><div class="page-title">🔗 فاحص الروابط</div></div><div class="tool-box"><h3>🔗 فحص الرابط</h3><input type="text" class="tool-input" id="urlToScan" placeholder="https://example.com"><button class="tool-btn" onclick="scanUrl()">🔍 فحص</button><button class="tool-btn" style="margin-top:10px;background:linear-gradient(135deg,#9C27B0,#BA68C8)" onclick="openVirusTotal()">🌐 VirusTotal</button><div class="tool-result" id="scanResult"></div></div></div>
-
-<div class="page" id="emergencyPage"><div class="page-header"><button class="back-btn" onclick="closePage('emergencyPage')">→</button><div class="page-title">🚨 دليل الطوارئ</div></div><div class="tool-box" style="background:rgba(244,67,54,0.1);border-color:var(--danger)"><h3 style="color:var(--danger)">⚠️ عند الاختراق</h3></div><div id="emergencyList"></div></div>
-
-<div class="page" id="toolsPage"><div class="page-header"><button class="back-btn" onclick="closePage('toolsPage')">→</button><div class="page-title">🔧 أدوات</div></div>
-<div class="tool-box"><h3>🔒 فاحص كلمة المرور</h3><input type="text" class="tool-input" id="passCheck" placeholder="اكتب..." oninput="checkStrength()"><div class="tool-result" id="strengthResult"></div></div>
-<div class="tool-box"><h3>🎲 مولّد</h3><button class="tool-btn" onclick="generatePassword()">🎲 توليد</button><div class="tool-result show" id="generatedPass" style="background:rgba(76,175,80,0.15);color:var(--primary);font-family:monospace;word-break:break-all"></div></div>
-<div class="tool-box"><h3>💻 Terminal</h3><div style="background:#000;border-radius:10px;padding:15px;font-family:monospace;color:#00FFAA;font-size:13px;min-height:180px;max-height:300px;overflow-y:auto" id="terminalOut"><div>مرحباً! اكتب "help"</div></div><input type="text" class="tool-input" id="terminalIn" placeholder="أمر..." onkeypress="if(event.key==='Enter')execCmd()" style="margin-top:10px;background:#000;color:#00FFAA;font-family:monospace"></div>
-</div>
-
+<div class="page" id="scannerPage"><div class="page-header"><button class="back-btn" onclick="closePage('scannerPage')">→</button><div class="page-title">🔗 فاحص</div></div><div class="tool-box"><h3>🔗 فحص الرابط</h3><input type="text" class="tool-input" id="urlToScan" placeholder="https://..."><button class="tool-btn" onclick="scanUrl()">🔍 فحص</button><button class="tool-btn" style="margin-top:10px;background:linear-gradient(135deg,#9C27B0,#BA68C8)" onclick="openVirusTotal()">🌐 VirusTotal</button><div class="tool-result" id="scanResult"></div></div></div>
+<div class="page" id="emergencyPage"><div class="page-header"><button class="back-btn" onclick="closePage('emergencyPage')">→</button><div class="page-title">🚨 الطوارئ</div></div><div class="tool-box" style="background:rgba(244,67,54,0.1);border-color:var(--danger)"><h3 style="color:var(--danger)">⚠️ عند الاختراق</h3></div><div id="emergencyList"></div></div>
+<div class="page" id="toolsPage"><div class="page-header"><button class="back-btn" onclick="closePage('toolsPage')">→</button><div class="page-title">🔧 أدوات</div></div><div class="tool-box"><h3>🔒 فاحص المرور</h3><input type="text" class="tool-input" id="passCheck" placeholder="..." oninput="checkStrength()"><div class="tool-result" id="strengthResult"></div></div><div class="tool-box"><h3>🎲 مولّد</h3><button class="tool-btn" onclick="generatePassword()">🎲 توليد</button><div class="tool-result show" id="generatedPass" style="background:rgba(76,175,80,0.15);color:var(--primary);font-family:monospace;word-break:break-all"></div></div><div class="tool-box"><h3>💻 Terminal</h3><div style="background:#000;border-radius:10px;padding:15px;font-family:monospace;color:#00FFAA;font-size:13px;min-height:180px;max-height:300px;overflow-y:auto" id="terminalOut"><div>مرحباً!</div></div><input type="text" class="tool-input" id="terminalIn" placeholder="أمر..." onkeypress="if(event.key==='Enter')execCmd()" style="margin-top:10px;background:#000;color:#00FFAA;font-family:monospace"></div></div>
 <div class="page" id="docsPage"><div class="page-header"><button class="back-btn" onclick="closePage('docsPage')">→</button><div class="page-title">📄 التوثيق</div></div><div id="docsList"></div></div>
-
-<div class="page" id="changelogPage"><div class="page-header"><button class="back-btn" onclick="closePage('changelogPage')">→</button><div class="page-title">📋 سجل التحديثات</div></div><div id="changelogList"></div></div>
-
-<div class="page" id="ratePage"><div class="page-header"><button class="back-btn" onclick="closePage('ratePage')">→</button><div class="page-title">⭐ قيّم</div></div><div class="tool-box"><h3 style="text-align:center">تقييمك؟</h3><div class="star-rating" id="starRating"><span class="star" onclick="setRating(1)">★</span><span class="star" onclick="setRating(2)">★</span><span class="star" onclick="setRating(3)">★</span><span class="star" onclick="setRating(4)">★</span><span class="star" onclick="setRating(5)">★</span></div><div id="ratingText" style="text-align:center;color:var(--primary);font-weight:bold;margin-bottom:20px"></div><textarea class="tool-textarea" id="rateComment" placeholder="تعليق (اختياري)"></textarea><button class="tool-btn" onclick="submitRating()" style="background:linear-gradient(135deg,#FFC107,#FFA000);color:#333">⭐ إرسال</button></div></div>
-
-<div class="page" id="profilePage"><div class="page-header"><button class="back-btn" onclick="closePage('profilePage')">→</button><div class="page-title">👤 حسابي</div></div>
-<div style="text-align:center;padding:20px 0"><div style="width:100px;height:100px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--primary2));display:flex;align-items:center;justify-content:center;font-size:50px;margin:0 auto 15px;border:4px solid var(--border)">👤</div><div style="font-size:22px;font-weight:bold" id="profileName">هاكر مبتدئ</div><div style="color:var(--primary);margin-top:5px" id="profileLevel">المستوى 1</div></div>
-<div class="dev-stat-grid">
-<div class="dev-stat"><div class="dev-stat-icon">🏆</div><div class="dev-stat-value" id="statPoints">0</div><div class="dev-stat-label">النقاط</div></div>
-<div class="dev-stat"><div class="dev-stat-icon">📚</div><div class="dev-stat-value" id="statLessons">0</div><div class="dev-stat-label">الدروس</div></div>
-<div class="dev-stat"><div class="dev-stat-icon">🧪</div><div class="dev-stat-value" id="statChallenges">0</div><div class="dev-stat-label">التحديات</div></div>
-<div class="dev-stat"><div class="dev-stat-icon">🏆</div><div class="dev-stat-value" id="statBadges">0</div><div class="dev-stat-label">الشارات</div></div>
-</div>
-<div class="tool-box"><h3>⚙️ الإعدادات</h3>
-<div style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border)" onclick="toggleTheme()"><span>🌙 الوضع الليلي</span><span style="color:var(--primary)" id="themeStatus">مفعّل</span></div>
-<div style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border)" onclick="openPage('themePage')"><span>🎨 الثيمات</span><span style="color:var(--primary)">←</span></div>
-<div style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border)" onclick="resetProgress()"><span>🗑️ إعادة تعيين</span><span style="color:var(--danger)">←</span></div>
-<div style="display:flex;justify-content:space-between;padding:12px 0" onclick="openDevLogin()"><span>👨‍💻 المطورين</span><span style="color:var(--primary)">←</span></div>
-</div>
-</div>
-
-<div class="page" id="themePage"><div class="page-header"><button class="back-btn" onclick="closePage('themePage')">→</button><div class="page-title">🎨 الثيمات</div></div>
-<div id="themesList"></div>
-</div>
-
-<div class="page" id="aboutPage"><div class="page-header"><button class="back-btn" onclick="closePage('aboutPage')">→</button><div class="page-title">ℹ️ حول</div></div>
-<div class="tool-box">
-<div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)"><span style="color:var(--text2)">التطبيق</span><span style="color:var(--primary);font-weight:bold">الأمن السيبراني</span></div>
-<div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)"><span style="color:var(--text2)">الإصدار</span><span style="color:var(--primary);font-weight:bold">1.6.0</span></div>
-<div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)"><span style="color:var(--text2)">المطور</span><span style="color:var(--primary);font-weight:bold">أنس خشان</span></div>
-<div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)"><span style="color:var(--text2)">القناة</span><span style="color:var(--primary);font-weight:bold">@amn_sirani</span></div>
-<div style="display:flex;justify-content:space-between;padding:10px 0"><span style="color:var(--text2)">السنة</span><span style="color:var(--primary);font-weight:bold">2025</span></div>
-</div>
-<div class="tool-box"><h3>📞 تواصل</h3><a href="https://t.me/amn_sirani" style="display:block;padding:15px;background:#0088CC;color:#fff;text-decoration:none;border-radius:10px;text-align:center;font-weight:bold;margin-top:10px">📺 @amn_sirani</a></div>
-</div>
+<div class="page" id="changelogPage"><div class="page-header"><button class="back-btn" onclick="closePage('changelogPage')">→</button><div class="page-title">📋 التحديثات</div></div><div id="changelogList"></div></div>
+<div class="page" id="ratePage"><div class="page-header"><button class="back-btn" onclick="closePage('ratePage')">→</button><div class="page-title">⭐ قيّم</div></div><div class="tool-box"><h3 style="text-align:center">تقييمك؟</h3><div class="star-rating" id="starRating"><span class="star" onclick="setRating(1)">★</span><span class="star" onclick="setRating(2)">★</span><span class="star" onclick="setRating(3)">★</span><span class="star" onclick="setRating(4)">★</span><span class="star" onclick="setRating(5)">★</span></div><div id="ratingText" style="text-align:center;color:var(--primary);font-weight:bold;margin-bottom:20px"></div><textarea class="tool-textarea" id="rateComment" placeholder="تعليق..."></textarea><button class="tool-btn" onclick="submitRating()" style="background:linear-gradient(135deg,#FFC107,#FFA000);color:#333">⭐ إرسال</button></div></div>
+<div class="page" id="profilePage"><div class="page-header"><button class="back-btn" onclick="closePage('profilePage')">→</button><div class="page-title">👤 حسابي</div></div><div style="text-align:center;padding:20px 0"><div style="width:100px;height:100px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--primary2));display:flex;align-items:center;justify-content:center;font-size:50px;margin:0 auto 15px;border:4px solid var(--border)">👤</div><div style="font-size:22px;font-weight:bold" id="profileName">هاكر مبتدئ</div><div style="color:var(--primary);margin-top:5px" id="profileLevel">المستوى 1</div><div style="color:var(--text2);font-size:11px;margin-top:5px" id="userIdDisplay"></div></div><div class="dev-stat-grid"><div class="dev-stat"><div class="dev-stat-icon">🏆</div><div class="dev-stat-value" id="statPoints">0</div><div class="dev-stat-label">النقاط</div></div><div class="dev-stat"><div class="dev-stat-icon">📚</div><div class="dev-stat-value" id="statLessons">0</div><div class="dev-stat-label">الدروس</div></div><div class="dev-stat"><div class="dev-stat-icon">🧪</div><div class="dev-stat-value" id="statChallenges">0</div><div class="dev-stat-label">التحديات</div></div><div class="dev-stat"><div class="dev-stat-icon">🏆</div><div class="dev-stat-value" id="statBadges">0</div><div class="dev-stat-label">الشارات</div></div></div><div class="tool-box"><h3>⚙️ الإعدادات</h3><div style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border)" onclick="toggleTheme()"><span>🌙 الوضع الليلي</span><span style="color:var(--primary)" id="themeStatus">مفعّل</span></div><div style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border)" onclick="openPage('themePage')"><span>🎨 الثيمات</span><span style="color:var(--primary)">←</span></div><div style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border)" onclick="resetProgress()"><span>🗑️ إعادة تعيين</span><span style="color:var(--danger)">←</span></div><div style="display:flex;justify-content:space-between;padding:12px 0" onclick="openDevLogin()"><span>👨‍💻 المطورين</span><span style="color:var(--primary)">←</span></div></div></div>
+<div class="page" id="themePage"><div class="page-header"><button class="back-btn" onclick="closePage('themePage')">→</button><div class="page-title">🎨 الثيمات</div></div><div id="themesList"></div></div>
+<div class="page" id="aboutPage"><div class="page-header"><button class="back-btn" onclick="closePage('aboutPage')">→</button><div class="page-title">ℹ️ حول</div></div><div class="tool-box"><div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)"><span>التطبيق</span><span style="color:var(--primary)">الأمن السيبراني</span></div><div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)"><span>الإصدار</span><span style="color:var(--primary)">1.6.0</span></div><div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)"><span>المطور</span><span style="color:var(--primary)">أنس خشان</span></div><div style="display:flex;justify-content:space-between;padding:10px 0"><span>القناة</span><span style="color:var(--primary)">@amn_sirani</span></div></div><div class="tool-box"><h3>📞 تواصل</h3><a href="https://t.me/amn_sirani" style="display:block;padding:15px;background:#0088CC;color:#fff;text-decoration:none;border-radius:10px;text-align:center;font-weight:bold;margin-top:10px">📺 @amn_sirani</a></div></div>
 
 <div class="modal-overlay" id="devModal"><div class="modal-box"><h3>🔐 دخول المطورين</h3><p>للمطورين فقط</p><input type="password" id="devPassword" placeholder="••••••••••" inputmode="numeric" maxlength="10"><div class="modal-box-btns"><button class="modal-btn cancel" onclick="closeDevLogin()">إلغاء</button><button class="modal-btn confirm" onclick="checkDevPassword()">دخول</button></div></div></div>
 
 <div class="dev-panel" id="devPanel">
-<div class="dev-header"><h2>👨‍💻 لوحة المطورين</h2><p>مرحباً أنس خشان</p></div>
+<div class="dev-header"><h2>👨‍💻 لوحة المطورين</h2><p id="devServerStatus">جاري الاتصال...</p></div>
 <div class="dev-tabs">
 <div class="dev-tab active" onclick="switchDevTab('stats',event)">📊 إحصائيات</div>
+<div class="dev-tab" onclick="switchDevTab('server',event)">🌐 السيرفر</div>
 <div class="dev-tab" onclick="switchDevTab('content',event)">📝 المحتوى</div>
-<div class="dev-tab" onclick="switchDevTab('users',event)">👥 المستخدمون</div>
-<div class="dev-tab" onclick="switchDevTab('logs',event)">📋 السجل</div>
-<div class="dev-tab" onclick="switchDevTab('settings',event)">⚙️ الإعدادات</div>
 <div class="dev-tab" onclick="switchDevTab('tools',event)">🔧 أدوات</div>
-<div class="dev-tab" onclick="switchDevTab('themes',event)">🎨 الثيمات</div>
-<div class="dev-tab" onclick="switchDevTab('backup',event)">💾 النسخ</div>
+<div class="dev-tab" onclick="switchDevTab('settings',event)">⚙️ إعدادات</div>
 </div>
 <div id="devTabContent"></div>
 </div>
@@ -482,85 +435,454 @@ html,body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hid
 <div class="toast" id="toast"></div>
 
 <script>
-const CONFIG={version:"1.6.0",developer:"أنس خشان",devPassword:"1234567890",proCode:"0000",telegram:"https://t.me/amn_sirani"};
-const STATE={points:0,completedLessons:[],completedChallenges:[],completedQuizzes:[],completedAI:[],userRating:0,darkMode:true,theme:"default",isPro:false,termsAccepted:false,versionChosen:false,userName:"هاكر مبتدئ",activityLog:[]};
+/* ============================================================
+   الأمن السيبراني - 1.6.0 مع ربط السيرفر
+   المطور: أنس خشان
+   ============================================================ */
 
-window.addEventListener('load',function(){
-setTimeout(function(){
-document.getElementById('splash').classList.add('hide');
-loadState();
-if(STATE.termsAccepted&&STATE.versionChosen){document.getElementById('app').classList.add('active');document.getElementById('bottomNav').style.display='flex';initApp();}
-else if(STATE.termsAccepted){document.getElementById('versionChoice').classList.add('active');}
-else{document.getElementById('welcomeScreen').classList.add('active');}
-},2600);
+const CONFIG = {
+    version: "1.6.0",
+    developer: "أنس خشان",
+    devPassword: "1234567890",
+    proCode: "0000",
+    telegram: "https://t.me/amn_sirani",
+    serverUrl: "https://9829bdfa18809d.lhr.life"  // ← غيّره عند تغيير الرابط
+};
+
+const STATE = {
+    points: 0,
+    completedLessons: [],
+    completedChallenges: [],
+    completedQuizzes: [],
+    completedAI: [],
+    earnedBadges: [],
+    userRating: 0,
+    darkMode: true,
+    theme: "default",
+    isPro: false,
+    termsAccepted: false,
+    versionChosen: false,
+    userName: "هاكر مبتدئ",
+    userId: null,
+    activityLog: [],
+    serverConnected: false
+};
+
+/* ============ Server Connection ============ */
+async function initServer() {
+    if(!STATE.userId) {
+        STATE.userId = 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+        saveState();
+    }
+    
+    try {
+        const res = await fetch(CONFIG.serverUrl + '/api/register', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                userId: STATE.userId,
+                platform: navigator.platform,
+                language: navigator.language
+            })
+        });
+        
+        if(res.ok) {
+            STATE.serverConnected = true;
+            document.getElementById('serverStatus').classList.add('show');
+            document.getElementById('serverStatus').textContent = '🟢 متصل بالسيرفر';
+            const splash = document.getElementById('splashStatus');
+            if(splash) splash.textContent = '✅ متصل بالسيرفر';
+            console.log('✅ متصل بالسيرفر');
+        }
+    } catch(e) {
+        STATE.serverConnected = false;
+        document.getElementById('serverStatus').classList.add('show', 'offline');
+        document.getElementById('serverStatus').textContent = '🔴 غير متصل';
+        const splash = document.getElementById('splashStatus');
+        if(splash) splash.textContent = '⚠️ السيرفر غير متاح';
+        console.log('❌ فشل الاتصال بالسيرفر');
+    }
+}
+
+async function sendEvent(eventName, data) {
+    if(!STATE.serverConnected) return;
+    try {
+        await fetch(CONFIG.serverUrl + '/api/event', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                userId: STATE.userId,
+                event: eventName,
+                data: data || {}
+            })
+        });
+    } catch(e) {
+        STATE.serverConnected = false;
+    }
+}
+
+async function fetchServerStats() {
+    try {
+        const res = await fetch(CONFIG.serverUrl + '/api/stats');
+        return await res.json();
+    } catch(e) {
+        return null;
+    }
+}
+
+/* ============ Init ============ */
+window.addEventListener('load', function() {
+    setTimeout(function() {
+        document.getElementById('splash').classList.add('hide');
+        loadState();
+        initServer();
+        
+        if(STATE.termsAccepted && STATE.versionChosen) {
+            document.getElementById('app').classList.add('active');
+            document.getElementById('bottomNav').style.display = 'flex';
+            initApp();
+        } else if(STATE.termsAccepted) {
+            document.getElementById('versionChoice').classList.add('active');
+        } else {
+            document.getElementById('welcomeScreen').classList.add('active');
+        }
+    }, 2600);
 });
 
-function loadState(){try{const s=localStorage.getItem('cyber_v160');if(s)Object.assign(STATE,JSON.parse(s));}catch(e){}}
-function saveState(){try{localStorage.setItem('cyber_v160',JSON.stringify(STATE));}catch(e){}}
-function logActivity(txt){STATE.activityLog.push({t:txt,d:new Date().toISOString()});if(STATE.activityLog.length>50)STATE.activityLog.shift();saveState();}
+function loadState() {
+    try {
+        const s = localStorage.getItem('cyber_v160');
+        if(s) Object.assign(STATE, JSON.parse(s));
+    } catch(e) {}
+}
 
-function showTerms(){document.getElementById('welcomeScreen').classList.remove('active');document.getElementById('termsScreen').classList.add('active');}
-function toggleTerms(){const c=document.getElementById('termsCheck');c.classList.toggle('checked');const btn=document.getElementById('termsBtn');if(c.classList.contains('checked'))btn.classList.add('active');else btn.classList.remove('active');}
-function showVersionChoice(){if(!document.getElementById('termsCheck').classList.contains('checked')){showToast('❌ يجب الموافقة','error');return;}STATE.termsAccepted=true;saveState();document.getElementById('termsScreen').classList.remove('active');document.getElementById('versionChoice').classList.add('active');}
-function selectVersion(v){if(v==='pro'){document.getElementById('proCodeScreen').classList.add('active');}else{STATE.versionChosen=true;STATE.isPro=false;saveState();enterApp();}}
-function closeProCode(){document.getElementById('proCodeScreen').classList.remove('active');}
-function verifyProCode(){const code=document.getElementById('proCodeInput').value;if(code===CONFIG.proCode){STATE.isPro=true;STATE.versionChosen=true;saveState();closeProCode();showToast('⭐ تم تفعيل Pro!','gold');setTimeout(enterApp,1000);}else{showToast('❌ كود خاطئ','error');}}
-function enterApp(){document.getElementById('versionChoice').classList.remove('active');document.getElementById('app').classList.add('active');document.getElementById('bottomNav').style.display='flex';initApp();}
+function saveState() {
+    try { localStorage.setItem('cyber_v160', JSON.stringify(STATE)); } catch(e) {}
+}
 
-function initApp(){renderLessons();renderVideos();renderGlossary();renderEmergency();renderDocs();renderChangelog();renderChallenges();renderBadgesPage();renderStats();renderCerts();renderLeaderboard();renderThemes();renderAIGame();updateProfile();if(STATE.isPro)document.getElementById('proBanner').style.display='flex';}
+function logActivity(txt) {
+    STATE.activityLog.push({t: txt, d: new Date().toISOString()});
+    if(STATE.activityLog.length > 50) STATE.activityLog.shift();
+    saveState();
+    sendEvent('activity', {text: txt});
+}
 
-/* Lessons */
-const LESSONS=[
-{id:'l1',cat:'🔐 الأساسيات',title:'ما هو الأمن السيبراني؟',points:50,pro:false,content:'<h3>🎯 التعريف</h3><p>الأمن السيبراني هو حماية الأنظمة والشبكات والبيانات من الهجمات الإلكترونية.</p><h3>📌 الأهمية</h3><ul><li>حماية البيانات الشخصية</li><li>الحفاظ على الخصوصية</li><li>منع الاحتيال</li></ul><div class="tip">💡 الأمن السيبراني أسلوب حياة!</div>'},
-{id:'l2',cat:'🔐 الأساسيات',title:'أنواع الهجمات',points:75,pro:false,content:'<h3>⚠️ الفيشينغ</h3><p>رسائل مزيفة لسرقة بياناتك.</p><h3>💀 برامج الفدية</h3><p>تشفر ملفاتك وتطلب فدية.</p><h3>🌊 DDoS</h3><p>إغراق الموقع بالطلبات.</p>'},
-{id:'l3',cat:'🔐 كلمات المرور',title:'كلمات المرور القوية',points:100,pro:false,content:'<h3>🔐 القواعد</h3><ul><li>12 حرفاً على الأقل</li><li>حروف كبيرة وصغيرة</li><li>أرقام ورموز</li><li>مختلفة لكل حساب</li></ul><div class="warning">❌ تجنب: تاريخ الميلاد</div>'},
-{id:'l4',cat:'🔐 كلمات المرور',title:'التحقق بخطوتين',points:100,pro:false,content:'<h3>🛡️ 2FA</h3><p>طبقة حماية إضافية.</p><ul><li>SMS</li><li>تطبيق مصادقة</li><li>مفاتيح فيزيائية</li></ul>'},
+/* ============ Welcome & Terms ============ */
+function showTerms() {
+    document.getElementById('welcomeScreen').classList.remove('active');
+    document.getElementById('termsScreen').classList.add('active');
+    sendEvent('welcome_shown');
+}
+
+function toggleTerms() {
+    const c = document.getElementById('termsCheck');
+    c.classList.toggle('checked');
+    const btn = document.getElementById('termsBtn');
+    if(c.classList.contains('checked')) btn.classList.add('active');
+    else btn.classList.remove('active');
+}
+
+function showVersionChoice() {
+    if(!document.getElementById('termsCheck').classList.contains('checked')) {
+        showToast('❌ يجب الموافقة', 'error');
+        return;
+    }
+    STATE.termsAccepted = true;
+    saveState();
+    sendEvent('terms_accepted');
+    document.getElementById('termsScreen').classList.remove('active');
+    document.getElementById('versionChoice').classList.add('active');
+}
+
+function selectVersion(v) {
+    if(v === 'pro') {
+        document.getElementById('proCodeScreen').classList.add('active');
+    } else {
+        STATE.versionChosen = true;
+        STATE.isPro = false;
+        saveState();
+        sendEvent('version_selected', {version: 'free'});
+        enterApp();
+    }
+}
+
+function closeProCode() {
+    document.getElementById('proCodeScreen').classList.remove('active');
+}
+
+function verifyProCode() {
+    const code = document.getElementById('proCodeInput').value;
+    if(code === CONFIG.proCode) {
+        STATE.isPro = true;
+        STATE.versionChosen = true;
+        saveState();
+        closeProCode();
+        sendEvent('pro_activated');
+        showToast('⭐ تم تفعيل Pro!', 'gold');
+        setTimeout(enterApp, 1000);
+    } else {
+        showToast('❌ كود خاطئ', 'error');
+        sendEvent('pro_failed');
+    }
+}
+
+function enterApp() {
+    document.getElementById('versionChoice').classList.remove('active');
+    document.getElementById('app').classList.add('active');
+    document.getElementById('bottomNav').style.display = 'flex';
+    initApp();
+}
+
+function initApp() {
+    renderLessons();
+    renderVideos();
+    renderGlossary();
+    renderEmergency();
+    renderDocs();
+    renderChangelog();
+    renderChallenges();
+    renderBadgesPage();
+    renderStats();
+    renderCerts();
+    renderLeaderboard();
+    renderThemes();
+    renderAIGame();
+    updateProfile();
+    if(STATE.isPro) document.getElementById('proBanner').style.display = 'flex';
+    if(STATE.userId) document.getElementById('userIdDisplay').textContent = 'ID: ' + STATE.userId.substring(0, 15) + '...';
+    sendEvent('app_ready');
+}
+
+/* ============ Lessons ============ */
+const LESSONS = [
+{id:'l1',cat:'🔐 الأساسيات',title:'ما هو الأمن السيبراني؟',points:50,pro:false,content:'<h3>🎯 التعريف</h3><p>الأمن السيبراني هو حماية الأنظمة والشبكات والبيانات.</p><h3>📌 الأهمية</h3><ul><li>حماية البيانات</li><li>الحفاظ على الخصوصية</li><li>منع الاحتيال</li></ul><div class="tip">💡 أسلوب حياة!</div>'},
+{id:'l2',cat:'🔐 الأساسيات',title:'أنواع الهجمات',points:75,pro:false,content:'<h3>⚠️ الفيشينغ</h3><p>رسائل مزيفة.</p><h3>💀 برامج الفدية</h3><p>تشفر ملفاتك.</p><h3>🌊 DDoS</h3><p>إغراق الموقع.</p>'},
+{id:'l3',cat:'🔐 كلمات المرور',title:'كلمات قوية',points:100,pro:false,content:'<h3>🔐 القواعد</h3><ul><li>12 حرفاً+</li><li>حروف كبيرة وصغيرة</li><li>أرقام ورموز</li></ul><div class="warning">❌ تجنب: تاريخ الميلاد</div>'},
+{id:'l4',cat:'🔐 كلمات المرور',title:'2FA',points:100,pro:false,content:'<h3>🛡️ التحقق بخطوتين</h3><p>طبقة إضافية.</p><ul><li>SMS</li><li>تطبيق</li><li>مفاتيح</li></ul>'},
 {id:'l5',cat:'🎣 الفيشينغ',title:'التعرف على الفيشينغ',points:75,pro:false,content:'<h3>🔍 العلامات</h3><ul><li>أخطاء إملائية</li><li>روابط غريبة</li><li>طلب عاجل</li></ul>'},
 {id:'l6',cat:'🌐 الشبكات',title:'أساسيات الشبكات',points:75,pro:false,content:'<h3>🌐 المكونات</h3><ul><li>Router</li><li>Switch</li><li>Modem</li><li>IP</li></ul>'},
-{id:'l7',cat:'🌐 الشبكات',title:'حماية الراوتر',points:100,pro:false,content:'<h3>🛡️ الخطوات</h3><ul><li>غيّر كلمة السر</li><li>WPA3</li><li>عطّل WPS</li><li>حدّث firmware</li></ul>'},
-{id:'l8',cat:'📱 الهاتف',title:'حماية الهاتف',points:75,pro:false,content:'<h3>✅ افعل</h3><ul><li>قفل الشاشة</li><li>تحديث النظام</li><li>نسخ احتياطية</li></ul>'},
+{id:'l7',cat:'🌐 الشبكات',title:'حماية الراوتر',points:100,pro:false,content:'<h3>🛡️ الخطوات</h3><ul><li>غيّر كلمة السر</li><li>WPA3</li><li>عطّل WPS</li></ul>'},
+{id:'l8',cat:'📱 الهاتف',title:'حماية الهاتف',points:75,pro:false,content:'<h3>✅ افعل</h3><ul><li>قفل الشاشة</li><li>تحديث النظام</li></ul>'},
 {id:'l9',cat:'🔒 التشفير',title:'ما هو التشفير؟',points:100,pro:false,content:'<h3>🔒 التشفير</h3><p>تحويل البيانات لصيغة غير مفهومة.</p>'},
 {id:'l10',cat:'🔒 التشفير',title:'HTTPS',points:75,pro:false,content:'<h3>🔐 HTTPS</h3><p>النسخة المشفرة من HTTP.</p>'},
-{id:'l11',cat:'🕵️ الهندسة',title:'الهندسة الاجتماعية',points:100,pro:false,content:'<h3>🕵️ التعريف</h3><p>خداع الناس للحصول على معلوماتهم.</p>'},
-{id:'l12',cat:'⭐ Pro',title:'الاختراق الأخلاقي',points:200,pro:true,content:'<h3>🎯 الاختراق الأخلاقي</h3><p>استخدام مهارات الاختراق للأغراض الأمنية.</p><h3>📋 المراحل</h3><ul><li>التخطيط</li><li>جمع المعلومات</li><li>المسح</li><li>الاستغلال</li><li>التقرير</li></ul>'},
+{id:'l11',cat:'🕵️ الهندسة',title:'الهندسة الاجتماعية',points:100,pro:false,content:'<h3>🕵️ التعريف</h3><p>خداع الناس للحصول على معلومات.</p>'},
+{id:'l12',cat:'⭐ Pro',title:'الاختراق الأخلاقي',points:200,pro:true,content:'<h3>🎯 الاختراق الأخلاقي</h3><p>للأغراض الأمنية المشروعة.</p><h3>📋 المراحل</h3><ul><li>التخطيط</li><li>جمع المعلومات</li><li>المسح</li><li>الاستغلال</li></ul>'},
 {id:'l13',cat:'⭐ Pro',title:'تحليل الحزم',points:200,pro:true,content:'<h3>📦 Wireshark</h3><p>لتحليل حركة الشبكة.</p>'},
-{id:'l14',cat:'⭐ Pro',title:'الاستجابة للحوادث',points:200,pro:true,content:'<h3>🚨 الخطوات</h3><ol><li>الاكتشاف</li><li>الاحتواء</li><li>الاستئصال</li><li>الاستعادة</li><li>التعلم</li></ol>'}
+{id:'l14',cat:'⭐ Pro',title:'الاستجابة للحوادث',points:200,pro:true,content:'<h3>🚨 الخطوات</h3><ol><li>الاكتشاف</li><li>الاحتواء</li><li>الاستئصال</li><li>الاستعادة</li></ol>'}
 ];
-let currentLesson=null;
 
-function renderLessons(){const list=document.getElementById('lessonsList');let html='';let lastCat='';LESSONS.forEach((l,i)=>{if(l.cat!==lastCat){html+=`<div style="color:var(--primary);font-weight:bold;margin:20px 0 10px">${l.cat}</div>`;lastCat=l.cat;}const done=STATE.completedLessons.includes(l.id);const locked=l.pro&&!STATE.isPro;html+=`<div class="lesson-item ${done?'completed':''} ${l.pro?'pro-content':''} ${locked?'locked':''}" onclick="openLesson('${l.id}')"><div class="lesson-check">${done?'✓':(locked?'🔒':(i+1))}</div><div class="lesson-info"><h4>${l.title}</h4><p>${done?'مكتمل':(locked?'Pro':'اضغط')}</p><span class="lesson-badge ${l.pro?'pro':'free'}">${l.pro?'⭐ Pro':'🆓'}</span></div><div class="lesson-points">+${l.points}</div></div>`;});list.innerHTML=html;}
+let currentLesson = null;
 
-function openLesson(id){const lesson=LESSONS.find(l=>l.id===id);if(!lesson)return;if(lesson.pro&&!STATE.isPro){showToast('⭐ Pro فقط','gold');return;}currentLesson=lesson;document.getElementById('lessonTitle').textContent=lesson.title;document.getElementById('lessonBody').innerHTML=lesson.content;const btn=document.getElementById('completeBtn');if(STATE.completedLessons.includes(id)){btn.textContent='✅ مكتمل';btn.classList.add('done');btn.disabled=true;}else{btn.textContent='✅ إكمال';btn.classList.remove('done');btn.disabled=false;}closePage('lessonsPage');openPage('lessonContentPage');}
+function renderLessons() {
+    const list = document.getElementById('lessonsList');
+    let html = '';
+    let lastCat = '';
+    LESSONS.forEach((l, i) => {
+        if(l.cat !== lastCat) {
+            html += `<div style="color:var(--primary);font-weight:bold;margin:20px 0 10px">${l.cat}</div>`;
+            lastCat = l.cat;
+        }
+        const done = STATE.completedLessons.includes(l.id);
+        const locked = l.pro && !STATE.isPro;
+        html += `<div class="lesson-item ${done?'completed':''} ${l.pro?'pro-content':''} ${locked?'locked':''}" onclick="openLesson('${l.id}')">
+            <div class="lesson-check">${done?'✓':(locked?'🔒':(i+1))}</div>
+            <div class="lesson-info">
+                <h4>${l.title}</h4>
+                <p>${done?'مكتمل':(locked?'Pro':'اضغط')}</p>
+                <span class="lesson-badge ${l.pro?'pro':'free'}">${l.pro?'⭐ Pro':'🆓'}</span>
+            </div>
+            <div class="lesson-points">+${l.points}</div>
+        </div>`;
+    });
+    list.innerHTML = html;
+}
 
-function completeLesson(){if(!currentLesson)return;if(STATE.completedLessons.includes(currentLesson.id))return;STATE.completedLessons.push(currentLesson.id);STATE.points+=currentLesson.points;logActivity('أكمل درس: '+currentLesson.title);saveState();updateProfile();showToast(`✅ +${currentLesson.points}`,'gold');document.getElementById('completeBtn').textContent='✅ مكتمل';document.getElementById('completeBtn').classList.add('done');document.getElementById('completeBtn').disabled=true;renderLessons();checkBadges();}
+function openLesson(id) {
+    const lesson = LESSONS.find(l => l.id === id);
+    if(!lesson) return;
+    if(lesson.pro && !STATE.isPro) {
+        showToast('⭐ Pro فقط', 'gold');
+        return;
+    }
+    currentLesson = lesson;
+    document.getElementById('lessonTitle').textContent = lesson.title;
+    document.getElementById('lessonBody').innerHTML = lesson.content;
+    const btn = document.getElementById('completeBtn');
+    if(STATE.completedLessons.includes(id)) {
+        btn.textContent = '✅ مكتمل';
+        btn.classList.add('done');
+        btn.disabled = true;
+    } else {
+        btn.textContent = '✅ إكمال';
+        btn.classList.remove('done');
+        btn.disabled = false;
+    }
+    closePage('lessonsPage');
+    openPage('lessonContentPage');
+    sendEvent('lesson_opened', {lesson_id: id, lesson_title: lesson.title});
+}
 
-/* Videos */
-const VIDEOS=[{t:'مقدمة الأمن السيبراني',d:'للمبتدئين',dur:'10:30',free:true},{t:'كلمات مرور قوية',d:'خطوات',dur:'8:15',free:true},{t:'الفيشينغ',d:'أمثلة',dur:'12:20',free:true},{t:'حماية الشبكة',d:'دليل',dur:'15:00',free:true},{t:'التشفير',d:'مبسط',dur:'18:45',free:false},{t:'الاختراق الأخلاقي',d:'متقدم',dur:'25:00',free:false},{t:'Wireshark',d:'تطبيقي',dur:'30:00',free:false},{t:'الاستجابة',d:'عملي',dur:'22:15',free:false}];
-function renderVideos(){document.getElementById('videosList').innerHTML=VIDEOS.map((v,i)=>`<div class="video-item" onclick="openVideo(${i})"><div class="video-thumb">${(!v.free&&!STATE.isPro)?'🔒':'🎬'}<div class="video-play">${(!v.free&&!STATE.isPro)?'⭐':'▶'}</div></div><div class="video-info"><h4>${v.t}</h4><p>${v.d} • ${v.dur} ${!v.free?'<span style="color:var(--gold)">⭐ Pro</span>':''}</p></div></div>`).join('');}
-function openVideo(i){const v=VIDEOS[i];if(!v.free&&!STATE.isPro){showToast('⭐ Pro فقط','gold');return;}showToast('🎬 على تلغرام','info');setTimeout(()=>window.open(CONFIG.telegram,'_blank'),1000);}
+function completeLesson() {
+    if(!currentLesson) return;
+    if(STATE.completedLessons.includes(currentLesson.id)) return;
+    STATE.completedLessons.push(currentLesson.id);
+    STATE.points += currentLesson.points;
+    logActivity('أكمل درس: ' + currentLesson.title);
+    saveState();
+    updateProfile();
+    showToast(`✅ +${currentLesson.points}`, 'gold');
+    document.getElementById('completeBtn').textContent = '✅ مكتمل';
+    document.getElementById('completeBtn').classList.add('done');
+    document.getElementById('completeBtn').disabled = true;
+    renderLessons();
+    checkBadges();
+    sendEvent('lesson_completed', {lesson_id: currentLesson.id, points: currentLesson.points});
+}
 
-/* Challenges */
-const CHALLENGES=[
-{id:'c1',level:'beginner',title:'تحدي كلمة المرور',desc:'اكتشف كلمة السر الضعيفة',points:100,pro:false,content:'<h3>🎯 الهدف</h3><p>ستحصل على hash، حاول كسرها</p><h3>💡 التلميح</h3><p>4 أرقام</p><h3>🛠️ الأمر</h3><p><code>hashcat</code></p>'},
-{id:'c2',level:'beginner',title:'تحدي الشبكة',desc:'اكتشف الأجهزة',points:100,pro:false,content:'<h3>🎯 الهدف</h3><p>اكتشف الأجهزة على الشبكة</p><h3>🛠️ الأمر</h3><p><code>nmap -sn 192.168.1.0/24</code></p>'},
-{id:'c3',level:'beginner',title:'تحدي الفيشينغ',desc:'ميز المزيف',points:100,pro:false,content:'<h3>🎯 حدد البريد المزيف</h3>'},
-{id:'c4',level:'intermediate',title:'فك التشفير',desc:'فك Caesar',points:200,pro:false,content:'<h3>🎯 فك التشفير</h3>'},
-{id:'c5',level:'intermediate',title:'تحليل Logs',desc:'اكتشف الهجوم',points:200,pro:false,content:'<h3>🎯 افحص السجلات</h3>'},
-{id:'c6',level:'intermediate',title:'تحليل الحزم',desc:'بيانات مسربة',points:200,pro:true,content:'<h3>🎯 Wireshark</h3>'},
-{id:'c7',level:'advanced',title:'اختراق كامل',desc:'نظام وهمي',points:500,pro:true,content:'<h3>🎯 اختراق كامل</h3>'},
-{id:'c8',level:'advanced',title:'الاستجابة',desc:'حادثة أمنية',points:500,pro:true,content:'<h3>🎯 اكتشف وأصلح</h3>'}
+/* ============ Videos ============ */
+const VIDEOS = [
+    {t:'مقدمة الأمن السيبراني',d:'للمبتدئين',dur:'10:30',free:true},
+    {t:'كلمات مرور قوية',d:'خطوات',dur:'8:15',free:true},
+    {t:'الفيشينغ',d:'أمثلة',dur:'12:20',free:true},
+    {t:'حماية الشبكة',d:'دليل',dur:'15:00',free:true},
+    {t:'التشفير',d:'مبسط',dur:'18:45',free:false},
+    {t:'الاختراق الأخلاقي',d:'متقدم',dur:'25:00',free:false}
 ];
-function renderChallenges(){document.getElementById('challengesList').innerHTML=CHALLENGES.map(c=>{const done=STATE.completedChallenges.includes(c.id);const locked=c.pro&&!STATE.isPro;return`<div class="challenge ${done?'completed':''}" onclick="openChallenge('${c.id}')"><div class="challenge-header"><div class="challenge-level level-${c.level}">${c.level==='beginner'?'🥉 مبتدئ':c.level==='intermediate'?'🥈 متوسط':'🥇 متقدم'}</div><div style="color:var(--gold);font-weight:bold;font-size:13px">+${c.points} ${locked?'🔒':(done?'✓':'')}</div></div><div class="challenge-title">${c.title}</div><div class="challenge-desc">${c.desc} ${c.pro?'⭐ Pro':''}</div></div>`;}).join('');}
-let currentChallenge=null;
-function openChallenge(id){const c=CHALLENGES.find(x=>x.id===id);if(!c)return;if(c.pro&&!STATE.isPro){showToast('⭐ Pro فقط','gold');return;}currentChallenge=c;document.getElementById('challengeTitle').textContent=c.title;document.getElementById('challengeBody').innerHTML=c.content;document.getElementById('challengeTerminal').innerHTML='<div class="terminal-lab-line">🔒 جاهز...</div><div class="terminal-lab-line">$ help</div>';const btn=document.getElementById('challengeCompleteBtn');if(STATE.completedChallenges.includes(id)){btn.textContent='✅ مكتمل';btn.disabled=true;btn.style.background='#333';}else{btn.textContent='✅ إكمال';btn.disabled=false;btn.style.background='linear-gradient(135deg,#673AB7,#9575CD)';}closePage('labPage');openPage('challengeDetailPage');}
-function execChallengeCmd(){const input=document.getElementById('challengeInput');const cmd=input.value.trim();if(!cmd)return;const term=document.getElementById('challengeTerminal');term.innerHTML+=`<div class="terminal-lab-line">$ ${cmd}</div>`;term.innerHTML+=`<div class="terminal-lab-line" style="color:#673AB7">${runChallengeCmd(cmd)}</div>`;input.value='';term.scrollTop=term.scrollHeight;}
-function runChallengeCmd(cmd){const c=cmd.toLowerCase();if(c==='help')return'ls, cat, nmap, hashcat, clear';if(c==='ls')return'challenge.txt  hash.txt  logs.txt';if(c.startsWith('cat '))return'بيانات سرية...';if(c.startsWith('nmap'))return'22/tcp open ssh\n80/tcp open http';if(c.startsWith('hashcat'))return'Password found: admin123';if(c==='clear'){document.getElementById('challengeTerminal').innerHTML='';return'';}return'غير معروف: '+cmd;}
-function completeChallenge(){if(!currentChallenge)return;if(STATE.completedChallenges.includes(currentChallenge.id))return;STATE.completedChallenges.push(currentChallenge.id);STATE.points+=currentChallenge.points;logActivity('أكمل تحدي: '+currentChallenge.title);saveState();updateProfile();showToast(`✅ +${currentChallenge.points}`,'gold');document.getElementById('challengeCompleteBtn').textContent='✅ مكتمل';document.getElementById('challengeCompleteBtn').disabled=true;document.getElementById('challengeCompleteBtn').style.background='#333';renderChallenges();checkBadges();setTimeout(()=>resetLab(),1500);}
-function openLab(){closePage('lessonsPage');openPage('labPage');renderChallenges();}
-function resetLab(){const t=document.getElementById('challengeTerminal');if(t)t.innerHTML='<div class="terminal-lab-line">🔒 جاهز...</div>';showToast('🛡️ تم إعادة الضبط','info');}
 
-/* Badges */
-const BADGES=[
+function renderVideos() {
+    document.getElementById('videosList').innerHTML = VIDEOS.map((v, i) => 
+        `<div class="video-item" onclick="openVideo(${i})">
+            <div class="video-thumb">${(!v.free && !STATE.isPro) ? '🔒' : '🎬'}
+                <div class="video-play">${(!v.free && !STATE.isPro) ? '⭐' : '▶'}</div>
+            </div>
+            <div class="video-info">
+                <h4>${v.t}</h4>
+                <p>${v.d} • ${v.dur} ${!v.free?'<span style="color:var(--gold)">⭐ Pro</span>':''}</p>
+            </div>
+        </div>`
+    ).join('');
+}
+
+function openVideo(i) {
+    const v = VIDEOS[i];
+    if(!v.free && !STATE.isPro) {
+        showToast('⭐ Pro فقط', 'gold');
+        return;
+    }
+    sendEvent('video_opened', {video: v.t});
+    showToast('🎬 على تلغرام', 'info');
+    setTimeout(() => window.open(CONFIG.telegram, '_blank'), 1000);
+}
+
+/* ============ Challenges ============ */
+const CHALLENGES = [
+    {id:'c1',level:'beginner',title:'تحدي كلمة المرور',desc:'اكتشف كلمة السر',points:100,pro:false,content:'<h3>🎯 الهدف</h3><p>استخدم hashcat</p><h3>🛠️</h3><p><code>hashcat</code></p>'},
+    {id:'c2',level:'beginner',title:'تحدي الشبكة',desc:'اكتشف الأجهزة',points:100,pro:false,content:'<h3>🎯</h3><p><code>nmap -sn 192.168.1.0/24</code></p>'},
+    {id:'c3',level:'beginner',title:'تحدي الفيشينغ',desc:'ميز المزيف',points:100,pro:false,content:'<h3>🎯 حدد البريد المزيف</h3>'},
+    {id:'c4',level:'intermediate',title:'فك التشفير',desc:'Caesar',points:200,pro:false,content:'<h3>🎯 فك التشفير</h3>'},
+    {id:'c5',level:'intermediate',title:'تحليل Logs',desc:'اكتشف الهجوم',points:200,pro:false,content:'<h3>🎯 افحص السجلات</h3>'},
+    {id:'c6',level:'intermediate',title:'تحليل الحزم',desc:'Wireshark',points:200,pro:true,content:'<h3>🎯 تحليل</h3>'},
+    {id:'c7',level:'advanced',title:'اختراق كامل',desc:'نظام وهمي',points:500,pro:true,content:'<h3>🎯 اختراق</h3>'},
+    {id:'c8',level:'advanced',title:'الاستجابة',desc:'حادثة أمنية',points:500,pro:true,content:'<h3>🎯 اكتشف وأصلح</h3>'}
+];
+
+function renderChallenges() {
+    document.getElementById('challengesList').innerHTML = CHALLENGES.map(c => {
+        const done = STATE.completedChallenges.includes(c.id);
+        const locked = c.pro && !STATE.isPro;
+        return `<div class="challenge ${done?'completed':''}" onclick="openChallenge('${c.id}')">
+            <div class="challenge-header">
+                <div class="challenge-level level-${c.level}">${c.level==='beginner'?'🥉 مبتدئ':c.level==='intermediate'?'🥈 متوسط':'🥇 متقدم'}</div>
+                <div style="color:var(--gold);font-weight:bold;font-size:13px">+${c.points} ${locked?'🔒':(done?'✓':'')}</div>
+            </div>
+            <div class="challenge-title">${c.title}</div>
+            <div class="challenge-desc">${c.desc} ${c.pro?'⭐ Pro':''}</div>
+        </div>`;
+    }).join('');
+}
+
+let currentChallenge = null;
+
+function openChallenge(id) {
+    const c = CHALLENGES.find(x => x.id === id);
+    if(!c) return;
+    if(c.pro && !STATE.isPro) {
+        showToast('⭐ Pro فقط', 'gold');
+        return;
+    }
+    currentChallenge = c;
+    document.getElementById('challengeTitle').textContent = c.title;
+    document.getElementById('challengeBody').innerHTML = c.content;
+    document.getElementById('challengeTerminal').innerHTML = '<div class="terminal-lab-line">🔒 جاهز...</div><div class="terminal-lab-line">$ help</div>';
+    const btn = document.getElementById('challengeCompleteBtn');
+    if(STATE.completedChallenges.includes(id)) {
+        btn.textContent = '✅ مكتمل';
+        btn.disabled = true;
+        btn.style.background = '#333';
+    } else {
+        btn.textContent = '✅ إكمال';
+        btn.disabled = false;
+        btn.style.background = 'linear-gradient(135deg,#673AB7,#9575CD)';
+    }
+    closePage('labPage');
+    openPage('challengeDetailPage');
+    sendEvent('challenge_opened', {challenge_id: id});
+}
+
+function execChallengeCmd() {
+    const input = document.getElementById('challengeInput');
+    const cmd = input.value.trim();
+    if(!cmd) return;
+    const term = document.getElementById('challengeTerminal');
+    term.innerHTML += `<div class="terminal-lab-line">$ ${cmd}</div>`;
+    term.innerHTML += `<div class="terminal-lab-line" style="color:#673AB7">${runChallengeCmd(cmd)}</div>`;
+    input.value = '';
+    term.scrollTop = term.scrollHeight;
+}
+
+function runChallengeCmd(cmd) {
+    const c = cmd.toLowerCase();
+    if(c === 'help') return 'ls, cat, nmap, hashcat, clear';
+    if(c === 'ls') return 'challenge.txt  hash.txt  logs.txt';
+    if(c.startsWith('cat ')) return 'بيانات سرية...';
+    if(c.startsWith('nmap')) return 'PORT  STATE\n22/tcp open ssh\n80/tcp open http';
+    if(c.startsWith('hashcat')) return 'Password found: admin123';
+    if(c === 'clear') { document.getElementById('challengeTerminal').innerHTML = ''; return ''; }
+    return 'غير معروف: ' + cmd;
+}
+
+function completeChallenge() {
+    if(!currentChallenge) return;
+    if(STATE.completedChallenges.includes(currentChallenge.id)) return;
+    STATE.completedChallenges.push(currentChallenge.id);
+    STATE.points += currentChallenge.points;
+    logActivity('أكمل تحدي: ' + currentChallenge.title);
+    saveState();
+    updateProfile();
+    showToast(`✅ +${currentChallenge.points}`, 'gold');
+    document.getElementById('challengeCompleteBtn').textContent = '✅ مكتمل';
+    document.getElementById('challengeCompleteBtn').disabled = true;
+    document.getElementById('challengeCompleteBtn').style.background = '#333';
+    renderChallenges();
+    checkBadges();
+    sendEvent('challenge_completed', {challenge_id: currentChallenge.id});
+    setTimeout(() => resetLab(), 1500);
+}
+
+function openLab() {
+    closePage('lessonsPage');
+    openPage('labPage');
+    renderChallenges();
+}
+
+function resetLab() {
+    const t = document.getElementById('challengeTerminal');
+    if(t) t.innerHTML = '<div class="terminal-lab-line">🔒 جاهز...</div>';
+    showToast('🛡️ تم إعادة الضبط', 'info');
+}
+
+/* ============ Badges ============ */
+const BADGES = [
 {id:'first_lesson',name:'أول درس',icon:'🥇',desc:'أكمل أول درس'},
 {id:'lessons_5',name:'طالب',icon:'📚',desc:'5 دروس'},
 {id:'lessons_10',name:'متعلم',icon:'📖',desc:'10 دروس'},
@@ -570,148 +892,773 @@ const BADGES=[
 {id:'points_1000',name:'1000 نقطة',icon:'🏆',desc:'احصل على 1000'},
 {id:'points_5000',name:'5000 نقطة',icon:'💎',desc:'احصل على 5000'},
 {id:'perfect_quiz',name:'الكمّال',icon:'💯',desc:'اختبار 100%'},
-{id:'all_beginner',name:'مبتدئ كامل',icon:'🥉',desc:'كل المبتدئ'},
-{id:'all_intermediate',name:'متوسط كامل',icon:'🥈',desc:'كل المتوسط'},
-{id:'all_advanced',name:'متقدم',icon:'🥇',desc:'كل المتقدم'},
 {id:'pro_user',name:'Pro',icon:'👑',desc:'فعّل Pro'},
 {id:'ai_master',name:'AI Master',icon:'🤖',desc:'10 تحديات AI'},
 {id:'rating_5',name:'معجب',icon:'❤️',desc:'قيّم 5 نجوم'}
 ];
-function checkBadges(){
-if(STATE.completedLessons.length>=1)earnBadge('first_lesson');
-if(STATE.completedLessons.length>=5)earnBadge('lessons_5');
-if(STATE.completedLessons.length>=10)earnBadge('lessons_10');
-if(STATE.completedChallenges.length>=1)earnBadge('first_challenge');
-if(STATE.completedChallenges.length>=5)earnBadge('challenges_5');
-if(STATE.points>=500)earnBadge('points_500');
-if(STATE.points>=1000)earnBadge('points_1000');
-if(STATE.points>=5000)earnBadge('points_5000');
-if(STATE.isPro)earnBadge('pro_user');
-if(STATE.userRating>=5)earnBadge('rating_5');
-if(STATE.completedAI.length>=10)earnBadge('ai_master');
+
+function checkBadges() {
+    if(STATE.completedLessons.length >= 1) earnBadge('first_lesson');
+    if(STATE.completedLessons.length >= 5) earnBadge('lessons_5');
+    if(STATE.completedLessons.length >= 10) earnBadge('lessons_10');
+    if(STATE.completedChallenges.length >= 1) earnBadge('first_challenge');
+    if(STATE.completedChallenges.length >= 5) earnBadge('challenges_5');
+    if(STATE.points >= 500) earnBadge('points_500');
+    if(STATE.points >= 1000) earnBadge('points_1000');
+    if(STATE.points >= 5000) earnBadge('points_5000');
+    if(STATE.isPro) earnBadge('pro_user');
+    if(STATE.userRating >= 5) earnBadge('rating_5');
+    if(STATE.completedAI.length >= 10) earnBadge('ai_master');
 }
-function earnBadge(id){if(STATE.earnedBadges&&STATE.earnedBadges.includes(id))return;if(!STATE.earnedBadges)STATE.earnedBadges=[];STATE.earnedBadges.push(id);const b=BADGES.find(x=>x.id===id);if(!b)return;saveState();showToast(`🏆 شارة: ${b.name}!`,'gold');renderBadgesPage();}
-function renderBadgesPage(){const c=document.getElementById('badgesPageContent');if(!c)return;const earned=STATE.earnedBadges||[];c.innerHTML='<div style="text-align:center;padding:15px"><div style="font-size:20px;font-weight:bold;color:var(--primary)">'+earned.length+' / '+BADGES.length+'</div><div style="color:var(--text2);font-size:13px;margin-top:5px">شارة مكتسبة</div></div><div class="badge-grid">'+BADGES.map(b=>`<div class="badge-item-full ${earned.includes(b.id)?'earned':''}"><div class="badge-icon-full">${b.icon}</div><div class="badge-name-full">${b.name}</div><div class="badge-desc-full">${b.desc}</div></div>`).join('')+'</div>';}
 
-/* Stats */
-function renderStats(){const c=document.getElementById('statsContent');if(!c)return;const totalLessons=LESSONS.length;const doneLessons=STATE.completedLessons.length;const totalChallenges=CHALLENGES.length;const doneChallenges=STATE.completedChallenges.length;const lessonPct=Math.round((doneLessons/totalLessons)*100);const challengePct=Math.round((doneChallenges/totalChallenges)*100);c.innerHTML=`
-<div class="stat-card"><div class="stat-big">${STATE.points.toLocaleString()}</div><div class="stat-label">إجمالي النقاط</div></div>
-<div class="stat-card"><div class="stat-big">${doneLessons}/${totalLessons}</div><div class="stat-label">الدروس المكتملة</div><div class="chart-bar"><div class="chart-bar-fill" style="width:${lessonPct}%"></div></div></div>
-<div class="stat-card"><div class="stat-big">${doneChallenges}/${totalChallenges}</div><div class="stat-label">التحديات المكتملة</div><div class="chart-bar"><div class="chart-bar-fill" style="width:${challengePct}%"></div></div></div>
-<div class="stat-card"><div class="stat-big">${(STATE.earnedBadges||[]).length}</div><div class="stat-label">الشارات</div></div>
-<div class="stat-card"><div class="stat-big">${STATE.completedQuizzes.length}</div><div class="stat-label">الاختبارات</div></div>
-<div class="stat-card"><div class="stat-big">${STATE.completedAI.length}</div><div class="stat-label">تحديات AI</div></div>
-<div class="tool-box"><h3>📈 آخر النشاطات</h3>${STATE.activityLog.slice(-10).reverse().map(a=>`<div style="padding:8px 0;border-bottom:1px solid var(--border);font-size:13px;color:var(--text2)">${a.t}</div>`).join('')||'<div style="color:var(--text3);text-align:center">لا يوجد</div>'}</div>`;}
+function earnBadge(id) {
+    if(STATE.earnedBadges.includes(id)) return;
+    STATE.earnedBadges.push(id);
+    const b = BADGES.find(x => x.id === id);
+    if(!b) return;
+    saveState();
+    showToast(`🏆 شارة: ${b.name}!`, 'gold');
+    renderBadgesPage();
+    sendEvent('badge_earned', {badge_id: id});
+}
 
-/* Certs */
-function renderCerts(){const c=document.getElementById('certsContent');if(!c)return;const cats=['🔐 الأساسيات','🔐 كلمات المرور','🎣 الفيشينغ','🌐 الشبكات','📱 الهاتف','🔒 التشفير','🕵️ الهندسة'];let html='';cats.forEach(cat=>{const catLessons=LESSONS.filter(l=>l.cat===cat);const done=catLessons.filter(l=>STATE.completedLessons.includes(l.id)).length;const complete=catLessons.length>0&&done===catLessons.length;if(complete){html+=`<div class="cert-preview"><div class="cert-title">🏆 شهادة إتمام</div><div class="cert-name">${STATE.userName}</div><div class="cert-text">أتم بنجاح قسم<br><strong style="color:#333">${cat}</strong></div><div class="cert-footer">${new Date().toLocaleDateString('ar-EG')}<br>تطوير: أنس خشان</div></div><button class="tool-btn" onclick="shareCert('${cat}')" style="margin-bottom:15px">📤 مشاركة الشهادة</button>`;}else{html+=`<div class="tool-box" style="opacity:0.5"><h3>${cat}</h3><p style="color:var(--text2);font-size:13px">${done}/${catLessons.length} - أكمل القسم للحصول على الشهادة</p></div>`;}});c.innerHTML=html||'<div style="text-align:center;padding:30px;color:var(--text2)">أكمل قسماً للحصول على شهادتك</div>';}
-function shareCert(cat){const txt=`🏆 حصلت على شهادة إتمام قسم ${cat}\nفي تطبيق الأمن السيبراني\nالمطور: أنس خشان\n📺 @amn_sirani`;if(navigator.share){navigator.share({title:'شهادة',text:txt});}else if(navigator.clipboard){navigator.clipboard.writeText(txt);showToast('📋 تم النسخ');}}
+function renderBadgesPage() {
+    const c = document.getElementById('badgesPageContent');
+    if(!c) return;
+    c.innerHTML = `<div style="text-align:center;padding:15px">
+        <div style="font-size:20px;font-weight:bold;color:var(--primary)">${STATE.earnedBadges.length} / ${BADGES.length}</div>
+        <div style="color:var(--text2);font-size:13px;margin-top:5px">شارة</div>
+    </div><div class="badge-grid">${BADGES.map(b => 
+        `<div class="badge-item-full ${STATE.earnedBadges.includes(b.id)?'earned':''}">
+            <div class="badge-icon-full">${b.icon}</div>
+            <div class="badge-name-full">${b.name}</div>
+            <div class="badge-desc-full">${b.desc}</div>
+        </div>`
+    ).join('')}</div>`;
+}
 
-/* Leaderboard */
-const LEADERBOARD=[{name:'أحمد',points:8500},{name:'فاطمة',points:7200},{name:'محمد',points:6800},{name:'سارة',points:5500},{name:'يوسف',points:4200},{name:'نور',points:3800},{name:'عمر',points:3200},{name:'ليلى',points:2900},{name:'حسن',points:2400}];
-function renderLeaderboard(){const all=[...LEADERBOARD,{name:STATE.userName+' (أنت)',points:STATE.points,isUser:true}].sort((a,b)=>b.points-a.points);const c=document.getElementById('leaderList');if(!c)return;c.innerHTML=all.map((u,i)=>{const cls=i===0?'top1':i===1?'top2':i===2?'top3':'';return`<div class="leader-item ${cls}"><div class="leader-rank">${i+1}</div><div class="leader-info"><div class="leader-name">${u.name}</div><div class="leader-points">${u.points.toLocaleString()} نقطة</div></div></div>`;}).join('');}
+/* ============ Stats ============ */
+function renderStats() {
+    const c = document.getElementById('statsContent');
+    if(!c) return;
+    const totalLessons = LESSONS.length;
+    const doneLessons = STATE.completedLessons.length;
+    const totalChallenges = CHALLENGES.length;
+    const doneChallenges = STATE.completedChallenges.length;
+    c.innerHTML = `
+    <div class="stat-card"><div class="stat-big">${STATE.points.toLocaleString()}</div><div class="stat-label">إجمالي النقاط</div></div>
+    <div class="stat-card"><div class="stat-big">${doneLessons}/${totalLessons}</div><div class="stat-label">الدروس</div><div class="chart-bar"><div class="chart-bar-fill" style="width:${(doneLessons/totalLessons)*100}%"></div></div></div>
+    <div class="stat-card"><div class="stat-big">${doneChallenges}/${totalChallenges}</div><div class="stat-label">التحديات</div><div class="chart-bar"><div class="chart-bar-fill" style="width:${(doneChallenges/totalChallenges)*100}%"></div></div></div>
+    <div class="stat-card"><div class="stat-big">${STATE.earnedBadges.length}</div><div class="stat-label">الشارات</div></div>
+    <div class="stat-card"><div class="stat-big">${STATE.completedAI.length}</div><div class="stat-label">تحديات AI</div></div>
+    <div class="tool-box"><h3>📈 آخر النشاطات</h3>${STATE.activityLog.slice(-10).reverse().map(a => 
+        `<div style="padding:8px 0;border-bottom:1px solid var(--border);font-size:13px;color:var(--text2)">${a.t}</div>`
+    ).join('') || '<div style="color:var(--text3);text-align:center">لا يوجد</div>'}</div>`;
+}
 
-/* AI Game */
-const AI_QUESTIONS=[
-{q:'هل هذه الرسالة فيشينغ؟\n\nمن: bank@secure-bank.tk\nالموضوع: حسابك سيُغلق!',a:['نعم فيشينغ','لا آمنة','لا أعرف','ربما'],c:0},
+/* ============ Certs ============ */
+function renderCerts() {
+    const c = document.getElementById('certsContent');
+    if(!c) return;
+    const cats = ['🔐 الأساسيات', '🔐 كلمات المرور', '🎣 الفيشينغ', '🌐 الشبكات', '📱 الهاتف', '🔒 التشفير', '🕵️ الهندسة'];
+    let html = '';
+    cats.forEach(cat => {
+        const catLessons = LESSONS.filter(l => l.cat === cat);
+        const done = catLessons.filter(l => STATE.completedLessons.includes(l.id)).length;
+        const complete = catLessons.length > 0 && done === catLessons.length;
+        if(complete) {
+            html += `<div class="cert-preview">
+                <div class="cert-title">🏆 شهادة إتمام</div>
+                <div class="cert-name">${STATE.userName}</div>
+                <div class="cert-text">أتم بنجاح قسم<br><strong style="color:#333">${cat}</strong></div>
+                <div class="cert-footer">${new Date().toLocaleDateString('ar-EG')}<br>تطوير: أنس خشان</div>
+            </div>
+            <button class="tool-btn" onclick="shareCert('${cat}')" style="margin-bottom:15px">📤 مشاركة</button>`;
+        } else {
+            html += `<div class="tool-box" style="opacity:0.5"><h3>${cat}</h3><p style="color:var(--text2);font-size:13px">${done}/${catLessons.length} - أكمل القسم</p></div>`;
+        }
+    });
+    c.innerHTML = html || '<div style="text-align:center;padding:30px;color:var(--text2)">أكمل قسماً للحصول على شهادة</div>';
+}
+
+function shareCert(cat) {
+    const txt = `🏆 حصلت على شهادة قسم ${cat}\nفي تطبيق الأمن السيبراني\nالمطور: أنس خشان\n📺 @amn_sirani`;
+    if(navigator.share) {
+        navigator.share({title: 'شهادة', text: txt});
+    } else if(navigator.clipboard) {
+        navigator.clipboard.writeText(txt);
+        showToast('📋 تم النسخ');
+    }
+    sendEvent('cert_shared', {category: cat});
+}
+
+/* ============ Leaderboard ============ */
+const LEADERBOARD = [
+    {name:'أحمد',points:8500},
+    {name:'فاطمة',points:7200},
+    {name:'محمد',points:6800},
+    {name:'سارة',points:5500},
+    {name:'يوسف',points:4200},
+    {name:'نور',points:3800},
+    {name:'عمر',points:3200}
+];
+
+function renderLeaderboard() {
+    const all = [...LEADERBOARD, {name: STATE.userName + ' (أنت)', points: STATE.points, isUser: true}]
+        .sort((a, b) => b.points - a.points);
+    const c = document.getElementById('leaderList');
+    if(!c) return;
+    c.innerHTML = all.map((u, i) => {
+        const cls = i === 0 ? 'top1' : i === 1 ? 'top2' : i === 2 ? 'top3' : '';
+        return `<div class="leader-item ${cls}">
+            <div class="leader-rank">${i + 1}</div>
+            <div class="leader-info">
+                <div class="leader-name">${u.name}</div>
+                <div class="leader-points">${u.points.toLocaleString()} نقطة</div>
+            </div>
+        </div>`;
+    }).join('');
+}
+
+/* ============ AI Game ============ */
+const AI_QUESTIONS = [
+{q:'هل هذه الرسالة فيشينغ؟\n\nمن: bank@secure-bank.tk\nالموضوع: حسابك سيُغلق!',a:['نعم فيشينغ','آمنة','لا أعرف','ربما'],c:0},
 {q:'أفضل كلمة مرور؟',a:['123456','MyDog2020','K9@mN2#pL8$','password'],c:2},
 {q:'هل تثق بهذا الرابط؟\nbit.ly/win-money',a:['نعم','لا مشبوه','لا أعرف','ربما'],c:1},
-{q:'خطوة عند الاختراق؟',a:['انتظر','اتصل بالبنك فوراً','أهمل','أخبر الجميع'],c:1},
-{q:'HTTPS يعني؟',a:['موقع آمن','سرعة','مجاني','قديم'],c:0},
-{q:'VPN يستخدم لـ؟',a:['اللعب','التشفير','التصميم','الطباعة'],c:1},
-{q:'الهندسة الاجتماعية؟',a:['بناء','خداع الناس','برمجة','تصميم'],c:1},
-{q:'برنامج الفدية؟',a:['مجاني','يشفر ويطلب فدية','لعبة','متصفح'],c:1},
-{q:'آمن؟\nWi-Fi مفتوح بدون كلمة سر',a:['نعم','لا خطير','لا أعرف','ربما'],c:1},
-{q:'2FA أفضل نوع؟',a:['SMS','تطبيق مصادقة','لا شيء','كلها'],c:1}
+{q:'خطوة عند الاختراق؟',a:['انتظر','اتصل بالبنك','أهمل','أخبر الجميع'],c:1},
+{q:'HTTPS يعني؟',a:['آمن','سريع','مجاني','قديم'],c:0},
+{q:'VPN لـ؟',a:['اللعب','التشفير','التصميم','الطباعة'],c:1},
+{q:'الهندسة؟',a:['بناء','خداع','برمجة','تصميم'],c:1},
+{q:'برنامج الفدية؟',a:['مجاني','يشفر ويطلب','لعبة','متصفح'],c:1},
+{q:'آمن؟ Wi-Fi مفتوح',a:['نعم','لا','لا أعرف','ربما'],c:1},
+{q:'2FA الأفضل؟',a:['SMS','تطبيق','لا شيء','الكل'],c:1}
 ];
-let aiIdx=0,aiScore=0;
-function renderAIGame(){const c=document.getElementById('aiGameContent');if(!c)return;if(aiIdx>=AI_QUESTIONS.length){const pct=Math.round((aiScore/AI_QUESTIONS.length)*100);const pts=pct>=80?300:pct>=50?150:50;STATE.points+=pts;STATE.completedAI.push(new Date().toISOString());saveState();updateProfile();c.innerHTML=`<div class="result-box"><div class="result-score">${aiScore}/${AI_QUESTIONS.length}</div><div class="result-msg">${pct>=80?'🏆 ممتاز!':pct>=50?'🎉 جيد':'📚 تدرب أكثر'}</div><div class="result-points">+${pts} نقطة</div><button class="result-btn" onclick="aiIdx=0;aiScore=0;renderAIGame()">🔄 إعادة</button></div>`;checkBadges();return;}const q=AI_QUESTIONS[aiIdx];c.innerHTML=`<div class="ai-question"><div class="ai-icon">🤖</div><div class="ai-text">${q.q.replace(/\n/g,'<br>')}</div><div class="ai-answers">${q.a.map((a,i)=>`<button class="ai-answer" onclick="answerAI(${i})">${a}</button>`).join('')}</div></div><div style="text-align:center;color:var(--text2);font-size:13px">سؤال ${aiIdx+1} من ${AI_QUESTIONS.length}</div>`;}
-function answerAI(sel){const q=AI_QUESTIONS[aiIdx];const btns=document.querySelectorAll('.ai-answer');btns.forEach((b,i)=>{b.disabled=true;if(i===q.c)b.classList.add('correct');if(i===sel&&sel!==q.c)b.classList.add('wrong');});if(sel===q.c)aiScore++;setTimeout(()=>{aiIdx++;renderAIGame();},1200);}
 
-/* Glossary */
-const GLOSSARY=[{t:'Phishing',d:'هجوم رسائل مزيفة'},{t:'DDoS',d:'حجب الخدمة'},{t:'Malware',d:'برامج ضارة'},{t:'2FA',d:'تحقق بخطوتين'},{t:'Encryption',d:'تشفير'},{t:'Firewall',d:'جدار ناري'},{t:'VPN',d:'شبكة افتراضية'},{t:'Ransomware',d:'برامج فدية'},{t:'Trojan',d:'حصان طروادة'},{t:'Spyware',d:'برامج تجسس'},{t:'Zero-Day',d:'ثغرة مجهولة'},{t:'HTTPS',d:'HTTP مشفر'},{t:'Brute Force',d:'تخمين شامل'},{t:'Social Engineering',d:'هندسة اجتماعية'},{t:'Botnet',d:'شبكة مصابة'},{t:'Keylogger',d:'تسجيل مفاتيح'},{t:'SQL Injection',d:'حقن SQL'},{t:'XSS',d:'حقن JavaScript'},{t:'MITM',d:'رجل في المنتصف'},{t:'WPA3',d:'أحدث تشفير Wi-Fi'}];
-function renderGlossary(){document.getElementById('glossaryList').innerHTML=GLOSSARY.map((g,i)=>`<div class="glossary-item" onclick="toggleGlossary(${i})" id="gloss${i}"><div class="glossary-term">${g.t}<span class="glossary-arrow">▶</span></div><div class="glossary-def">${g.d}</div></div>`).join('');}
-function toggleGlossary(i){document.getElementById('gloss'+i).classList.toggle('open');}
-function filterGlossary(){const q=document.getElementById('glossarySearch').value.toLowerCase();GLOSSARY.forEach((g,i)=>{const el=document.getElementById('gloss'+i);if(el)el.style.display=(g.t.toLowerCase().includes(q)||g.d.toLowerCase().includes(q))?'block':'none';});}
+let aiIdx = 0, aiScore = 0;
 
-/* Emergency */
-const EMERGENCY=[{t:'افصل الإنترنت فوراً',d:'اقطع الاتصال'},{t:'غيّر كلمات المرور',d:'من جهاز آمن'},{t:'فعّل 2FA',d:'في كل الحسابات'},{t:'افحص الأجهزة',d:'وأزل المجهولة'},{t:'اتصل بالبنك',d:'إذا سرقت بطاقتك'},{t:'افحص الجهاز',d:'بمضاد فيروسات'},{t:'أبلغ الجهات',d:'CERT'},{t:'تعلم',d:'لتجنب التكرار'}];
-function renderEmergency(){document.getElementById('emergencyList').innerHTML=EMERGENCY.map((s,i)=>`<div class="emergency-step"><div class="emergency-num">${i+1}</div><div><div style="font-weight:bold;margin-bottom:5px">${s.t}</div><div style="color:var(--text2);font-size:13px">${s.d}</div></div></div>`).join('');}
+function renderAIGame() {
+    const c = document.getElementById('aiGameContent');
+    if(!c) return;
+    if(aiIdx >= AI_QUESTIONS.length) {
+        const pct = Math.round((aiScore / AI_QUESTIONS.length) * 100);
+        const pts = pct >= 80 ? 300 : pct >= 50 ? 150 : 50;
+        STATE.points += pts;
+        STATE.completedAI.push(new Date().toISOString());
+        saveState();
+        updateProfile();
+        c.innerHTML = `<div class="result-box">
+            <div class="result-score">${aiScore}/${AI_QUESTIONS.length}</div>
+            <div class="result-msg">${pct >= 80 ? '🏆 ممتاز!' : pct >= 50 ? '🎉 جيد' : '📚 تدرب'}</div>
+            <div class="result-points">+${pts}</div>
+            <button class="result-btn" onclick="aiIdx=0;aiScore=0;renderAIGame()">🔄 إعادة</button>
+        </div>`;
+        checkBadges();
+        sendEvent('ai_game_completed', {score: aiScore});
+        return;
+    }
+    const q = AI_QUESTIONS[aiIdx];
+    c.innerHTML = `<div class="ai-question">
+        <div class="ai-icon">🤖</div>
+        <div class="ai-text">${q.q.replace(/\n/g, '<br>')}</div>
+        <div class="ai-answers">${q.a.map((a, i) => 
+            `<button class="ai-answer" onclick="answerAI(${i})">${a}</button>`
+        ).join('')}</div>
+    </div><div style="text-align:center;color:var(--text2);font-size:13px">سؤال ${aiIdx + 1} من ${AI_QUESTIONS.length}</div>`;
+}
 
-/* Quiz */
-const QUIZ=[{q:'الأمن السيبراني؟',o:['حماية','لعبة','برنامج','تطبيق'],c:0},{q:'أفضل كلمة مرور؟',o:['123456','اسمي','K9@mN2#pL8$','تاريخ'],c:2},{q:'الفيشينغ؟',o:['سمك','رسائل مزيفة','مضاد','لعبة'],c:1},{q:'HTTPS؟',o:['آمن','سريع','مجاني','قديم'],c:0},{q:'2FA؟',o:['مزدوج','طبقة','فيروس','متصفح'],c:1},{q:'طول كلمة المرور؟',o:['4','6','12+','لا'],c:2},{q:'VPN؟',o:['تصميم','شبكة','لعبة','متجر'],c:1},{q:'حماية الهاتف؟',o:['Root','APK','تحديث','لا'],c:2},{q:'الهندسة؟',o:['بناء','خداع','برمجة','تصميم'],c:1},{q:'الفدية؟',o:['مجاني','يشفر','لعبة','متصفح'],c:1}];
-let quizIdx=0,quizScore=0;
-function startQuiz(){quizIdx=0;quizScore=0;renderQuestion();}
-function renderQuestion(){const c=document.getElementById('quizContainer');if(quizIdx>=QUIZ.length){const pct=Math.round((quizScore/QUIZ.length)*100);const msg=pct>=90?'🏆 ممتاز!':pct>=70?'🎉 جيد جداً':pct>=50?'💪 لا بأس':'📚 راجع';const pts=pct===100?200:pct>=70?100:pct>=50?50:20;STATE.points+=pts;STATE.completedQuizzes.push(new Date().toISOString());saveState();updateProfile();c.innerHTML=`<div class="result-box"><div class="result-score">${quizScore}/${QUIZ.length}</div><div class="result-msg">${msg}</div><div class="result-points">+${pts}</div><button class="result-btn" onclick="startQuiz()">🔄 إعادة</button></div>`;if(pct===100)earnBadge('perfect_quiz');checkBadges();return;}const q=QUIZ[quizIdx];const progress=(quizIdx/QUIZ.length)*100;c.innerHTML=`<div class="quiz-box"><div class="quiz-progress"><div class="quiz-progress-bar" style="width:${progress}%"></div></div><div class="quiz-qnum">سؤال ${quizIdx+1}/${QUIZ.length}</div><div class="quiz-qtext">${q.q}</div>${q.o.map((o,i)=>`<button class="quiz-opt" onclick="answerQuiz(${i})">${o}</button>`).join('')}</div>`;}
-function answerQuiz(sel){const q=QUIZ[quizIdx];document.querySelectorAll('.quiz-opt').forEach((b,i)=>{b.disabled=true;if(i===q.c)b.classList.add('correct');if(i===sel&&sel!==q.c)b.classList.add('wrong');});if(sel===q.c)quizScore++;setTimeout(()=>{quizIdx++;renderQuestion();},1000);}
+function answerAI(sel) {
+    const q = AI_QUESTIONS[aiIdx];
+    document.querySelectorAll('.ai-answer').forEach((b, i) => {
+        b.disabled = true;
+        if(i === q.c) b.classList.add('correct');
+        if(i === sel && sel !== q.c) b.classList.add('wrong');
+    });
+    if(sel === q.c) aiScore++;
+    setTimeout(() => { aiIdx++; renderAIGame(); }, 1200);
+}
 
-/* Tools */
-function checkStrength(){const p=document.getElementById('passCheck').value;const r=document.getElementById('strengthResult');if(!p){r.classList.remove('show');return;}let s=0;if(p.length>=8)s++;if(p.length>=12)s++;if(/[a-z]/.test(p))s++;if(/[A-Z]/.test(p))s++;if(/[0-9]/.test(p))s++;if(/[^a-zA-Z0-9]/.test(p))s++;r.classList.add('show');r.classList.remove('weak','medium','strong');if(s<=2){r.classList.add('weak');r.textContent='🔴 ضعيفة';}else if(s<=4){r.classList.add('medium');r.textContent='🟡 متوسطة';}else{r.classList.add('strong');r.textContent='🟢 قوية';}}
-function generatePassword(){const c='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*';let p='';for(let i=0;i<20;i++)p+=c.charAt(Math.floor(Math.random()*c.length));document.getElementById('generatedPass').textContent='🔑 '+p;}
-function execCmd(){const input=document.getElementById('terminalIn');const cmd=input.value.trim();if(!cmd)return;const out=document.getElementById('terminalOut');out.innerHTML+=`<div style="margin-top:8px">$ ${cmd}</div>`;out.innerHTML+=`<div style="color:#00BCD4">${runCmd(cmd)}</div>`;input.value='';out.scrollTop=out.scrollHeight;}
-function runCmd(cmd){const c=cmd.toLowerCase();if(c==='help')return'ls, pwd, whoami, date, uname, ping, nmap, clear';if(c==='ls')return'Documents  Downloads  Pictures';if(c==='pwd')return'/home/user';if(c==='whoami')return'u0_a123';if(c==='date')return new Date().toString();if(c==='uname')return'Linux Android';if(c==='clear'){document.getElementById('terminalOut').innerHTML='';return'';}if(c.startsWith('ping '))return'PING '+cmd.substring(5)+'\ntime=20ms';if(c.startsWith('nmap'))return'PORT  STATE\n22/tcp open ssh';return'غير معروف: '+cmd;}
+/* ============ Glossary ============ */
+const GLOSSARY = [
+    {t:'Phishing',d:'هجوم رسائل مزيفة'},
+    {t:'DDoS',d:'حجب الخدمة'},
+    {t:'Malware',d:'برامج ضارة'},
+    {t:'2FA',d:'تحقق بخطوتين'},
+    {t:'Encryption',d:'تشفير'},
+    {t:'Firewall',d:'جدار ناري'},
+    {t:'VPN',d:'شبكة افتراضية'},
+    {t:'Ransomware',d:'برامج فدية'},
+    {t:'Trojan',d:'حصان طروادة'},
+    {t:'Spyware',d:'برامج تجسس'},
+    {t:'Zero-Day',d:'ثغرة مجهولة'},
+    {t:'HTTPS',d:'HTTP مشفر'},
+    {t:'Brute Force',d:'تخمين شامل'},
+    {t:'Social Engineering',d:'هندسة اجتماعية'},
+    {t:'Botnet',d:'شبكة مصابة'},
+    {t:'Keylogger',d:'تسجيل مفاتيح'},
+    {t:'SQL Injection',d:'حقن SQL'},
+    {t:'XSS',d:'حقن JavaScript'},
+    {t:'MITM',d:'رجل في المنتصف'},
+    {t:'WPA3',d:'أحدث تشفير Wi-Fi'}
+];
 
-/* Scanner */
-function scanUrl(){const url=document.getElementById('urlToScan').value.trim();const r=document.getElementById('scanResult');if(!url){showToast('❌ أدخل رابط','error');return;}r.classList.add('show');r.classList.remove('weak','medium','strong');const https=url.toLowerCase().startsWith('https://');const susp=/bit\.ly|tinyurl|free-money|win-|prize/i.test(url);const ip=/^https?:\/\/\d+\.\d+\.\d+\.\d+/.test(url);if(susp||ip){r.classList.add('weak');r.innerHTML='🔴 مشبوه!';}else if(!https){r.classList.add('medium');r.innerHTML='🟡 غير مشفر';}else{r.classList.add('strong');r.innerHTML='🟢 آمن';}}
-function openVirusTotal(){const url=document.getElementById('urlToScan').value.trim();if(!url){showToast('❌ أدخل رابط','error');return;}window.open('https://www.virustotal.com/gui/home/url','_blank');}
+function renderGlossary() {
+    document.getElementById('glossaryList').innerHTML = GLOSSARY.map((g, i) => 
+        `<div class="glossary-item" onclick="toggleGlossary(${i})" id="gloss${i}">
+            <div class="glossary-term">${g.t}<span class="glossary-arrow">▶</span></div>
+            <div class="glossary-def">${g.d}</div>
+        </div>`
+    ).join('');
+}
 
-/* Docs */
-const DOCS=[{t:'🚀 البدء',b:'<ul><li>وافق على الشروط</li><li>اختر النسخة</li><li>ابدأ بالدروس</li><li>جرّب المختبر</li></ul>'},{t:'🧪 المختبر',b:'<p>بيئة آمنة ومعزولة للتدريب</p>'},{t:'🎯 التحديات',b:'<ul><li>🥉 مبتدئ: 100</li><li>🥈 متوسط: 200</li><li>🥇 متقدم: 500</li></ul>'},{t:'⭐ Pro',b:'<p>ميزات إضافية. كود: 0000</p>'},{t:'🛡️ الأمان',b:'<p>آمن تماماً، لا يجمع بيانات</p>'},{t:'🔒 الخصوصية',b:'<p>لا نجمع أي بيانات شخصية</p>'},{t:'🐛 الأخطاء',b:'<ul><li>أعد التشغيل</li><li>امسح Cache</li><li>حدّث</li></ul>'},{t:'📋 الإصدارات',b:'<p>راجع سجل التحديثات</p>'}];
-function renderDocs(){document.getElementById('docsList').innerHTML=DOCS.map((d,i)=>`<div class="doc-section" onclick="toggleDoc(${i})" id="doc${i}"><div class="doc-header"><h4>${d.t}</h4><span class="doc-arrow">▶</span></div><div class="doc-body">${d.b}</div></div>`).join('');}
-function toggleDoc(i){document.getElementById('doc'+i).classList.toggle('open');}
+function toggleGlossary(i) {
+    document.getElementById('gloss' + i).classList.toggle('open');
+}
 
-/* Changelog */
-const CHANGELOG=[{v:'1.6.0',d:'2025',l:['🏆 نظام الشارات (15 شارة)','📊 إحصائيات مفصلة','🎓 شهادات إتمام','🤖 تحدي AI','🏅 لوحة المتصدرين','🎨 5 ثيمات','📄 توثيق موسّع','👨‍💻 لوحة مطورين ضخمة']},{v:'1.5.0',d:'2025',l:['🧪 مختبر معزول','📺 فيديوهات','🎯 8 تحديات','⭐ Pro','📄 التوثيق']},{v:'1.4.0',d:'2025',l:['🔍 بحث','🧪 اختبار 15','📖 قاموس','🔗 فاحص']},{v:'1.3.0',d:'2025',l:['💻 أوامر','🖥️ محاكي','🤖 مساعد']},{v:'1.2.0',d:'2025',l:['👨‍💻 مطور','📚 8 دروس']},{v:'1.1.0',d:'2025',l:['🔐 دخول','📚 6 دروس']},{v:'1.0.0',d:'2025',l:['🎉 الإصدار الأول']}];
-function renderChangelog(){document.getElementById('changelogList').innerHTML=CHANGELOG.map(c=>`<div class="changelog-item"><div class="changelog-version">الإصدار ${c.v}<span class="changelog-date">${c.d}</span></div><ul class="changelog-list">${c.l.map(x=>`<li>${x}</li>`).join('')}</ul></div>`).join('');}
+function filterGlossary() {
+    const q = document.getElementById('glossarySearch').value.toLowerCase();
+    GLOSSARY.forEach((g, i) => {
+        const el = document.getElementById('gloss' + i);
+        if(el) el.style.display = (g.t.toLowerCase().includes(q) || g.d.toLowerCase().includes(q)) ? 'block' : 'none';
+    });
+}
 
-/* Themes */
-const THEMES=[{id:'default',name:'الافتراضي',color:'#4CAF50'},{id:'blue',name:'أزرق',color:'#2196F3'},{id:'purple',name:'بنفسجي',color:'#9C27B0'},{id:'orange',name:'برتقالي',color:'#FF9800'},{id:'red',name:'أحمر',color:'#f44336'}];
-function renderThemes(){const c=document.getElementById('themesList');if(!c)return;c.innerHTML=THEMES.map(t=>`<div class="tool-box" onclick="setTheme('${t.id}')" style="cursor:pointer;display:flex;align-items:center;gap:15px"><div style="width:40px;height:40px;border-radius:50%;background:${t.color}"></div><div style="flex:1"><div style="font-weight:bold">${t.name}</div><div style="color:var(--text2);font-size:12px">${STATE.theme===t.id?'✅ مفعّل':'اضغط للتفعيل'}</div></div></div>`).join('');}
-function setTheme(id){STATE.theme=id;document.body.className=STATE.darkMode?'':'light';if(id!=='default')document.body.classList.add('theme-'+id);saveState();renderThemes();showToast('🎨 تم تغيير الثيم','gold');}
+/* ============ Emergency ============ */
+const EMERGENCY = [
+    {t:'افصل الإنترنت',d:'اقطع الاتصال'},
+    {t:'غيّر كلمات المرور',d:'من جهاز آمن'},
+    {t:'فعّل 2FA',d:'في كل الحسابات'},
+    {t:'افحص الأجهزة',d:'وأزل المجهولة'},
+    {t:'اتصل بالبنك',d:'إذا سرقت بطاقتك'},
+    {t:'افحص الجهاز',d:'بمضاد فيروسات'},
+    {t:'أبلغ الجهات',d:'CERT'},
+    {t:'تعلم',d:'لتجنب التكرار'}
+];
 
-/* Search */
-function performSearch(){const q=document.getElementById('searchInput').value.toLowerCase().trim();const results=document.getElementById('searchResults');if(!q){results.classList.remove('show');return;}let items=[];LESSONS.forEach(l=>{if(l.title.toLowerCase().includes(q)||l.cat.toLowerCase().includes(q))items.push({i:'📚',t:l.title,d:'درس',a:`openLesson('${l.id}')`});});GLOSSARY.forEach(g=>{if(g.t.toLowerCase().includes(q))items.push({i:'📖',t:g.t,d:'مصطلح',a:`openPage('glossaryPage')`});});CHALLENGES.forEach(c=>{if(c.title.toLowerCase().includes(q))items.push({i:'🧪',t:c.title,d:'تحدي',a:`openChallenge('${c.id}')`});});if(items.length===0)results.innerHTML='<div class="search-empty">لا نتائج</div>';else results.innerHTML=items.slice(0,10).map(it=>`<div class="search-item" onclick="${it.a};closeSearch()"><div class="search-item-icon">${it.i}</div><div class="search-item-text"><div class="search-item-title">${it.t}</div><div class="search-item-type">${it.d}</div></div></div>`).join('');results.classList.add('show');}
-function closeSearch(){document.getElementById('searchResults').classList.remove('show');document.getElementById('searchInput').value='';}
+function renderEmergency() {
+    document.getElementById('emergencyList').innerHTML = EMERGENCY.map((s, i) => 
+        `<div class="emergency-step">
+            <div class="emergency-num">${i + 1}</div>
+            <div><div style="font-weight:bold;margin-bottom:5px">${s.t}</div>
+            <div style="color:var(--text2);font-size:13px">${s.d}</div></div>
+        </div>`
+    ).join('');
+}
 
-/* Pages */
-function openPage(id){document.getElementById(id).classList.add('active');}
-function closePage(id){document.getElementById(id).classList.remove('active');}
-function switchTab(tab,e){document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));if(e)e.currentTarget.classList.add('active');document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));if(tab==='home')return;if(tab==='learn'){openPage('lessonsPage');renderLessons();}else if(tab==='lab')openLab();else if(tab==='tools')openPage('toolsPage');else if(tab==='profile'){openPage('profilePage');updateProfile();}}
+/* ============ Quiz ============ */
+const QUIZ = [
+    {q:'الأمن السيبراني؟',o:['حماية','لعبة','برنامج','تطبيق'],c:0},
+    {q:'أفضل كلمة مرور؟',o:['123456','اسمي','K9@mN2#pL8$','تاريخ'],c:2},
+    {q:'الفيشينغ؟',o:['سمك','رسائل مزيفة','مضاد','لعبة'],c:1},
+    {q:'HTTPS؟',o:['آمن','سريع','مجاني','قديم'],c:0},
+    {q:'2FA؟',o:['مزدوج','طبقة','فيروس','متصفح'],c:1},
+    {q:'طول المرور؟',o:['4','6','12+','لا'],c:2},
+    {q:'VPN؟',o:['تصميم','شبكة','لعبة','متجر'],c:1},
+    {q:'حماية؟',o:['Root','APK','تحديث','لا'],c:2},
+    {q:'الهندسة؟',o:['بناء','خداع','برمجة','تصميم'],c:1},
+    {q:'الفدية؟',o:['مجاني','يشفر','لعبة','متصفح'],c:1}
+];
 
-function updateProfile(){let level='المستوى 1';if(STATE.points>=1000)level='المستوى 4';else if(STATE.points>=500)level='المستوى 3';else if(STATE.points>=200)level='المستوى 2';document.getElementById('profileLevel').textContent=(STATE.isPro?'⭐ Pro - ':'')+level;document.getElementById('statPoints').textContent=STATE.points;document.getElementById('statLessons').textContent=STATE.completedLessons.length;document.getElementById('statChallenges').textContent=STATE.completedChallenges.length;document.getElementById('statBadges').textContent=(STATE.earnedBadges||[]).length;}
+let quizIdx = 0, quizScore = 0;
 
-function toggleTheme(){STATE.darkMode=!STATE.darkMode;document.body.classList.toggle('light',!STATE.darkMode);document.getElementById('themeBtn').textContent=STATE.darkMode?'🌙':'☀️';const ts=document.getElementById('themeStatus');if(ts)ts.textContent=STATE.darkMode?'مفعّل':'معطل';saveState();}
+function startQuiz() {
+    quizIdx = 0;
+    quizScore = 0;
+    renderQuestion();
+}
 
-let tempRating=0;
-function setRating(n){tempRating=n;document.querySelectorAll('#starRating .star').forEach((s,i)=>s.classList.toggle('active',i<n));const texts=['','😞 سيء','😐','🙂','😊','🤩 ممتاز!'];document.getElementById('ratingText').textContent=texts[n];}
-function submitRating(){if(!tempRating){showToast('❌ اختر','error');return;}STATE.userRating=tempRating;saveState();updateProfile();checkBadges();showToast('✅ شكراً!','gold');setTimeout(()=>closePage('ratePage'),1500);}
+function renderQuestion() {
+    const c = document.getElementById('quizContainer');
+    if(quizIdx >= QUIZ.length) {
+        const pct = Math.round((quizScore / QUIZ.length) * 100);
+        const msg = pct >= 90 ? '🏆 ممتاز!' : pct >= 70 ? '🎉 جيد' : pct >= 50 ? '💪 لا بأس' : '📚 راجع';
+        const pts = pct === 100 ? 200 : pct >= 70 ? 100 : pct >= 50 ? 50 : 20;
+        STATE.points += pts;
+        STATE.completedQuizzes.push(new Date().toISOString());
+        saveState();
+        updateProfile();
+        c.innerHTML = `<div class="result-box">
+            <div class="result-score">${quizScore}/${QUIZ.length}</div>
+            <div class="result-msg">${msg}</div>
+            <div class="result-points">+${pts}</div>
+            <button class="result-btn" onclick="startQuiz()">🔄 إعادة</button>
+        </div>`;
+        if(pct === 100) earnBadge('perfect_quiz');
+        checkBadges();
+        sendEvent('quiz_completed', {score: quizScore, percent: pct});
+        return;
+    }
+    const q = QUIZ[quizIdx];
+    const progress = (quizIdx / QUIZ.length) * 100;
+    c.innerHTML = `<div class="quiz-box">
+        <div class="quiz-progress"><div class="quiz-progress-bar" style="width:${progress}%"></div></div>
+        <div class="quiz-qnum">سؤال ${quizIdx + 1}/${QUIZ.length}</div>
+        <div class="quiz-qtext">${q.q}</div>
+        ${q.o.map((o, i) => `<button class="quiz-opt" onclick="answerQuiz(${i})">${o}</button>`).join('')}
+    </div>`;
+}
 
-function openDevLogin(){document.getElementById('devModal').classList.add('active');document.getElementById('devPassword').value='';document.getElementById('devPassword').focus();}
-function closeDevLogin(){document.getElementById('devModal').classList.remove('active');}
-function checkDevPassword(){if(document.getElementById('devPassword').value===CONFIG.devPassword){closeDevLogin();document.getElementById('devPanel').classList.add('active');renderDevTab('stats');showToast('🎉 مرحباً!','info');}else{showToast('❌ خطأ','error');}}
-function closeDevPanel(){document.getElementById('devPanel').classList.remove('active');}
-function switchDevTab(tab,e){document.querySelectorAll('.dev-tab').forEach(t=>t.classList.remove('active'));if(e)e.currentTarget.classList.add('active');renderDevTab(tab);}
-function renderDevTab(tab){const c=document.getElementById('devTabContent');if(tab==='stats'){c.innerHTML=`<div class="dev-stat-grid"><div class="dev-stat"><div class="dev-stat-icon">🏆</div><div class="dev-stat-value">${STATE.points}</div><div class="dev-stat-label">النقاط</div></div><div class="dev-stat"><div class="dev-stat-icon">📚</div><div class="dev-stat-value">${STATE.completedLessons.length}</div><div class="dev-stat-label">الدروس</div></div><div class="dev-stat"><div class="dev-stat-icon">🧪</div><div class="dev-stat-value">${STATE.completedChallenges.length}</div><div class="dev-stat-label">التحديات</div></div><div class="dev-stat"><div class="dev-stat-icon">🏆</div><div class="dev-stat-value">${(STATE.earnedBadges||[]).length}</div><div class="dev-stat-label">الشارات</div></div></div>`;}else if(tab==='content'){c.innerHTML=`<div class="dev-stat-grid"><div class="dev-stat"><div class="dev-stat-icon">📚</div><div class="dev-stat-value">${LESSONS.length}</div><div class="dev-stat-label">دروس</div></div><div class="dev-stat"><div class="dev-stat-icon">🧪</div><div class="dev-stat-value">${CHALLENGES.length}</div><div class="dev-stat-label">تحديات</div></div><div class="dev-stat"><div class="dev-stat-icon">📖</div><div class="dev-stat-value">${GLOSSARY.length}</div><div class="dev-stat-label">مصطلحات</div></div><div class="dev-stat"><div class="dev-stat-icon">🏆</div><div class="dev-stat-value">${BADGES.length}</div><div class="dev-stat-label">شارات</div></div></div>`;}else if(tab==='users'){c.innerHTML=`<div class="dev-stat"><div class="dev-stat-icon">👤</div><div class="dev-stat-value">1</div><div class="dev-stat-label">المستخدم الحالي</div></div><div class="dev-action"><div class="dev-action-icon">📊</div><div><div class="dev-action-title">${STATE.userName}</div><div class="dev-action-desc">${STATE.points} نقطة • ${STATE.completedLessons.length} درس</div></div></div>`;}else if(tab==='logs'){c.innerHTML=CHANGELOG.slice(0,5).map(ch=>`<div class="changelog-item"><div class="changelog-version">الإصدار ${ch.v}</div><ul class="changelog-list">${ch.l.map(x=>`<li>${x}</li>`).join('')}</ul></div>`).join('');}else if(tab==='settings'){c.innerHTML=`<div class="dev-action"><div class="dev-action-icon">⭐</div><div><div class="dev-action-title">حالة Pro</div><div class="dev-action-desc">${STATE.isPro?'مفعّل':'معطّل'}</div></div></div><div class="dev-action" onclick="togglePro()"><div class="dev-action-icon">🔄</div><div><div class="dev-action-title">تبديل Pro</div></div></div>`;}else if(tab==='tools'){c.innerHTML=`<div class="dev-action" onclick="testToast()"><div class="dev-action-icon">🔔</div><div><div class="dev-action-title">اختبار الإشعارات</div></div></div><div class="dev-action" onclick="testBadge()"><div class="dev-action-icon">🏆</div><div><div class="dev-action-title">اختبار الشارات</div></div></div>`;}else if(tab==='themes'){c.innerHTML=THEMES.map(t=>`<div class="dev-action" onclick="setTheme('${t.id}')"><div class="dev-action-icon">🎨</div><div><div class="dev-action-title">${t.name}</div></div></div>`).join('');}else if(tab==='backup'){c.innerHTML=`<div class="dev-action" onclick="exportData()"><div class="dev-action-icon">💾</div><div><div class="dev-action-title">تصدير البيانات</div><div class="dev-action-desc">JSON</div></div></div><div class="dev-action" onclick="clearAllData()" style="background:rgba(244,67,54,0.1)"><div class="dev-action-icon">🗑️</div><div><div class="dev-action-title">مسح الكل</div></div></div>`;}}
-function testToast(){showToast('🔔 اختبار','info');}
-function testBadge(){earnBadge('first_lesson');}
-function togglePro(){STATE.isPro=!STATE.isPro;saveState();document.getElementById('proBanner').style.display=STATE.isPro?'flex':'none';renderLessons();renderVideos();renderChallenges();renderDevTab('settings');showToast(STATE.isPro?'⭐ Pro':'🆓','gold');}
-function exportData(){const data={...STATE,exportDate:new Date().toISOString(),version:CONFIG.version};const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='cyber-backup.json';a.click();URL.revokeObjectURL(url);showToast('💾 تم','gold');}
-function clearAllData(){confirmAction('⚠️ مسح','سيتم حذف كل شيء',function(){localStorage.clear();showToast('✅');setTimeout(()=>location.reload(),1500);});}
-document.getElementById('devPassword').addEventListener('keypress',function(e){if(e.key==='Enter')checkDevPassword();});
+function answerQuiz(sel) {
+    const q = QUIZ[quizIdx];
+    document.querySelectorAll('.quiz-opt').forEach((b, i) => {
+        b.disabled = true;
+        if(i === q.c) b.classList.add('correct');
+        if(i === sel && sel !== q.c) b.classList.add('wrong');
+    });
+    if(sel === q.c) quizScore++;
+    setTimeout(() => { quizIdx++; renderQuestion(); }, 1000);
+}
 
-function confirmAction(title,text,action){document.getElementById('confirmTitle').textContent=title;document.getElementById('confirmText').textContent=text;document.getElementById('confirmModal').classList.add('active');window._confirmAction=action;}
-function closeConfirm(){document.getElementById('confirmModal').classList.remove('active');}
-function executeConfirm(){if(window._confirmAction)window._confirmAction();closeConfirm();}
-function resetProgress(){confirmAction('🗑️ إعادة','سيتم حذف تقدمك',function(){STATE.points=0;STATE.completedLessons=[];STATE.completedChallenges=[];STATE.completedQuizzes=[];STATE.completedAI=[];STATE.earnedBadges=[];STATE.activityLog=[];saveState();renderLessons();renderChallenges();renderBadgesPage();renderStats();renderCerts();updateProfile();showToast('✅');});}
+/* ============ Tools ============ */
+function checkStrength() {
+    const p = document.getElementById('passCheck').value;
+    const r = document.getElementById('strengthResult');
+    if(!p) { r.classList.remove('show'); return; }
+    let s = 0;
+    if(p.length >= 8) s++;
+    if(p.length >= 12) s++;
+    if(/[a-z]/.test(p)) s++;
+    if(/[A-Z]/.test(p)) s++;
+    if(/[0-9]/.test(p)) s++;
+    if(/[^a-zA-Z0-9]/.test(p)) s++;
+    r.classList.add('show');
+    r.classList.remove('weak', 'medium', 'strong');
+    if(s <= 2) { r.classList.add('weak'); r.textContent = '🔴 ضعيفة'; }
+    else if(s <= 4) { r.classList.add('medium'); r.textContent = '🟡 متوسطة'; }
+    else { r.classList.add('strong'); r.textContent = '🟢 قوية'; }
+}
 
-function showToast(msg,type){const t=document.getElementById('toast');t.textContent=msg;t.className='toast';if(type)t.classList.add(type);t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
+function generatePassword() {
+    const c = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*';
+    let p = '';
+    for(let i = 0; i < 20; i++) p += c.charAt(Math.floor(Math.random() * c.length));
+    document.getElementById('generatedPass').textContent = '🔑 ' + p;
+}
 
-history.pushState(null,null,location.href);
-window.onpopstate=function(){const pages=document.querySelectorAll('.page.active');if(pages.length>0){pages.forEach(p=>p.classList.remove('active'));document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));document.querySelectorAll('.nav-item')[0].classList.add('active');}history.pushState(null,null,location.href);};
+function execCmd() {
+    const input = document.getElementById('terminalIn');
+    const cmd = input.value.trim();
+    if(!cmd) return;
+    const out = document.getElementById('terminalOut');
+    out.innerHTML += `<div style="margin-top:8px">$ ${cmd}</div>`;
+    out.innerHTML += `<div style="color:#00BCD4">${runCmd(cmd)}</div>`;
+    input.value = '';
+    out.scrollTop = out.scrollHeight;
+}
 
-console.log('%c🛡️ الأمن السيبراني 1.6.0','color:#4CAF50;font-size:20px;font-weight:bold');
-console.log('%c👨‍💻 أنس خشان','color:#4CAF50;font-size:14px');
-console.log('%c📺 @amn_sirani','color:#0088CC;font-size:14px');
+function runCmd(cmd) {
+    const c = cmd.toLowerCase();
+    if(c === 'help') return 'ls, pwd, whoami, date, clear';
+    if(c === 'ls') return 'Documents  Downloads  Pictures';
+    if(c === 'pwd') return '/home/user';
+    if(c === 'whoami') return 'u0_a123';
+    if(c === 'date') return new Date().toString();
+    if(c === 'clear') { document.getElementById('terminalOut').innerHTML = ''; return ''; }
+    return 'غير معروف: ' + cmd;
+}
+
+/* ============ Scanner ============ */
+function scanUrl() {
+    const url = document.getElementById('urlToScan').value.trim();
+    const r = document.getElementById('scanResult');
+    if(!url) { showToast('❌ أدخل رابط', 'error'); return; }
+    r.classList.add('show');
+    r.classList.remove('weak', 'medium', 'strong');
+    const https = url.toLowerCase().startsWith('https://');
+    const susp = /bit\.ly|tinyurl|free-money|win-|prize/i.test(url);
+    if(susp) { r.classList.add('weak'); r.innerHTML = '🔴 مشبوه!'; }
+    else if(!https) { r.classList.add('medium'); r.innerHTML = '🟡 غير مشفر'; }
+    else { r.classList.add('strong'); r.innerHTML = '🟢 آمن'; }
+    sendEvent('url_scanned', {url: url});
+}
+
+function openVirusTotal() {
+    const url = document.getElementById('urlToScan').value.trim();
+    if(!url) { showToast('❌ أدخل رابط', 'error'); return; }
+    window.open('https://www.virustotal.com/gui/home/url', '_blank');
+}
+
+/* ============ Docs ============ */
+const DOCS = [
+    {t:'🚀 البدء',b:'<ul><li>وافق على الشروط</li><li>اختر النسخة</li><li>ابدأ بالدروس</li><li>جرّب المختبر</li></ul>'},
+    {t:'🧪 المختبر',b:'<p>بيئة آمنة ومعزولة للتدريب</p>'},
+    {t:'🎯 التحديات',b:'<ul><li>🥉 مبتدئ: 100</li><li>🥈 متوسط: 200</li><li>🥇 متقدم: 500</li></ul>'},
+    {t:'⭐ Pro',b:'<p>ميزات إضافية. كود: 0000</p>'},
+    {t:'🛡️ الأمان',b:'<p>آمن تماماً، لا يجمع بيانات شخصية</p>'},
+    {t:'🔒 الخصوصية',b:'<p>نجمع إحصائيات مجهولة لتحسين التطبيق فقط</p>'},
+    {t:'🌐 السيرفر',b:'<p>يرسل التطبيق إحصائيات للسيرفر (عدد المستخدمين والأحداث)</p>'},
+    {t:'🐛 الأخطاء',b:'<ul><li>أعد التشغيل</li><li>امسح Cache</li><li>حدّث</li></ul>'}
+];
+
+function renderDocs() {
+    document.getElementById('docsList').innerHTML = DOCS.map((d, i) => 
+        `<div class="doc-section" onclick="toggleDoc(${i})" id="doc${i}">
+            <div class="doc-header"><h4>${d.t}</h4><span class="doc-arrow">▶</span></div>
+            <div class="doc-body">${d.b}</div>
+        </div>`
+    ).join('');
+}
+
+function toggleDoc(i) {
+    document.getElementById('doc' + i).classList.toggle('open');
+}
+
+/* ============ Changelog ============ */
+const CHANGELOG = [
+    {v:'1.6.0',d:'2025',l:['🌐 ربط بالسيرفر','📊 إحصائيات مباشرة','🏆 شارات (12)','🎓 شهادات','🤖 تحدي AI','🏅 متصدرون','🎨 ثيمات','👨‍💻 لوحة مطورين ضخمة']},
+    {v:'1.5.0',d:'2025',l:['🧪 مختبر معزول','📺 فيديوهات','🎯 8 تحديات','⭐ Pro']},
+    {v:'1.4.0',d:'2025',l:['🔍 بحث','🧪 اختبار','📖 قاموس','🔗 فاحص']},
+    {v:'1.3.0',d:'2025',l:['💻 أوامر','🖥️ محاكي']},
+    {v:'1.0.0',d:'2025',l:['🎉 الإصدار الأول']}
+];
+
+function renderChangelog() {
+    document.getElementById('changelogList').innerHTML = CHANGELOG.map(c => 
+        `<div class="changelog-item">
+            <div class="changelog-version">الإصدار ${c.v}<span class="changelog-date">${c.d}</span></div>
+            <ul class="changelog-list">${c.l.map(x => `<li>${x}</li>`).join('')}</ul>
+        </div>`
+    ).join('');
+}
+
+/* ============ Themes ============ */
+const THEMES = [
+    {id:'default',name:'الافتراضي',color:'#4CAF50'},
+    {id:'blue',name:'أزرق',color:'#2196F3'},
+    {id:'purple',name:'بنفسجي',color:'#9C27B0'},
+    {id:'orange',name:'برتقالي',color:'#FF9800'},
+    {id:'red',name:'أحمر',color:'#f44336'}
+];
+
+function renderThemes() {
+    const c = document.getElementById('themesList');
+    if(!c) return;
+    c.innerHTML = THEMES.map(t => 
+        `<div class="tool-box" onclick="setTheme('${t.id}')" style="cursor:pointer;display:flex;align-items:center;gap:15px">
+            <div style="width:40px;height:40px;border-radius:50%;background:${t.color}"></div>
+            <div style="flex:1"><div style="font-weight:bold">${t.name}</div>
+            <div style="color:var(--text2);font-size:12px">${STATE.theme===t.id?'✅ مفعّل':'اضغط'}</div></div>
+        </div>`
+    ).join('');
+}
+
+function setTheme(id) {
+    STATE.theme = id;
+    document.body.className = STATE.darkMode ? '' : 'light';
+    if(id !== 'default') document.body.classList.add('theme-' + id);
+    saveState();
+    renderThemes();
+    showToast('🎨 تم تغيير الثيم', 'gold');
+    sendEvent('theme_changed', {theme: id});
+}
+
+/* ============ Search ============ */
+function performSearch() {
+    const q = document.getElementById('searchInput').value.toLowerCase().trim();
+    const results = document.getElementById('searchResults');
+    if(!q) { results.classList.remove('show'); return; }
+    let items = [];
+    LESSONS.forEach(l => {
+        if(l.title.toLowerCase().includes(q) || l.cat.toLowerCase().includes(q))
+            items.push({i:'📚',t:l.title,d:'درس',a:`openLesson('${l.id}')`});
+    });
+    GLOSSARY.forEach(g => {
+        if(g.t.toLowerCase().includes(q))
+            items.push({i:'📖',t:g.t,d:'مصطلح',a:`openPage('glossaryPage')`});
+    });
+    CHALLENGES.forEach(c => {
+        if(c.title.toLowerCase().includes(q))
+            items.push({i:'🧪',t:c.title,d:'تحدي',a:`openChallenge('${c.id}')`});
+    });
+    if(items.length === 0) results.innerHTML = '<div class="search-empty">لا نتائج</div>';
+    else results.innerHTML = items.slice(0, 10).map(it => 
+        `<div class="search-item" onclick="${it.a};closeSearch()">
+            <div class="search-item-icon">${it.i}</div>
+            <div class="search-item-text">
+                <div class="search-item-title">${it.t}</div>
+                <div class="search-item-type">${it.d}</div>
+            </div>
+        </div>`
+    ).join('');
+    results.classList.add('show');
+}
+
+function closeSearch() {
+    document.getElementById('searchResults').classList.remove('show');
+    document.getElementById('searchInput').value = '';
+}
+
+/* ============ Pages ============ */
+function openPage(id) {
+    document.getElementById(id).classList.add('active');
+    sendEvent('page_opened', {page: id});
+}
+
+function closePage(id) {
+    document.getElementById(id).classList.remove('active');
+}
+
+function switchTab(tab, e) {
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    if(e) e.currentTarget.classList.add('active');
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    if(tab === 'home') return;
+    if(tab === 'learn') { openPage('lessonsPage'); renderLessons(); }
+    else if(tab === 'lab') openLab();
+    else if(tab === 'tools') openPage('toolsPage');
+    else if(tab === 'profile') { openPage('profilePage'); updateProfile(); }
+}
+
+function updateProfile() {
+    let level = 'المستوى 1';
+    if(STATE.points >= 1000) level = 'المستوى 4';
+    else if(STATE.points >= 500) level = 'المستوى 3';
+    else if(STATE.points >= 200) level = 'المستوى 2';
+    document.getElementById('profileLevel').textContent = (STATE.isPro ? '⭐ Pro - ' : '') + level;
+    document.getElementById('statPoints').textContent = STATE.points;
+    document.getElementById('statLessons').textContent = STATE.completedLessons.length;
+    document.getElementById('statChallenges').textContent = STATE.completedChallenges.length;
+    document.getElementById('statBadges').textContent = STATE.earnedBadges.length;
+}
+
+function toggleTheme() {
+    STATE.darkMode = !STATE.darkMode;
+    document.body.classList.toggle('light', !STATE.darkMode);
+    document.getElementById('themeBtn').textContent = STATE.darkMode ? '🌙' : '☀️';
+    const ts = document.getElementById('themeStatus');
+    if(ts) ts.textContent = STATE.darkMode ? 'مفعّل' : 'معطل';
+    saveState();
+}
+
+let tempRating = 0;
+
+function setRating(n) {
+    tempRating = n;
+    document.querySelectorAll('#starRating .star').forEach((s, i) => s.classList.toggle('active', i < n));
+    const texts = ['', '😞 سيء', '😐', '🙂', '😊', '🤩 ممتاز!'];
+    document.getElementById('ratingText').textContent = texts[n];
+}
+
+function submitRating() {
+    if(!tempRating) { showToast('❌ اختر', 'error'); return; }
+    STATE.userRating = tempRating;
+    saveState();
+    updateProfile();
+    checkBadges();
+    sendEvent('app_rated', {rating: tempRating});
+    showToast('✅ شكراً!', 'gold');
+    setTimeout(() => closePage('ratePage'), 1500);
+}
+
+/* ============ Dev ============ */
+function openDevLogin() {
+    document.getElementById('devModal').classList.add('active');
+    document.getElementById('devPassword').value = '';
+    document.getElementById('devPassword').focus();
+}
+
+function closeDevLogin() {
+    document.getElementById('devModal').classList.remove('active');
+}
+
+function checkDevPassword() {
+    if(document.getElementById('devPassword').value === CONFIG.devPassword) {
+        closeDevLogin();
+        document.getElementById('devPanel').classList.add('active');
+        renderDevTab('stats');
+        updateDevServerStatus();
+        showToast('🎉 مرحباً!', 'info');
+    } else {
+        showToast('❌ خطأ', 'error');
+    }
+}
+
+function closeDevPanel() {
+    document.getElementById('devPanel').classList.remove('active');
+}
+
+async function updateDevServerStatus() {
+    const el = document.getElementById('devServerStatus');
+    if(!el) return;
+    if(STATE.serverConnected) {
+        const stats = await fetchServerStats();
+        if(stats) {
+            el.textContent = `🟢 متصل - ${stats.totalUsers} مستخدم - ${stats.events} حدث`;
+        } else {
+            el.textContent = '🟡 متصل لكن لا توجد بيانات';
+        }
+    } else {
+        el.textContent = '🔴 غير متصل بالسيرفر';
+    }
+}
+
+function switchDevTab(tab, e) {
+    document.querySelectorAll('.dev-tab').forEach(t => t.classList.remove('active'));
+    if(e) e.currentTarget.classList.add('active');
+    renderDevTab(tab);
+}
+
+async function renderDevTab(tab) {
+    const c = document.getElementById('devTabContent');
+    if(tab === 'stats') {
+        c.innerHTML = `<div class="dev-stat-grid">
+            <div class="dev-stat"><div class="dev-stat-icon">🏆</div><div class="dev-stat-value">${STATE.points}</div><div class="dev-stat-label">النقاط</div></div>
+            <div class="dev-stat"><div class="dev-stat-icon">📚</div><div class="dev-stat-value">${STATE.completedLessons.length}</div><div class="dev-stat-label">الدروس</div></div>
+            <div class="dev-stat"><div class="dev-stat-icon">🧪</div><div class="dev-stat-value">${STATE.completedChallenges.length}</div><div class="dev-stat-label">التحديات</div></div>
+            <div class="dev-stat"><div class="dev-stat-icon">🏆</div><div class="dev-stat-value">${STATE.earnedBadges.length}</div><div class="dev-stat-label">الشارات</div></div>
+        </div>
+        <div class="dev-action" onclick="exportData()"><div class="dev-action-icon">💾</div><div><div class="dev-action-title">تصدير البيانات</div><div class="dev-action-desc">JSON</div></div></div>
+        <div class="dev-action" onclick="clearAllData()" style="background:rgba(244,67,54,0.1)"><div class="dev-action-icon">🗑️</div><div><div class="dev-action-title">مسح الكل</div></div></div>`;
+    } else if(tab === 'server') {
+        c.innerHTML = `<div style="text-align:center;padding:15px"><div style="font-size:16px;font-weight:bold;color:var(--primary)">🌐 حالة السيرفر</div></div>
+        <div class="dev-stat" style="margin-bottom:15px"><div class="dev-stat-icon">${STATE.serverConnected ? '🟢' : '🔴'}</div><div class="dev-stat-value" style="color:${STATE.serverConnected ? 'var(--primary)' : 'var(--danger)'}">${STATE.serverConnected ? 'متصل' : 'غير متصل'}</div><div class="dev-stat-label">الحالة</div></div>
+        <div class="tool-box"><h3>🆔 معرف المستخدم</h3><div style="font-family:monospace;font-size:11px;color:var(--text2);word-break:break-all">${STATE.userId || 'غير موجود'}</div></div>
+        <div class="dev-action" onclick="refreshServerStats()"><div class="dev-action-icon">📊</div><div><div class="dev-action-title">عرض إحصائيات السيرفر</div></div></div>
+        <div class="dev-action" onclick="testServer()"><div class="dev-action-icon">🧪</div><div><div class="dev-action-title">اختبار الاتصال</div></div></div>
+        <div id="serverStatsBox"></div>`;
+    } else if(tab === 'content') {
+        c.innerHTML = `<div class="dev-stat-grid">
+            <div class="dev-stat"><div class="dev-stat-icon">📚</div><div class="dev-stat-value">${LESSONS.length}</div><div class="dev-stat-label">دروس</div></div>
+            <div class="dev-stat"><div class="dev-stat-icon">🧪</div><div class="dev-stat-value">${CHALLENGES.length}</div><div class="dev-stat-label">تحديات</div></div>
+            <div class="dev-stat"><div class="dev-stat-icon">📖</div><div class="dev-stat-value">${GLOSSARY.length}</div><div class="dev-stat-label">مصطلحات</div></div>
+            <div class="dev-stat"><div class="dev-stat-icon">🏆</div><div class="dev-stat-value">${BADGES.length}</div><div class="dev-stat-label">شارات</div></div>
+        </div>`;
+    } else if(tab === 'tools') {
+        c.innerHTML = `<div class="dev-action" onclick="testToast()"><div class="dev-action-icon">🔔</div><div><div class="dev-action-title">اختبار Toast</div></div></div>
+        <div class="dev-action" onclick="testBadge()"><div class="dev-action-icon">🏆</div><div><div class="dev-action-title">اختبار شارة</div></div></div>
+        <div class="dev-action" onclick="sendTestEvent()"><div class="dev-action-icon">📤</div><div><div class="dev-action-title">إرسال حدث اختباري</div></div></div>`;
+    } else if(tab === 'settings') {
+        c.innerHTML = `<div class="dev-action"><div class="dev-action-icon">⭐</div><div><div class="dev-action-title">Pro: ${STATE.isPro ? 'مفعّل' : 'معطّل'}</div></div></div>
+        <div class="dev-action" onclick="togglePro()"><div class="dev-action-icon">🔄</div><div><div class="dev-action-title">تبديل Pro</div></div></div>
+        <div class="dev-action" onclick="closeDevPanel()" style="background:linear-gradient(135deg,var(--danger),#c62828);color:#fff"><div class="dev-action-icon">🚪</div><div><div class="dev-action-title" style="color:#fff">خروج</div></div></div>`;
+    }
+}
+
+async function refreshServerStats() {
+    const box = document.getElementById('serverStatsBox');
+    box.innerHTML = '<div style="text-align:center;padding:15px;color:var(--text2)">⏳ جاري التحميل...</div>';
+    const stats = await fetchServerStats();
+    if(stats) {
+        box.innerHTML = `<div class="tool-box">
+            <h3>📊 إحصائيات السيرفر</h3>
+            <div style="padding:10px 0;border-bottom:1px solid var(--border)"><strong>المستخدمون:</strong> ${stats.totalUsers}</div>
+            <div style="padding:10px 0;border-bottom:1px solid var(--border)"><strong>نشطون اليوم:</strong> ${stats.activeToday}</div>
+            <div style="padding:10px 0;border-bottom:1px solid var(--border)"><strong>الأحداث:</strong> ${stats.events}</div>
+            <div style="padding:10px 0"><strong>مدة التشغيل:</strong> ${stats.uptime}</div>
+        </div>`;
+    } else {
+        box.innerHTML = '<div style="text-align:center;padding:15px;color:var(--danger)">❌ فشل الاتصال</div>';
+    }
+}
+
+async function testServer() {
+    showToast('⏳ جاري الاختبار...', 'info');
+    const stats = await fetchServerStats();
+    if(stats) showToast('✅ السيرفر يعمل!', 'gold');
+    else showToast('❌ السيرفر لا يستجيب', 'error');
+}
+
+function testToast() { showToast('🔔 اختبار', 'info'); }
+function testBadge() { earnBadge('first_lesson'); }
+function sendTestEvent() {
+    sendEvent('test_event', {test: true, time: new Date().toISOString()});
+    showToast('📤 تم إرسال حدث', 'info');
+}
+
+function togglePro() {
+    STATE.isPro = !STATE.isPro;
+    saveState();
+    document.getElementById('proBanner').style.display = STATE.isPro ? 'flex' : 'none';
+    renderLessons();
+    renderVideos();
+    renderChallenges();
+    renderDevTab('settings');
+    showToast(STATE.isPro ? '⭐ Pro' : '🆓', 'gold');
+}
+
+function exportData() {
+    const data = {...STATE, exportDate: new Date().toISOString(), version: CONFIG.version};
+    const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'cyber-backup.json';
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast('💾 تم', 'gold');
+}
+
+function clearAllData() {
+    confirmAction('⚠️ مسح', 'سيتم حذف كل شيء', function() {
+        localStorage.clear();
+        showToast('✅');
+        setTimeout(() => location.reload(), 1500);
+    });
+}
+
+document.getElementById('devPassword').addEventListener('keypress', function(e) {
+    if(e.key === 'Enter') checkDevPassword();
+});
+
+function confirmAction(title, text, action) {
+    document.getElementById('confirmTitle').textContent = title;
+    document.getElementById('confirmText').textContent = text;
+    document.getElementById('confirmModal').classList.add('active');
+    window._confirmAction = action;
+}
+
+function closeConfirm() {
+    document.getElementById('confirmModal').classList.remove('active');
+}
+
+function executeConfirm() {
+    if(window._confirmAction) window._confirmAction();
+    closeConfirm();
+}
+
+function resetProgress() {
+    confirmAction('🗑️ إعادة', 'سيتم حذف تقدمك', function() {
+        STATE.points = 0;
+        STATE.completedLessons = [];
+        STATE.completedChallenges = [];
+        STATE.completedQuizzes = [];
+        STATE.completedAI = [];
+        STATE.earnedBadges = [];
+        STATE.activityLog = [];
+        saveState();
+        renderLessons();
+        renderChallenges();
+        renderBadgesPage();
+        renderStats();
+        renderCerts();
+        updateProfile();
+        showToast('✅');
+    });
+}
+
+function showToast(msg, type) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = 'toast';
+    if(type) t.classList.add(type);
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+history.pushState(null, null, location.href);
+window.onpopstate = function() {
+    const pages = document.querySelectorAll('.page.active');
+    if(pages.length > 0) {
+        pages.forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        document.querySelectorAll('.nav-item')[0].classList.add('active');
+    }
+    history.pushState(null, null, location.href);
+};
+
+console.log('%c🛡️ الأمن السيبراني 1.6.0', 'color:#4CAF50;font-size:20px;font-weight:bold');
+console.log('%c👨‍💻 أنس خشان', 'color:#4CAF50;font-size:14px');
+console.log('%c📺 @amn_sirani', 'color:#0088CC;font-size:14px');
+console.log('%c🌐 السيرفر: ' + CONFIG.serverUrl, 'color:#2196F3;font-size:14px');
 </script>
 </body>
      </html>
