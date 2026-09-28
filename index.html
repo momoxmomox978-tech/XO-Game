@@ -4,27 +4,53 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <meta name="theme-color" content="#00FF41">
-<title>SECURE SYSTEM - v2.1.0</title>
+<title>SECURE SYSTEM - v3.0.0</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Courier New',monospace;-webkit-tap-highlight-color:transparent}
-:root{--bg:#000308;--bg2:#0D1117;--border:#21262d;--text:#fff;--text2:#888;--matrix:#00FF41;--neon:#00E5FF;--gold:#FFD700;--danger:#f44336;--purple:#9C27B0;--pink:#E91E63}
+:root{--bg:#000308;--bg2:#0D1117;--border:#21262d;--text:#fff;--text2:#888;--matrix:#00FF41;--neon:#00E5FF;--gold:#FFD700;--danger:#f44336;--purple:#9C27B0;--pink:#E91E63;--kali:#367BF0}
 body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;user-select:none}
 #matrixCanvas{position:fixed;top:0;left:0;width:100%;height:100vh;z-index:-1;opacity:.15;pointer-events:none}
 .screen{position:fixed;inset:0;display:none;flex-direction:column;background:linear-gradient(135deg,#000308,#0a1620);z-index:10;overflow-y:auto}
 .screen.active{display:flex}
-.auth-logo{width:130px;height:130px;border-radius:50%;background:radial-gradient(circle,#0a1620,#000308);display:flex;align-items:center;justify-content:center;font-size:65px;margin:0 auto 20px;border:3px solid var(--matrix);box-shadow:0 0 40px var(--matrix);animation:pulse 3s infinite}
-@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
-.auth-content{width:100%;max-width:400px;text-align:center;margin:auto;padding:20px}
-.auth-title{font-size:24px;color:var(--matrix);font-weight:bold;margin-bottom:6px;text-shadow:0 0 15px var(--matrix)}
-.auth-sub{font-size:12px;color:#0a5a0a;margin-bottom:25px}
-.input-group{position:relative;margin-bottom:12px}
-.input-group input{width:100%;padding:14px 45px 14px 15px;background:rgba(0,20,0,.8);border:2px solid rgba(0,255,65,.3);border-radius:12px;color:var(--matrix);font-size:14px;outline:none;font-family:inherit}
-.input-group input:focus{border-color:var(--matrix);box-shadow:0 0 20px rgba(0,255,65,.4)}
-.input-group input::placeholder{color:#0a4a0a}
-.input-icon{position:absolute;top:50%;left:15px;transform:translateY(-50%);font-size:16px;color:var(--matrix);opacity:.6}
-.auth-btn{width:100%;padding:14px;margin-top:10px;background:linear-gradient(135deg,#00FF41,#00AA2A);color:#000;border:none;border-radius:12px;font-size:15px;font-weight:bold;cursor:pointer;box-shadow:0 5px 30px rgba(0,255,65,.4);font-family:inherit}
-.auth-btn:active{transform:scale(.97)}
-.auth-footer{margin-top:20px;color:#0a5a0a;font-size:12px}
+
+/* Dragon Welcome */
+.dragon-screen{background:linear-gradient(135deg,#000308,#1a0000,#0a1620);align-items:center;justify-content:center;text-align:center;padding:20px}
+.dragon-emoji{font-size:140px;animation:dragonFloat 3s ease-in-out infinite;filter:drop-shadow(0 0 40px #FF3366) drop-shadow(0 0 80px #FF6B35);line-height:1}
+@keyframes dragonFloat{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-20px) scale(1.08)}}
+.dragon-name{font-size:32px;color:#FF6B35;font-weight:bold;margin-top:25px;text-shadow:0 0 20px #FF6B35,0 0 40px #FF3366;letter-spacing:4px;animation:glowPulse 2s infinite}
+@keyframes glowPulse{0%,100%{text-shadow:0 0 20px #FF6B35,0 0 40px #FF3366}50%{text-shadow:0 0 30px #FF6B35,0 0 60px #FF3366,0 0 80px #FF3366}}
+.dragon-sub{font-size:14px;color:#8a5a3a;margin-top:10px;letter-spacing:2px}
+.dragon-dev{font-size:16px;color:var(--matrix);margin-top:30px;font-weight:bold;letter-spacing:1px}
+.dragon-btn{margin-top:40px;padding:18px 60px;background:linear-gradient(135deg,#FF6B35,#FF3366);color:#fff;border:none;border-radius:15px;font-size:18px;font-weight:bold;cursor:pointer;box-shadow:0 0 40px rgba(255,107,53,.6);font-family:inherit;letter-spacing:2px}
+.dragon-btn:active{transform:scale(.95)}
+
+/* Kali Linux Login */
+.kali-screen{background:#0a0e14;padding:20px;font-family:'Courier New',monospace}
+.kali-window{max-width:500px;width:100%;margin:auto;background:#1a1f2e;border:1px solid #2c3e50;border-radius:8px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.8),0 0 60px rgba(54,123,240,.2)}
+.kali-titlebar{background:linear-gradient(180deg,#2c3e50,#1a2634);padding:10px 15px;display:flex;align-items:center;gap:10px;border-bottom:1px solid #000}
+.kali-dots{display:flex;gap:6px}
+.kali-dot{width:12px;height:12px;border-radius:50%}
+.kali-dot.red{background:#ff5f56}
+.kali-dot.yellow{background:#ffbd2e}
+.kali-dot.green{background:#27c93f}
+.kali-title{flex:1;text-align:center;color:#8899aa;font-size:12px;letter-spacing:1px}
+.kali-body{padding:25px;background:#0a0e14}
+.kali-logo{text-align:center;margin-bottom:25px}
+.kali-dragon{font-size:70px;filter:drop-shadow(0 0 20px #367BF0)}
+.kali-name{color:#367BF0;font-size:22px;font-weight:bold;margin-top:10px;letter-spacing:3px;text-shadow:0 0 15px #367BF0}
+.kali-version{color:#5a6b7a;font-size:12px;margin-top:5px}
+.kali-input-group{margin-bottom:15px;position:relative}
+.kali-input-group label{color:#5a6b7a;font-size:12px;display:block;margin-bottom:6px}
+.kali-input{width:100%;padding:12px 15px;background:#000;border:1px solid #2c3e50;border-radius:5px;color:#00FF41;font-size:14px;font-family:'Courier New',monospace;outline:none;transition:all .2s}
+.kali-input:focus{border-color:#367BF0;box-shadow:0 0 15px rgba(54,123,240,.4)}
+.kali-input::placeholder{color:#3a4a5a}
+.kali-btn{width:100%;padding:14px;margin-top:10px;background:linear-gradient(135deg,#367BF0,#2c5cc5);color:#fff;border:none;border-radius:5px;font-size:15px;font-weight:bold;cursor:pointer;font-family:inherit;letter-spacing:1px}
+.kali-btn:active{transform:scale(.98)}
+.kali-footer{color:#3a4a5a;font-size:11px;text-align:center;margin-top:15px}
+.kali-hint{background:rgba(54,123,240,.1);border:1px solid #2c3e50;border-radius:5px;padding:10px;color:#5a6b7a;font-size:11px;margin-bottom:15px;text-align:center}
+.kali-hint b{color:#367BF0}
+
+/* App */
 .header{display:flex;justify-content:space-between;align-items:center;padding:12px 15px;border-bottom:1px solid rgba(0,255,65,.3)}
 .header-left h1{font-size:18px;color:var(--matrix);text-shadow:0 0 10px var(--matrix)}
 .header-left p{font-size:10px;color:#0a5a0a}
@@ -48,6 +74,7 @@ body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;u
 .btn-sandbox{background:linear-gradient(135deg,#9C27B0,#E91E63)}
 .btn-defense{background:linear-gradient(135deg,#00BCD4,#4DD0E1)}
 .btn-library{background:linear-gradient(135deg,#009688,#4DB6AC)}
+.btn-kali{background:linear-gradient(135deg,#367BF0,#2c5cc5)}
 .btn-badges{background:linear-gradient(135deg,#FFC107,#FFD54F);color:#000}
 .btn-stats{background:linear-gradient(135deg,#3F51B5,#5C6BC0)}
 .btn-telegram{background:linear-gradient(135deg,#0088CC,#00A0E0)}
@@ -67,9 +94,8 @@ body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;u
 .chat-header button{background:rgba(0,0,0,.3);border:none;color:#fff;width:38px;height:38px;border-radius:50%;font-size:20px;cursor:pointer}
 .chat-header h3{flex:1;font-size:15px}
 .chat-messages{flex:1;overflow-y:auto;padding:15px}
-.msg{margin-bottom:12px;display:flex;gap:8px;animation:fade .3s}
+.msg{margin-bottom:12px;display:flex;gap:8px}
 .msg.user{flex-direction:row-reverse}
-@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 .msg-avatar{width:35px;height:35px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
 .msg.bot .msg-avatar{background:#00E5FF;color:#000}
 .msg.user .msg-avatar{background:#00FF41;color:#000}
@@ -85,7 +111,6 @@ body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;u
 .tool-btn{width:100%;padding:12px;background:linear-gradient(135deg,#00FF41,#00AA2A);color:#000;border:none;border-radius:10px;font-size:13px;font-weight:bold;cursor:pointer;font-family:inherit}
 .terminal{background:#000;border:2px solid var(--matrix);border-radius:12px;padding:15px;color:var(--matrix);font-size:12px;min-height:250px;max-height:350px;overflow-y:auto;margin-bottom:12px}
 .terminal-line{margin-bottom:4px}
-.result{text-align:center;padding:30px;color:var(--matrix);font-size:18px}
 .toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--matrix);color:#000;padding:12px 22px;border-radius:25px;font-size:13px;font-weight:bold;z-index:9999;opacity:0;transition:all .3s;max-width:90%;text-align:center}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .toast.error{background:#FF3366;color:#fff}
@@ -94,78 +119,58 @@ body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;u
 .nav-item{flex:1;display:flex;flex-direction:column;align-items:center;cursor:pointer;color:#0a5a0a;padding:6px 0;font-size:9px}
 .nav-item.active{color:var(--matrix)}
 .nav-icon{font-size:20px;margin-bottom:2px}
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.92);display:none;align-items:center;justify-content:center;z-index:9999;padding:20px}
-.modal.active{display:flex}
-.modal-box{background:var(--bg2);border:2px solid var(--matrix);border-radius:16px;padding:24px;max-width:400px;width:100%;text-align:center}
-.modal-box h3{color:var(--matrix);margin-bottom:12px;font-size:18px}
-.modal-box p{color:#8aFF8a;margin-bottom:15px;font-size:13px;line-height:1.7}
-.modal-box input{width:100%;padding:14px;background:rgba(0,20,0,.8);border:2px solid rgba(0,255,65,.3);border-radius:10px;color:var(--matrix);font-size:16px;text-align:center;outline:none;margin-bottom:12px;font-family:inherit}
-.modal-btns{display:flex;gap:8px}
-.modal-btn{flex:1;padding:12px;border:none;border-radius:10px;font-size:13px;font-weight:bold;cursor:pointer;font-family:inherit}
-.modal-btn.cancel{background:#333;color:#fff}
-.modal-btn.confirm{background:var(--matrix);color:#000}
 .star-rating{display:flex;justify-content:center;gap:8px;margin:15px 0;font-size:40px}
 .star{cursor:pointer;color:rgba(0,255,65,.2)}
 .star.active{color:var(--gold)}
-.update-screen{position:fixed;inset:0;background:#000;display:none;flex-direction:column;align-items:center;justify-content:center;z-index:99999;padding:25px;text-align:center}
-.update-screen.active{display:flex}
-.update-icon{font-size:80px;animation:spin 2s linear infinite;margin-bottom:20px}
-@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
-.update-title{color:var(--matrix);font-size:22px;font-weight:bold;margin-bottom:12px;text-shadow:0 0 15px var(--matrix)}
-.update-text{color:#8aFF8a;font-size:14px;margin-bottom:25px;line-height:1.7}
-.update-bar-container{width:100%;max-width:400px;height:8px;background:#0a1a0a;border-radius:4px;overflow:hidden;border:1px solid var(--matrix);margin-bottom:15px}
-.update-bar{height:100%;background:var(--matrix);width:0%;transition:width .3s;box-shadow:0 0 15px var(--matrix)}
-.update-percent{color:var(--matrix);font-size:16px;font-weight:bold;margin-bottom:20px}
-.update-steps{width:100%;max-width:400px;text-align:right}
-.update-step{color:#0a5a0a;font-size:13px;margin-bottom:6px;font-family:'Courier New',monospace;opacity:.3;transition:all .4s}
-.update-step.active{color:#00E5FF;opacity:1}
-.update-step.done{color:var(--matrix);opacity:1}
-.apology-modal{position:fixed;inset:0;background:rgba(0,0,0,.95);display:none;align-items:center;justify-content:center;z-index:99998;padding:20px}
-.apology-modal.active{display:flex}
-.apology-box{background:linear-gradient(135deg,#0a1620,#000308);border:3px solid var(--neon);border-radius:20px;padding:30px;max-width:420px;width:100%;text-align:center;box-shadow:0 0 60px rgba(0,229,255,.5);animation:pop .4s}
-@keyframes pop{from{transform:scale(.8);opacity:0}to{transform:scale(1);opacity:1}}
-.apology-icon{font-size:70px;margin-bottom:15px}
-.apology-title{color:var(--neon);font-size:22px;font-weight:bold;margin-bottom:15px;text-shadow:0 0 15px var(--neon)}
-.apology-message{background:rgba(0,229,255,.1);border-right:4px solid var(--neon);padding:15px;border-radius:8px;color:#8aFF8a;font-size:14px;line-height:1.8;text-align:right;margin-bottom:20px}
-.apology-message strong{color:var(--neon)}
-.apology-timer{color:var(--gold);font-size:18px;font-weight:bold;margin-bottom:20px}
-.apology-btn{width:100%;padding:15px;background:linear-gradient(135deg,#00E5FF,#0091EA);color:#000;border:none;border-radius:12px;font-size:15px;font-weight:bold;cursor:pointer;font-family:inherit}
-.welcome-back-modal{position:fixed;inset:0;background:rgba(0,0,0,.95);display:none;align-items:center;justify-content:center;z-index:99999;padding:20px}
-.welcome-back-modal.active{display:flex}
-.welcome-back-box{background:linear-gradient(135deg,#0a1620,#000308);border:3px solid var(--matrix);border-radius:20px;padding:30px;max-width:420px;width:100%;text-align:center;box-shadow:0 0 60px rgba(0,255,65,.5);animation:pop .4s}
-.welcome-back-icon{font-size:80px;margin-bottom:15px;animation:pulse 1.5s infinite}
-.welcome-back-title{color:var(--matrix);font-size:24px;font-weight:bold;margin-bottom:15px;text-shadow:0 0 20px var(--matrix)}
-.welcome-back-text{color:#8aFF8a;font-size:14px;line-height:1.7;margin-bottom:20px}
-.welcome-back-reward{background:rgba(255,215,0,.15);border:2px solid var(--gold);border-radius:12px;padding:15px;color:var(--gold);font-size:16px;font-weight:bold;margin-bottom:20px}
-.welcome-back-btn{width:100%;padding:15px;background:linear-gradient(135deg,#00FF41,#00AA2A);color:#000;border:none;border-radius:12px;font-size:15px;font-weight:bold;cursor:pointer;font-family:inherit}
-.timer-widget{position:fixed;top:8px;left:50%;transform:translateX(-50%);background:rgba(0,10,0,.9);border:1px solid var(--matrix);border-radius:20px;padding:5px 15px;color:var(--matrix);font-size:11px;font-weight:bold;z-index:999;display:none;font-family:'Courier New',monospace}
+.timer-widget{position:fixed;top:8px;left:50%;transform:translateX(-50%);background:rgba(0,10,0,.9);border:1px solid var(--matrix);border-radius:20px;padding:5px 15px;color:var(--matrix);font-size:11px;font-weight:bold;z-index:999;display:none}
 .timer-widget.show{display:block}
-.timer-widget.warning{border-color:var(--danger);color:var(--danger);animation:blink 1s infinite}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.5}}
 </style>
 </head>
 <body>
 <canvas id="matrixCanvas"></canvas>
+<div class="timer-widget" id="timerWidget">⏱️ <span id="timerDisplay">02:00</span></div>
 
-<div class="timer-widget" id="timerWidget">⏱️ الوقت: <span id="timerDisplay">02:00</span></div>
+<!-- Dragon Welcome -->
+<div class="screen dragon-screen active" id="dragonScreen">
+<div class="dragon-emoji">🐲</div>
+<div class="dragon-name">ANS KHAN</div>
+<div class="dragon-sub">// SECURE SYSTEM v3.0.0</div>
+<div class="dragon-dev">🛡️ أنس خشان</div>
+<button class="dragon-btn" onclick="goToKali()">[ ENTER SYSTEM ]</button>
+</div>
 
-<!-- Auth Screen -->
-<div class="screen active" id="authScreen">
-<div class="auth-content">
-<div class="auth-logo">👨‍💻</div>
-<div class="auth-title">SECURE SYSTEM</div>
-<div class="auth-sub">// v2.1.0 - AI EDITION</div>
-<div class="input-group"><span class="input-icon">👤</span><input type="text" id="username" placeholder="اسم المستخدم"></div>
-<div class="input-group"><span class="input-icon">🔒</span><input type="password" id="password" placeholder="كلمة المرور"></div>
-<button class="auth-btn" onclick="doLogin()">[ SIGN IN ]</button>
-<div class="auth-footer">الإصدار: 2.1.0 • المطور: أنس خشان</div>
+<!-- Kali Login -->
+<div class="screen kali-screen" id="kaliScreen">
+<div class="kali-window">
+<div class="kali-titlebar">
+<div class="kali-dots"><div class="kali-dot red"></div><div class="kali-dot yellow"></div><div class="kali-dot green"></div></div>
+<div class="kali-title">kali@secure-system: ~</div>
+</div>
+<div class="kali-body">
+<div class="kali-logo">
+<div class="kali-dragon">🐲</div>
+<div class="kali-name">KALI LINUX</div>
+<div class="kali-version">SECURE SYSTEM EDITION v3.0.0</div>
+</div>
+<div class="kali-hint">💡 <b>للتجربة:</b> أي اسم + كلمة مرور<br>🔑 <b>Pro:</b> 0000 | <b>Beta:</b> BETA2025</div>
+<div class="kali-input-group">
+<label>┌─[ username ]</label>
+<input type="text" class="kali-input" id="username" placeholder="أنس خشان">
+</div>
+<div class="kali-input-group">
+<label>┌─[ password ]</label>
+<input type="password" class="kali-input" id="password" placeholder="••••••••">
+</div>
+<button class="kali-btn" onclick="doLogin()">└─ $ LOGIN</button>
+<div class="kali-footer">© 2025 أنس خشان • momoxmomox978@gmail.com</div>
+</div>
 </div>
 </div>
 
 <!-- Main App -->
 <div class="screen" id="appScreen">
 <div class="header">
-<div class="header-left"><h1 id="welcomeTitle">🛡️ SECURE</h1><p id="welcomeSub">// مرحباً بك</p></div>
+<div class="header-left"><h1 id="welcomeTitle">🛡️ SECURE</h1><p id="welcomeSub">// مرحباً</p></div>
 <div class="header-btn" onclick="logout()">🚪</div>
 </div>
 <div class="app-content">
@@ -173,17 +178,18 @@ body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;u
 <h3>🤖 AI Chat - مدربك الذكي</h3>
 <p>اسألني أي شيء عن الأمن السيبراني!</p>
 </div>
-<div class="daily-widget" id="dailyWidget">
+<div class="daily-widget">
 <h3>🎯 مهام اليوم</h3>
 <div id="dailyTasksList"></div>
 </div>
 <div class="menu">
 <button class="btn btn-ai" onclick="openChat()"><span>🤖 AI Chat</span><span>←</span></button>
-<button class="btn btn-lessons" onclick="openPage('lessonsPage')"><span>📚 الدروس</span><span>←</span></button>
+<button class="btn btn-lessons" onclick="openPage('lessonsPage')"><span>📚 الدروس (30)</span><span>←</span></button>
 <button class="btn btn-videos" onclick="openPage('videosPage')"><span>📺 الفيديوهات</span><span>←</span></button>
 <button class="btn btn-quiz" onclick="openPage('quizPage')"><span>🧪 اختبار</span><span>←</span></button>
 <button class="btn btn-sandbox" onclick="openPage('sandboxPage')"><span>🎮 Sandbox</span><span>←</span></button>
 <button class="btn btn-defense" onclick="openPage('defensePage')"><span>🛡️ نظام الحماية</span><span>←</span></button>
+<button class="btn btn-kali" onclick="openPage('kaliPage')"><span>🐲 Kali Terminal</span><span>←</span></button>
 <button class="btn btn-market" onclick="openPage('marketPage')"><span>💰 Marketplace</span><span>←</span></button>
 <button class="btn btn-library" onclick="openPage('libraryPage')"><span>📚 مكتبة Termux</span><span>←</span></button>
 <button class="btn btn-badges" onclick="openPage('badgesPage')"><span>🏆 الشارات</span><span>←</span></button>
@@ -198,10 +204,10 @@ body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;u
 <div class="chat-container" id="chatScreen">
 <div class="chat-header"><button onclick="closeChat()">→</button><h3>🤖 AI Chat</h3></div>
 <div class="chat-messages" id="chatMessages">
-<div class="msg bot"><div class="msg-avatar">🤖</div><div class="msg-content">مرحباً! أنا AI مدربك في الأمن السيبراني. اسألني عن أي شيء!</div></div>
+<div class="msg bot"><div class="msg-avatar">🤖</div><div class="msg-content">مرحباً! أنا AI مدربك. اسألني عن: فيشينغ، كلمات مرور، 2FA، VPN، تشفير، HTTPS، DDoS، هندسة اجتماعية.</div></div>
 </div>
 <div class="chat-input-area">
-<input type="text" class="chat-input" id="chatInput" placeholder="اكتب سؤالك..." onkeypress="if(event.key==='Enter')sendMessage()">
+<input type="text" class="chat-input" id="chatInput" placeholder="اكتب..." onkeypress="if(event.key==='Enter')sendMessage()">
 <button class="chat-send" onclick="sendMessage()">➤</button>
 </div>
 </div>
@@ -211,62 +217,32 @@ body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;u
 <div class="page" id="videosPage"><div class="page-header"><button class="back-btn" onclick="closePage('videosPage')">→</button><div class="page-title">📺 الفيديوهات</div></div><div id="videosList"></div></div>
 <div class="page" id="quizPage"><div class="page-header"><button class="back-btn" onclick="closePage('quizPage')">→</button><div class="page-title">🧪 اختبار</div></div><div id="quizContent"></div></div>
 <div class="page" id="sandboxPage"><div class="page-header"><button class="back-btn" onclick="closePage('sandboxPage')">→</button><div class="page-title">🎮 Sandbox</div></div>
-<div class="tool-box"><h3>🎯 مختبر الاختراق الآمن</h3>
-<div class="terminal" id="sandboxTerminal"><div class="terminal-line">$ SYSTEM READY</div><div class="terminal-line">$ اكتب help للأوامر</div></div>
+<div class="tool-box"><h3>🎯 مختبر الاختراق</h3>
+<div class="terminal" id="sandboxTerminal"><div class="terminal-line">$ SYSTEM READY</div><div class="terminal-line">$ اكتب help</div></div>
 <input type="text" class="tool-input" id="sandboxInput" placeholder="$ أمر..." onkeypress="if(event.key==='Enter')execSandbox()">
 </div></div>
-<div class="page" id="defensePage"><div class="page-header"><button class="back-btn" onclick="closePage('defensePage')">→</button><div class="page-title">🛡️ نظام الحماية</div></div>
-<div class="tool-box"><h3>🛡️ محاكي الحماية</h3><p style="color:#0a5a0a;font-size:12px;margin-bottom:10px">هاجم النظام وشاهد الدفاعات!</p>
+<div class="page" id="defensePage"><div class="page-header"><button class="back-btn" onclick="closePage('defensePage')">→</button><div class="page-title">🛡️ الحماية</div></div>
+<div class="tool-box"><h3>🛡️ محاكي الحماية</h3>
 <button class="tool-btn" onclick="simulateAttack()">⚔️ ابدأ الهجوم</button>
-<div class="terminal" id="defenseTerminal" style="margin-top:12px"><div class="terminal-line">🛡️ النظام في وضع الاستعداد...</div></div>
+<div class="terminal" id="defenseTerminal" style="margin-top:12px"><div class="terminal-line">🛡️ في الاستعداد...</div></div>
+</div></div>
+<div class="page" id="kaliPage"><div class="page-header"><button class="back-btn" onclick="closePage('kaliPage')">→</button><div class="page-title">🐲 Kali Terminal</div></div>
+<div class="tool-box"><h3 style="color:#367BF0">🐲 KALI LINUX TERMINAL</h3>
+<div class="terminal" id="kaliTerminal" style="border-color:#367BF0;color:#5a9bff"><div class="terminal-line">┌──(kali㉿secure)-[~]</div><div class="terminal-line">└─$ SYSTEM READY</div><div class="terminal-line">└─$ اكتب help</div></div>
+<input type="text" class="tool-input" id="kaliInput" placeholder="kali@secure:~$" onkeypress="if(event.key==='Enter')execKali()" style="border-color:#367BF0;color:#5a9bff">
 </div></div>
 <div class="page" id="marketPage"><div class="page-header"><button class="back-btn" onclick="closePage('marketPage')">→</button><div class="page-title">💰 Marketplace</div></div><div id="marketList"></div></div>
-<div class="page" id="libraryPage"><div class="page-header"><button class="back-btn" onclick="closePage('libraryPage')">→</button><div class="page-title">📚 مكتبة Termux</div></div><div id="libraryList"></div></div>
+<div class="page" id="libraryPage"><div class="page-header"><button class="back-btn" onclick="closePage('libraryPage')">→</button><div class="page-title">📚 المكتبة</div></div><div id="libraryList"></div></div>
 <div class="page" id="badgesPage"><div class="page-header"><button class="back-btn" onclick="closePage('badgesPage')">→</button><div class="page-title">🏆 الشارات</div></div><div id="badgesList"></div></div>
 <div class="page" id="statsPage"><div class="page-header"><button class="back-btn" onclick="closePage('statsPage')">→</button><div class="page-title">📊 إحصائياتي</div></div><div id="statsList"></div></div>
 <div class="page" id="docsPage"><div class="page-header"><button class="back-btn" onclick="closePage('docsPage')">→</button><div class="page-title">📄 الوثائق</div></div><div id="docsList"></div></div>
-
-<!-- Apology Modal -->
-<div class="apology-modal" id="apologyModal">
-<div class="apology-box">
-<div class="apology-icon">⚠️</div>
-<div class="apology-title">عذراً...</div>
-<div class="apology-message">
-<strong>المطور يقول لك:</strong><br><br>
-"انتظر قليلاً! سنخرجك مؤقتاً لتحديث التطبيق، ثم ستعود لنا تلقائياً. لا تقلق، بياناتك محفوظة!"
-</div>
-<div class="apology-timer">⏳ <span id="apologyTimer">10</span> ثانية</div>
-<button class="apology-btn" onclick="startUpdate()">[ حسناً، أنا في الانتظار ]</button>
-</div>
-</div>
-
-<!-- Update Screen -->
-<div class="update-screen" id="updateScreen">
-<div class="update-icon">🔄</div>
-<div class="update-title">جاري تثبيت التحديث</div>
-<div class="update-text">يتم الآن تحديث التطبيق إلى v2.1.0</div>
-<div class="update-bar-container"><div class="update-bar" id="updateBar"></div></div>
-<div class="update-percent" id="updatePercent">0%</div>
-<div class="update-steps" id="updateSteps"></div>
-</div>
-
-<!-- Welcome Back Modal -->
-<div class="welcome-back-modal" id="welcomeBackModal">
-<div class="welcome-back-box">
-<div class="welcome-back-icon">🎉</div>
-<div class="welcome-back-title">مرحباً بعودتك!</div>
-<div class="welcome-back-text">تم تحديث التطبيق بنجاح إلى <b style="color:#00E5FF">v2.1.0</b></div>
-<div class="welcome-back-reward">🎁 مكافأة العودة: +200 نقطة</div>
-<button class="welcome-back-btn" onclick="closeWelcomeBack()">[ استمر في اللعب ]</button>
-</div>
-</div>
 
 <!-- Bottom Nav -->
 <div class="bottom-nav" id="bottomNav" style="display:none">
 <div class="nav-item active" onclick="switchTab('home')"><div class="nav-icon">🏠</div><div>الرئيسية</div></div>
 <div class="nav-item" onclick="switchTab('ai')"><div class="nav-icon">🤖</div><div>AI</div></div>
 <div class="nav-item" onclick="switchTab('lessons')"><div class="nav-icon">📚</div><div>تعلم</div></div>
-<div class="nav-item" onclick="switchTab('sandbox')"><div class="nav-icon">🎮</div><div>مختبر</div></div>
+<div class="nav-item" onclick="switchTab('kali')"><div class="nav-icon">🐲</div><div>Kali</div></div>
 <div class="nav-item" onclick="switchTab('stats')"><div class="nav-icon">📊</div><div>إحصائيات</div></div>
 </div>
 
@@ -274,684 +250,571 @@ body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;u
 
 <script>
 // Matrix Rain
-var canvas = document.getElementById('matrixCanvas');
-var ctx = canvas.getContext('2d');
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-var chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノ01ABCDEF';
-var fontSize = 14;
-var columns = canvas.width / fontSize;
-var drops = [];
-for (var i = 0; i < columns; i++) drops[i] = 1;
-function drawMatrix() {
-  ctx.fillStyle = 'rgba(0,0,0,.06)';
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = '#00FF41';
-  ctx.font = fontSize + 'px monospace';
-  for (var i = 0; i < drops.length; i++) {
-    var t = chars.charAt(Math.floor(Math.random() * chars.length));
-    ctx.fillText(t, i * fontSize, drops[i] * fontSize);
-    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
-    drops[i]++;
-  }
-}
-setInterval(drawMatrix, 50);
+var canvas=document.getElementById('matrixCanvas');
+var ctx=canvas.getContext('2d');
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+var chars='01アイウエオカキクケコサシスセソタチツテトナニヌネノ01ABCDEF🐲';
+var fontSize=14;
+var columns=canvas.width/fontSize;
+var drops=[];
+for(var i=0;i<columns;i++)drops[i]=1;
+function drawMatrix(){
+ctx.fillStyle='rgba(0,0,0,.06)';
+ctx.fillRect(0,0,canvas.width,canvas.height);
+ctx.fillStyle='#00FF41';
+ctx.font=fontSize+'px monospace';
+for(var i=0;i<drops.length;i++){
+var t=chars.charAt(Math.floor(Math.random()*chars.length));
+ctx.fillText(t,i*fontSize,drops[i]*fontSize);
+if(drops[i]*fontSize>canvas.height&&Math.random()>.975)drops[i]=0;
+drops[i]++;
+}}
+setInterval(drawMatrix,50);
 
 // State
-var STATE = {
-  userName: '',
-  points: 0,
-  isPro: false,
-  completedLessons: [],
-  completedChallenges: [],
-  earnedBadges: [],
-  dailyTasks: [],
-  dailyDate: null,
-  updateShown: false
+var STATE={
+userName:'',points:0,isPro:false,
+completedLessons:[],completedChallenges:[],earnedBadges:[],
+dailyTasks:[],dailyDate:null
 };
 
-// Timer
-var sessionTimer = null;
-var sessionSeconds = 120;
-
-function startSessionTimer() {
-  sessionSeconds = 120;
-  var widget = document.getElementById('timerWidget');
-  widget.classList.add('show');
-  updateTimerDisplay();
-  sessionTimer = setInterval(function() {
-    sessionSeconds--;
-    updateTimerDisplay();
-    if (sessionSeconds <= 30) widget.classList.add('warning');
-    if (sessionSeconds <= 0) {
-      clearInterval(sessionTimer);
-      widget.classList.remove('show');
-      showApology();
-    }
-  }, 1000);
+// Navigation
+function goToKali(){
+document.getElementById('dragonScreen').classList.remove('active');
+document.getElementById('kaliScreen').classList.add('active');
 }
 
-function updateTimerDisplay() {
-  var m = Math.floor(sessionSeconds / 60);
-  var s = sessionSeconds % 60;
-  var str = (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
-  document.getElementById('timerDisplay').textContent = str;
+function doLogin(){
+var u=document.getElementById('username').value.trim();
+var p=document.getElementById('password').value;
+if(!u||!p){showToast('❌ املأ الحقول','error');return;}
+STATE.userName=u;
+if(p==='0000')STATE.isPro=true;
+localStorage.setItem('cyber_user',JSON.stringify({userName:u,isPro:STATE.isPro}));
+loadState();
+showToast('✅ مرحباً '+u,'gold');
+setTimeout(showApp,600);
 }
 
-// Apology
-function showApology() {
-  var modal = document.getElementById('apologyModal');
-  modal.classList.add('active');
-  var seconds = 10;
-  var timer = document.getElementById('apologyTimer');
-  timer.textContent = seconds;
-  var countdown = setInterval(function() {
-    seconds--;
-    timer.textContent = seconds;
-    if (seconds <= 0) {
-      clearInterval(countdown);
-      startUpdate();
-    }
-  }, 1000);
+function logout(){
+if(confirm('هل تريد الخروج؟')){
+localStorage.removeItem('cyber_user');
+location.reload();
+}}
+
+function loadState(){
+try{var s=localStorage.getItem('cyber_state');if(s)Object.assign(STATE,JSON.parse(s));}catch(e){}
 }
 
-// Update Progress
-function startUpdate() {
-  document.getElementById('apologyModal').classList.remove('active');
-  var screen = document.getElementById('updateScreen');
-  screen.classList.add('active');
+function saveState(){try{localStorage.setItem('cyber_state',JSON.stringify(STATE));}catch(e){}}
 
-  var steps = [
-    'حفظ بياناتك...',
-    'تحميل الميزات الجديدة...',
-    'تثبيت AI Chat...',
-    'تثبيت Sandbox...',
-    'تثبيت نظام الحماية...',
-    'تثبيت Marketplace...',
-    'التحقق النهائي...',
-    'اكتمل التحديث!'
-  ];
-
-  var stepsContainer = document.getElementById('updateSteps');
-  stepsContainer.innerHTML = '';
-  for (var i = 0; i < steps.length; i++) {
-    var div = document.createElement('div');
-    div.className = 'update-step';
-    div.id = 'upStep' + i;
-    div.textContent = '⏳ ' + steps[i];
-    stepsContainer.appendChild(div);
-  }
-
-  var bar = document.getElementById('updateBar');
-  var percentEl = document.getElementById('updatePercent');
-  var idx = 0;
-
-  function processStep() {
-    if (idx >= steps.length) {
-      setTimeout(function() {
-        screen.classList.remove('active');
-        showWelcomeBack();
-      }, 600);
-      return;
-    }
-    var el = document.getElementById('upStep' + idx);
-    el.classList.add('active');
-    el.textContent = '⏳ ' + steps[idx];
-
-    setTimeout(function() {
-      el.classList.remove('active');
-      el.classList.add('done');
-      el.textContent = '✓ ' + steps[idx];
-      idx++;
-      var percent = Math.round((idx / steps.length) * 100);
-      bar.style.width = percent + '%';
-      percentEl.textContent = percent + '%';
-      processStep();
-    }, 500);
-  }
-  processStep();
-}
-
-// Welcome Back
-function showWelcomeBack() {
-  STATE.points += 200;
-  saveState();
-  document.getElementById('welcomeBackModal').classList.add('active');
-  STATE.updateShown = true;
-  saveState();
-}
-
-function closeWelcomeBack() {
-  document.getElementById('welcomeBackModal').classList.remove('active');
-  showToast('🎉 +200 نقطة مكافأة!', 'gold');
-  // Restart session timer
-  sessionSeconds = 120;
-  startSessionTimer();
-}
-
-// Login
-function doLogin() {
-  var u = document.getElementById('username').value.trim();
-  var p = document.getElementById('password').value;
-  if (!u || !p) { showToast('❌ املأ الحقول', 'error'); return; }
-  STATE.userName = u;
-  localStorage.setItem('cyber_user', JSON.stringify({ userName: u, loginTime: Date.now() }));
-  loadState();
-  showToast('✅ مرحباً ' + u, 'gold');
-  setTimeout(showApp, 600);
-}
-
-function logout() {
-  if (confirm('هل تريد الخروج؟')) {
-    localStorage.removeItem('cyber_user');
-    location.reload();
-  }
-}
-
-function loadState() {
-  try {
-    var s = localStorage.getItem('cyber_state');
-    if (s) Object.assign(STATE, JSON.parse(s));
-  } catch (e) {}
-}
-
-function saveState() {
-  try { localStorage.setItem('cyber_state', JSON.stringify(STATE)); } catch (e) {}
-}
-
-function showApp() {
-  document.getElementById('authScreen').classList.remove('active');
-  document.getElementById('appScreen').classList.add('active');
-  document.getElementById('bottomNav').style.display = 'flex';
-  document.getElementById('welcomeSub').textContent = '// ' + STATE.userName;
-  generateDailyTasks();
-  renderDailyTasks();
-
-  if (!STATE.updateShown) {
-    startSessionTimer();
-  }
+function showApp(){
+document.getElementById('dragonScreen').classList.remove('active');
+document.getElementById('kaliScreen').classList.remove('active');
+document.getElementById('appScreen').classList.add('active');
+document.getElementById('bottomNav').style.display='flex';
+document.getElementById('welcomeSub').textContent='// '+STATE.userName;
+generateDailyTasks();
+renderDailyTasks();
 }
 
 // Daily Tasks
-function generateDailyTasks() {
-  var today = new Date().toDateString();
-  if (STATE.dailyDate === today && STATE.dailyTasks.length > 0) return;
-  STATE.dailyTasks = [
-    { id: 't1', icon: '📚', title: 'أكمل درساً', points: 50, done: false },
-    { id: 't2', icon: '🧪', title: 'اجتز اختباراً', points: 100, done: false },
-    { id: 't3', icon: '🤖', title: 'تحدي AI', points: 60, done: false }
-  ];
-  STATE.dailyDate = today;
-  saveState();
+function generateDailyTasks(){
+var today=new Date().toDateString();
+if(STATE.dailyDate===today&&STATE.dailyTasks.length>0)return;
+STATE.dailyTasks=[
+{id:'t1',icon:'📚',title:'أكمل درساً',points:50,done:false},
+{id:'t2',icon:'🧪',title:'اجتز اختباراً',points:100,done:false},
+{id:'t3',icon:'🐲',title:'جرب Kali',points:80,done:false}
+];
+STATE.dailyDate=today;
+saveState();
 }
 
-function renderDailyTasks() {
-  var list = document.getElementById('dailyTasksList');
-  if (!list) return;
-  var html = '';
-  for (var i = 0; i < STATE.dailyTasks.length; i++) {
-    var t = STATE.dailyTasks[i];
-    html += '<div class="task-item ' + (t.done ? 'done' : '') + '" onclick="doTask(' + i + ')">';
-    html += '<span>' + t.icon + '</span>';
-    html += '<span style="flex:1">' + t.title + '</span>';
-    html += '<span style="color:#FFD700">+' + t.points + '</span>';
-    html += '</div>';
-  }
-  list.innerHTML = html;
+function renderDailyTasks(){
+var list=document.getElementById('dailyTasksList');
+if(!list)return;
+var html='';
+for(var i=0;i<STATE.dailyTasks.length;i++){
+var t=STATE.dailyTasks[i];
+html+='<div class="task-item '+(t.done?'done':'')+'" onclick="doTask('+i+')">';
+html+='<span>'+t.icon+'</span><span style="flex:1">'+t.title+'</span><span style="color:#FFD700">+'+t.points+'</span></div>';
+}
+list.innerHTML=html;
 }
 
-function doTask(i) {
-  var t = STATE.dailyTasks[i];
-  if (t.done) return;
-  t.done = true;
-  STATE.points += t.points;
-  saveState();
-  showToast('✅ +' + t.points + ' نقطة', 'gold');
-  renderDailyTasks();
+function doTask(i){
+var t=STATE.dailyTasks[i];
+if(t.done)return;
+t.done=true;
+STATE.points+=t.points;
+saveState();
+showToast('✅ +'+t.points+' نقطة','gold');
+renderDailyTasks();
 }
 
 // Chat AI
-function openChat() {
-  document.getElementById('chatScreen').classList.add('active');
-  setTimeout(function() { document.getElementById('chatInput').focus(); }, 300);
+function openChat(){
+document.getElementById('chatScreen').classList.add('active');
+setTimeout(function(){document.getElementById('chatInput').focus();},300);
+}
+function closeChat(){document.getElementById('chatScreen').classList.remove('active');}
+
+function sendMessage(){
+var input=document.getElementById('chatInput');
+var text=input.value.trim();
+if(!text)return;
+addMessage(text,'user');
+input.value='';
+setTimeout(function(){addMessage(getAIResponse(text),'bot');},600);
 }
 
-function closeChat() {
-  document.getElementById('chatScreen').classList.remove('active');
+function getAIResponse(msg){
+var lower=msg.toLowerCase();
+var responses={
+'فيشينغ':'الفيشينغ هو هجوم برسائل مزيفة لسرقة بياناتك. احذر: أخطاء إملائية، روابط غريبة، طلب عاجل.',
+'كلمة مرور':'12 حرفاً على الأقل، حروف كبيرة وصغيرة، أرقام ورموز. مثال: K9@mN2#pL8$',
+'2fa':'التحقق بخطوتين: SMS، تطبيق، مفاتيح. فعّله في كل حساباتك!',
+'vpn':'VPN يشفر اتصالك ويخفي IP. استخدمه على Wi-Fi العام. ProtonVPN مجاني.',
+'تشفير':'التشفير يحول البيانات لصيغة غير مفهومة. HTTPS مشفر. 7-Zip للملفات.',
+'https':'HTTPS = HTTP + TLS. ابحث عن القفل 🔒 في المتصفح.',
+'ddos':'DDoS = إغراق موقع بطلبات حتى يتوقف. يستخدم Botnet.',
+'هندسة':'الهندسة الاجتماعية = خداع الناس. أساليب: استعجال، سلطة، عاطفة.',
+'kali':'Kali Linux نظام تشغيل للأمن السيبراني. يحتوي 600+ أداة اختبار اختراق.',
+'nmap':'Nmap أداة فحص المنافذ والشبكات. استخدمها لفحص شبكتك الخاصة فقط!',
+'help':'اسألني عن: فيشينغ، كلمات مرور، 2FA، VPN، تشفير، HTTPS، DDoS، هندسة، Kali، nmap.'
+};
+for(var key in responses){
+if(lower.indexOf(key)!==-1)return responses[key];
+}
+return 'سؤال ممتاز! اسألني عن: فيشينغ، كلمات مرور، 2FA، VPN، تشفير، Kali، nmap.';
 }
 
-function sendMessage() {
-  var input = document.getElementById('chatInput');
-  var text = input.value.trim();
-  if (!text) return;
-  addMessage(text, 'user');
-  input.value = '';
-  setTimeout(function() {
-    var reply = getAIResponse(text);
-    addMessage(reply, 'bot');
-  }, 600);
-}
-
-function getAIResponse(msg) {
-  var lower = msg.toLowerCase();
-  var responses = {
-    'فيشينغ': 'الفيشينغ هو هجوم يستخدم رسائل مزيفة لسرقة بياناتك. احذر من: أخطاء إملائية، روابط غريبة، طلب عاجل. لا تضغط على أي رابط مشبوه!',
-    'كلمة مرور': 'استخدم 12 حرفاً على الأقل، مزيج من: حروف كبيرة ABC، صغيرة abc، أرقام 123، رموز !@#. مثال: K9@mN2#pL8$vQ4',
-    '2fa': 'التحقق بخطوتين طبقة حماية إضافية. الأنواع: SMS (أضعف)، تطبيق مصادقة (أفضل)، مفاتيح فيزيائية (الأقوى). فعّله في كل حساباتك!',
-    'vpn': 'VPN يشفر اتصالك ويخفي IP. استخدمه على Wi-Fi العام. أفضل: ProtonVPN، Mullvad، NordVPN.',
-    'تشفير': 'التشفير يحوّل البيانات لصيغة غير مفهومة. HTTPS مشفر. استخدم 7-Zip أو VeraCrypt للملفات.',
-    'https': 'HTTPS = HTTP + TLS. ابحث عن القفل 🔒 في المتصفح. لا تدخل بياناتك في موقع بدون HTTPS!',
-    'ddos': 'DDoS = إغراق موقع بطلبات كثيرة حتى يتوقف. يستخدم شبكة Botnet (أجهزة مصابة).',
-    'هندسة': 'الهندسة الاجتماعية = خداع الناس نفسياً. أساليب: الاستعجال، السلطة، العاطفة. لا تثق بمن يطلب معلومات حساسة.',
-    'hacker': 'الهاكر الأخلاقي يستخدم مهاراته للخير. المراحل: التخطيط، جمع المعلومات، المسح، الاستغلال، التقرير.',
-    'hello': 'مرحباً! كيف أساعدك في الأمن السيبراني اليوم؟',
-    'help': 'يمكنك أن تسألني عن: الفيشينغ، كلمات المرور، 2FA، VPN، التشفير، HTTPS، DDoS، الهندسة الاجتماعية، الهاكر الأخلاقي، وغيرها!'
-  };
-  for (var key in responses) {
-    if (lower.indexOf(key) !== -1) return responses[key];
-  }
-  if (lower.indexOf('مرحبا') !== -1 || lower.indexOf('سلام') !== -1) return responses.hello;
-  if (lower.indexOf('مساعدة') !== -1 || lower.indexOf('help') !== -1) return responses.help;
-  return 'سؤال ممتاز! يمكنك السؤال عن: فيشينغ، كلمات مرور، 2FA، VPN، تشفير، HTTPS، DDoS، هندسة اجتماعية، هاكر أخلاقي.';
-}
-
-function addMessage(text, type) {
-  var box = document.getElementById('chatMessages');
-  var div = document.createElement('div');
-  div.className = 'msg ' + type;
-  div.innerHTML = '<div class="msg-avatar">' + (type === 'bot' ? '🤖' : '👤') + '</div><div class="msg-content">' + text + '</div>';
-  box.appendChild(div);
-  box.scrollTop = box.scrollHeight;
+function addMessage(text,type){
+var box=document.getElementById('chatMessages');
+var div=document.createElement('div');
+div.className='msg '+type;
+div.innerHTML='<div class="msg-avatar">'+(type==='bot'?'🤖':'👤')+'</div><div class="msg-content">'+text+'</div>';
+box.appendChild(div);
+box.scrollTop=box.scrollHeight;
 }
 
 // Pages
-function openPage(id) {
-  document.getElementById(id).classList.add('active');
-  if (id === 'lessonsPage') renderLessons();
-  if (id === 'videosPage') renderVideos();
-  if (id === 'marketPage') renderMarket();
-  if (id === 'libraryPage') renderLibrary();
-  if (id === 'badgesPage') renderBadges();
-  if (id === 'statsPage') renderStats();
-  if (id === 'docsPage') renderDocs();
-  if (id === 'quizPage') startQuiz();
+function openPage(id){
+document.getElementById(id).classList.add('active');
+if(id==='lessonsPage')renderLessons();
+if(id==='videosPage')renderVideos();
+if(id==='marketPage')renderMarket();
+if(id==='libraryPage')renderLibrary();
+if(id==='badgesPage')renderBadges();
+if(id==='statsPage')renderStats();
+if(id==='docsPage')renderDocs();
+if(id==='quizPage')startQuiz();
 }
+function closePage(id){document.getElementById(id).classList.remove('active');}
 
-function closePage(id) {
-  document.getElementById(id).classList.remove('active');
-}
-
-function switchTab(tab) {
-  if (tab === 'home') { document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); }); return; }
-  if (tab === 'ai') { openChat(); return; }
-  if (tab === 'lessons') { openPage('lessonsPage'); return; }
-  if (tab === 'sandbox') { openPage('sandboxPage'); return; }
-  if (tab === 'stats') { openPage('statsPage'); return; }
+function switchTab(tab){
+if(tab==='home'){document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});return;}
+if(tab==='ai'){openChat();return;}
+if(tab==='lessons'){openPage('lessonsPage');return;}
+if(tab==='kali'){openPage('kaliPage');return;}
+if(tab==='stats'){openPage('statsPage');return;}
 }
 
 // Lessons
-var LESSONS = [
-  { id: 1, title: 'ما هو الأمن السيبراني؟', points: 50, content: 'الأمن السيبراني هو حماية الأنظمة والشبكات والبيانات من الهجمات الإلكترونية.' },
-  { id: 2, title: 'أنواع الهجمات', points: 60, content: 'الفيشينغ، برامج الفدية، DDoS، الهندسة الاجتماعية.' },
-  { id: 3, title: 'كلمات المرور القوية', points: 75, content: '12 حرفاً على الأقل، حروف كبيرة وصغيرة، أرقام ورموز.' },
-  { id: 4, title: 'التحقق بخطوتين', points: 80, content: '2FA طبقة حماية إضافية عبر SMS أو تطبيق.' },
-  { id: 5, title: 'الفيشينغ', points: 70, content: 'رسائل مزيفة تبدو حقيقية لسرقة بياناتك.' },
-  { id: 6, title: 'حماية الشبكة', points: 90, content: 'غيّر كلمة سر الراوتر، استخدم WPA3.' },
-  { id: 7, title: 'التشفير', points: 100, content: 'تحويل البيانات لصيغة غير مفهومة.' },
-  { id: 8, title: 'HTTPS', points: 60, content: 'النسخة المشفرة من HTTP، ابحث عن القفل 🔒.' },
-  { id: 9, title: 'الهندسة الاجتماعية', points: 85, content: 'خداع الناس للحصول على معلوماتهم.' },
-  { id: 10, title: 'أمان الهاتف', points: 70, content: 'قفل الشاشة، تحديث النظام، نسخ احتياطية.' }
+var LESSONS=[
+{id:1,title:'ما هو الأمن السيبراني؟',points:50,content:'حماية الأنظمة والشبكات والبيانات من الهجمات الإلكترونية.'},
+{id:2,title:'أنواع الهجمات',points:60,content:'الفيشينغ، برامج الفدية، DDoS، الهندسة الاجتماعية.'},
+{id:3,title:'كلمات المرور القوية',points:75,content:'12 حرفاً، حروف كبيرة وصغيرة، أرقام ورموز.'},
+{id:4,title:'التحقق بخطوتين',points:80,content:'2FA طبقة إضافية عبر SMS أو تطبيق.'},
+{id:5,title:'الفيشينغ',points:70,content:'رسائل مزيفة لسرقة بياناتك.'},
+{id:6,title:'حماية الشبكة',points:90,content:'غيّر كلمة سر الراوتر، استخدم WPA3.'},
+{id:7,title:'التشفير',points:100,content:'تحويل البيانات لصيغة غير مفهومة.'},
+{id:8,title:'HTTPS',points:60,content:'النسخة المشفرة، ابحث عن القفل 🔒.'},
+{id:9,title:'الهندسة الاجتماعية',points:85,content:'خداع الناس للحصول على معلوماتهم.'},
+{id:10,title:'أمان الهاتف',points:70,content:'قفل الشاشة، تحديث، نسخ احتياطية.'},
+{id:11,title:'VPN',points:75,content:'يشفر اتصالك ويخفي IP.'},
+{id:12,title:'Firewall',points:80,content:'جدار ناري يصد الهجمات.'},
+{id:13,title:'Malware',points:70,content:'برامج ضارة: فيروسات، ديدان، أحصنة.'},
+{id:14,title:'Ransomware',points:90,content:'يشفر ملفاتك ويطلب فدية.'},
+{id:15,title:'Botnet',points:85,content:'شبكة أجهزة مصابة يتحكم بها مهاجم.'},
+{id:16,title:'Social Engineering',points:80,content:'استغلال البشر لا الأجهزة.'},
+{id:17,title:'Zero-Day',points:100,content:'ثغرة غير معروفة للمطور.'},
+{id:18,title:'SQL Injection',points:95,content:'حقن SQL في قواعد البيانات.'},
+{id:19,title:'XSS',points:95,content:'حقن JavaScript في صفحات الويب.'},
+{id:20,title:'MITM',points:100,content:'رجل في المنتصف يعترض الاتصال.'},
+{id:21,title:'PenTest',points:120,content:'اختبار الاختراق الأخلاقي.'},
+{id:22,title:'Wireshark',points:110,content:'تحليل حزم الشبكة.'},
+{id:23,title:'Nmap',points:100,content:'فحص المنافذ والشبكات.'},
+{id:24,title:'Metasploit',points:130,content:'إطار اختبار الاختراق.'},
+{id:25,title:'Kali Linux',points:120,content:'نظام تشغيل للأمن السيبراني.'},
+{id:26,title:'Termux',points:90,content:'محاكي طرفية على أندرويد.'},
+{id:27,title:'Python للأمن',points:110,content:'أتمتة المهام الأمنية.'},
+{id:28,title:'أمن السحابة',points:100,content:'حماية البيانات في السحابة.'},
+{id:29,title:'IoT Security',points:110,content:'أمن إنترنت الأشياء.'},
+{id:30,title:'مستقبل الأمن',points:150,content:'AI + Quantum + IoT.'}
 ];
 
-function renderLessons() {
-  var html = '';
-  for (var i = 0; i < LESSONS.length; i++) {
-    var l = LESSONS[i];
-    var done = STATE.completedLessons.indexOf(l.id) !== -1;
-    html += '<div class="lesson-item" onclick="openLesson(' + l.id + ')">';
-    html += '<h4>' + (done ? '✅ ' : '') + l.title + '</h4>';
-    html += '<p>+' + l.points + ' نقطة</p>';
-    html += '</div>';
-  }
-  document.getElementById('lessonsList').innerHTML = html;
+function renderLessons(){
+var html='';
+for(var i=0;i<LESSONS.length;i++){
+var l=LESSONS[i];
+var done=STATE.completedLessons.indexOf(l.id)!==-1;
+html+='<div class="lesson-item" onclick="openLesson('+l.id+')">';
+html+='<h4>'+(done?'✅ ':'')+l.title+'</h4>';
+html+='<p>+'+l.points+' نقطة</p></div>';
+}
+document.getElementById('lessonsList').innerHTML=html;
 }
 
-function openLesson(id) {
-  var l = null;
-  for (var i = 0; i < LESSONS.length; i++) { if (LESSONS[i].id === id) l = LESSONS[i]; }
-  if (!l) return;
-  if (STATE.completedLessons.indexOf(id) === -1) {
-    STATE.completedLessons.push(id);
-    STATE.points += l.points;
-    saveState();
-    showToast('✅ +' + l.points + ' نقطة', 'gold');
-    checkBadges();
-  }
-  alert(l.title + '\n\n' + l.content);
-  renderLessons();
+function openLesson(id){
+var l=null;
+for(var i=0;i<LESSONS.length;i++){if(LESSONS[i].id===id)l=LESSONS[i];}
+if(!l)return;
+if(STATE.completedLessons.indexOf(id)===-1){
+STATE.completedLessons.push(id);
+STATE.points+=l.points;
+saveState();
+showToast('✅ +'+l.points+' نقطة','gold');
+checkBadges();
+}
+alert(l.title+'\n\n'+l.content);
+renderLessons();
 }
 
 // Videos
-var VIDEOS = [
-  { id: 1, title: 'مقدمة الأمن السيبراني', duration: '10:30', free: true },
-  { id: 2, title: 'كيف تصنع كلمة مرور قوية', duration: '8:15', free: true },
-  { id: 3, title: 'التعرف على الفيشينغ', duration: '12:20', free: true },
-  { id: 4, title: 'حماية شبكتك', duration: '15:00', free: true },
-  { id: 5, title: 'التشفير المبسط', duration: '18:45', free: false }
+var VIDEOS=[
+{id:1,title:'مقدمة الأمن السيبراني',duration:'10:30',free:true},
+{id:2,title:'كلمات مرور قوية',duration:'8:15',free:true},
+{id:3,title:'التعرف على الفيشينغ',duration:'12:20',free:true},
+{id:4,title:'حماية شبكتك',duration:'15:00',free:true},
+{id:5,title:'التشفير المبسط',duration:'18:45',free:false},
+{id:6,title:'Kali Linux من الصفر',duration:'25:00',free:false}
 ];
 
-function renderVideos() {
-  var html = '';
-  for (var i = 0; i < VIDEOS.length; i++) {
-    var v = VIDEOS[i];
-    html += '<div class="lesson-item" onclick="openVideo(' + v.id + ')">';
-    html += '<h4>' + (v.free ? '🎬' : '🔒') + ' ' + v.title + '</h4>';
-    html += '<p>المدة: ' + v.duration + (v.free ? '' : ' • ⭐ Pro') + '</p>';
-    html += '</div>';
-  }
-  document.getElementById('videosList').innerHTML = html;
+function renderVideos(){
+var html='';
+for(var i=0;i<VIDEOS.length;i++){
+var v=VIDEOS[i];
+html+='<div class="lesson-item" onclick="openVideo('+v.id+')">';
+html+='<h4>'+(v.free?'🎬':'🔒')+' '+v.title+'</h4>';
+html+='<p>المدة: '+v.duration+(v.free?'':' • ⭐ Pro')+'</p></div>';
+}
+document.getElementById('videosList').innerHTML=html;
 }
 
-function openVideo(id) {
-  var v = null;
-  for (var i = 0; i < VIDEOS.length; i++) { if (VIDEOS[i].id === id) v = VIDEOS[i]; }
-  if (!v) return;
-  if (!v.free) { showToast('⭐ يحتاج Pro', 'error'); return; }
-  showToast('🎬 ' + v.title, 'gold');
-  setTimeout(function() { window.open('https://t.me/amn_sirani', '_blank'); }, 800);
+function openVideo(id){
+var v=null;
+for(var i=0;i<VIDEOS.length;i++){if(VIDEOS[i].id===id)v=VIDEOS[i];}
+if(!v)return;
+if(!v.free&&!STATE.isPro){showToast('⭐ يحتاج Pro','error');return;}
+showToast('🎬 '+v.title,'gold');
+setTimeout(function(){window.open('https://t.me/amn_sirani','_blank');},800);
 }
 
 // Quiz
-var QUIZ = [
-  { q: 'ما هو الأمن السيبراني؟', o: ['حماية الأنظمة', 'لعبة', 'برنامج', 'موقع'], c: 0 },
-  { q: 'أفضل كلمة مرور؟', o: ['123456', 'اسمك', 'K9@mN2#pL8$', 'تاريخ'], c: 2 },
-  { q: 'الفيشينغ هو؟', o: ['سمك', 'رسائل مزيفة', 'مضاد', 'لعبة'], c: 1 },
-  { q: 'HTTPS يعني؟', o: ['موقع آمن', 'سريع', 'مجاني', 'قديم'], c: 0 },
-  { q: '2FA هو؟', o: ['طبقة إضافية', 'فيروس', 'لعبة', 'متصفح'], c: 0 }
+var QUIZ=[
+{q:'ما هو الأمن السيبراني؟',o:['حماية','لعبة','برنامج','موقع'],c:0},
+{q:'أفضل كلمة مرور؟',o:['123456','اسمك','K9@mN2#pL8$','تاريخ'],c:2},
+{q:'الفيشينغ؟',o:['سمك','رسائل مزيفة','مضاد','لعبة'],c:1},
+{q:'HTTPS؟',o:['آمن','سريع','مجاني','قديم'],c:0},
+{q:'2FA؟',o:['طبقة إضافية','فيروس','لعبة','متصفح'],c:0},
+{q:'VPN؟',o:['شبكة افتراضية','لعبة','موقع','برنامج'],c:0},
+{q:'DDoS؟',o:['حجب','لعبة','برنامج','موقع'],c:0},
+{q:'Malware؟',o:['ضار','لعبة','برنامج','خلفية'],c:0}
 ];
-var quizIdx = 0, quizScore = 0;
+var quizIdx=0,quizScore=0;
 
-function startQuiz() {
-  quizIdx = 0;
-  quizScore = 0;
-  renderQuizQuestion();
+function startQuiz(){quizIdx=0;quizScore=0;renderQuizQuestion();}
+
+function renderQuizQuestion(){
+var c=document.getElementById('quizContent');
+if(quizIdx>=QUIZ.length){
+var pct=Math.round((quizScore/QUIZ.length)*100);
+var pts=pct===100?300:pct>=70?150:pct>=50?75:25;
+STATE.points+=pts;
+saveState();
+c.innerHTML='<div style="text-align:center;padding:30px;color:#00FF41">'+
+'<div style="font-size:70px">'+quizScore+'/'+QUIZ.length+'</div>'+
+'<div style="margin-top:15px;font-size:18px">'+(pct>=80?'🏆 ممتاز!':pct>=50?'🎉 جيد':'📚 راجع')+'</div>'+
+'<div style="color:#FFD700;font-size:20px;margin-top:15px">+'+pts+' نقطة</div>'+
+'<button class="tool-btn" style="margin-top:20px" onclick="startQuiz()">🔄 إعادة</button></div>';
+checkBadges();
+return;
+}
+var q=QUIZ[quizIdx];
+var html='<div class="tool-box"><div style="color:#00FF41;font-size:12px;margin-bottom:8px">سؤال '+(quizIdx+1)+'/'+QUIZ.length+'</div>';
+html+='<h3 style="font-size:16px;color:#fff">'+q.q+'</h3>';
+for(var i=0;i<q.o.length;i++){
+html+='<button class="tool-btn" style="margin-top:8px;background:rgba(0,255,65,.1);color:#00FF41;border:1px solid #00FF41" onclick="answerQuiz('+i+')">'+q.o[i]+'</button>';
+}
+html+='</div>';
+c.innerHTML=html;
 }
 
-function renderQuizQuestion() {
-  var c = document.getElementById('quizContent');
-  if (quizIdx >= QUIZ.length) {
-    var pct = Math.round((quizScore / QUIZ.length) * 100);
-    var pts = pct === 100 ? 200 : pct >= 70 ? 100 : pct >= 50 ? 50 : 20;
-    STATE.points += pts;
-    saveState();
-    c.innerHTML = '<div class="result">' +
-      '<div style="font-size:70px">' + quizScore + '/' + QUIZ.length + '</div>' +
-      '<div style="margin-top:15px">' + (pct >= 80 ? '🏆 ممتاز!' : pct >= 50 ? '🎉 جيد' : '📚 راجع') + '</div>' +
-      '<div style="color:#FFD700;font-size:20px;margin-top:15px">+' + pts + ' نقطة</div>' +
-      '<button class="tool-btn" style="margin-top:20px" onclick="startQuiz()">🔄 إعادة</button>' +
-      '</div>';
-    checkBadges();
-    return;
-  }
-  var q = QUIZ[quizIdx];
-  var html = '<div class="tool-box">';
-  html += '<div style="color:#00FF41;font-size:12px;margin-bottom:8px">سؤال ' + (quizIdx + 1) + '/' + QUIZ.length + '</div>';
-  html += '<h3 style="font-size:16px;color:#fff">' + q.q + '</h3>';
-  for (var i = 0; i < q.o.length; i++) {
-    html += '<button class="tool-btn" style="margin-top:8px;background:rgba(0,255,65,.1);color:#00FF41;border:1px solid #00FF41" onclick="answerQuiz(' + i + ')">' + q.o[i] + '</button>';
-  }
-  html += '</div>';
-  c.innerHTML = html;
-}
-
-function answerQuiz(sel) {
-  var q = QUIZ[quizIdx];
-  if (sel === q.c) quizScore++;
-  quizIdx++;
-  setTimeout(renderQuizQuestion, 600);
+function answerQuiz(sel){
+var q=QUIZ[quizIdx];
+if(sel===q.c)quizScore++;
+quizIdx++;
+setTimeout(renderQuizQuestion,600);
 }
 
 // Sandbox
-function execSandbox() {
-  var input = document.getElementById('sandboxInput');
-  var cmd = input.value.trim();
-  if (!cmd) return;
-  var term = document.getElementById('sandboxTerminal');
-  term.innerHTML += '<div class="terminal-line">$ ' + cmd + '</div>';
-  term.innerHTML += '<div class="terminal-line" style="color:#00E5FF">' + runSandboxCmd(cmd) + '</div>';
-  input.value = '';
-  term.scrollTop = term.scrollHeight;
+function execSandbox(){
+var input=document.getElementById('sandboxInput');
+var cmd=input.value.trim();
+if(!cmd)return;
+var term=document.getElementById('sandboxTerminal');
+term.innerHTML+='<div class="terminal-line">$ '+cmd+'</div>';
+term.innerHTML+='<div class="terminal-line" style="color:#00E5FF">'+runSandboxCmd(cmd)+'</div>';
+input.value='';
+term.scrollTop=term.scrollHeight;
 }
 
-function runSandboxCmd(cmd) {
-  var c = cmd.toLowerCase();
-  if (c === 'help') return 'ls, nmap, ping, whoami, clear, attack, defend';
-  if (c === 'ls') return 'system.log  network.txt  target.ip';
-  if (c.indexOf('nmap') === 0) return 'PORT  STATE\n22/tcp open ssh\n80/tcp open http\n443/tcp open https';
-  if (c.indexOf('ping') === 0) return 'PING target: 64 bytes time=15ms';
-  if (c === 'whoami') return 'hacker@secure-system';
-  if (c === 'clear') { document.getElementById('sandboxTerminal').innerHTML = ''; return ''; }
-  if (c === 'attack') return '⚔️ بدء الهجوم... تم اختراق 1 نظام وهمي!';
-  if (c === 'defend') return '🛡️ تفعيل الدفاعات... تم صد 5 هجمات!';
-  return 'الأمر غير معروف: ' + cmd;
+function runSandboxCmd(cmd){
+var c=cmd.toLowerCase();
+if(c==='help')return 'ls, nmap, ping, whoami, clear, attack, defend';
+if(c==='ls')return 'system.log  network.txt  target.ip';
+if(c.indexOf('nmap')===0)return 'PORT  STATE\n22/tcp open ssh\n80/tcp open http\n443/tcp open https';
+if(c.indexOf('ping')===0)return 'PING target: time=15ms';
+if(c==='whoami')return 'hacker@secure-system';
+if(c==='clear'){document.getElementById('sandboxTerminal').innerHTML='';return '';}
+if(c==='attack')return '⚔️ بدء الهجوم... اختراق نظام وهمي!';
+if(c==='defend')return '🛡️ تفعيل الدفاعات... صد 5 هجمات!';
+return 'غير معروف: '+cmd;
+}
+
+// Kali Terminal
+function execKali(){
+var input=document.getElementById('kaliInput');
+var cmd=input.value.trim();
+if(!cmd)return;
+var term=document.getElementById('kaliTerminal');
+term.innerHTML+='<div class="terminal-line">└─$ '+cmd+'</div>';
+term.innerHTML+='<div class="terminal-line" style="color:#00FF41">'+runKaliCmd(cmd)+'</div>';
+input.value='';
+term.scrollTop=term.scrollHeight;
+}
+
+function runKaliCmd(cmd){
+var c=cmd.toLowerCase();
+if(c==='help')return 'ls, pwd, whoami, nmap, msfconsole, sqlmap, hydra, hashcat, clear';
+if(c==='ls')return 'Desktop  Documents  Downloads  tools  exploits';
+if(c==='pwd')return '/home/kali';
+if(c==='whoami')return 'kali';
+if(c==='nmap'||c.indexOf('nmap ')===0)return 'Starting Nmap 7.94\nNmap scan report for target\nPORT     STATE SERVICE\n22/tcp   open  ssh\n80/tcp   open  http\n443/tcp  open  https';
+if(c==='msfconsole')return 'Metasploit Framework v6.3\nmsf6 > _';
+if(c==='sqlmap'||c.indexOf('sqlmap')===0)return 'sqlmap v1.7\n[INFO] testing connection\n[CRITICAL] vulnerable!';
+if(c==='hydra')return 'Hydra v9.5\n[STATUS] attacking...\n[SUCCESS] password found';
+if(c==='hashcat')return 'hashcat v6.2\n[INFO] cracking...\n[FOUND] admin123';
+if(c==='clear'){document.getElementById('kaliTerminal').innerHTML='<div class="terminal-line">┌──(kali㉿secure)-[~]</div>';return '';}
+return 'bash: '+cmd+': command not found';
 }
 
 // Defense
-function simulateAttack() {
-  var term = document.getElementById('defenseTerminal');
-  term.innerHTML = '';
-  var steps = [
-    { msg: '> تحليل الشبكة...', color: '#0a5a0a', delay: 400 },
-    { msg: '[!] اكتشاف هجوم DDoS!', color: '#FFAA00', delay: 700 },
-    { msg: '> تفعيل Firewall...', color: '#0a5a0a', delay: 500 },
-    { msg: '[✓] تم صد 1000 طلب مشبوه', color: '#00FF41', delay: 600 },
-    { msg: '> تحليل البصمة...', color: '#0a5a0a', delay: 500 },
-    { msg: '[✓] المصدر: 192.168.1.100', color: '#00E5FF', delay: 600 },
-    { msg: '> حظر المصدر...', color: '#0a5a0a', delay: 500 },
-    { msg: '[✓] تم الحظر بنجاح!', color: '#00FF41', delay: 600 },
-    { msg: '[✓] النظام آمن ✅', color: '#00FF41', delay: 800 }
-  ];
-  var i = 0;
-  function addStep() {
-    if (i >= steps.length) {
-      STATE.points += 75;
-      saveState();
-      term.innerHTML += '<div class="terminal-line" style="color:#FFD700">+75 نقطة</div>';
-      showToast('✅ تم صد الهجوم! +75', 'gold');
-      return;
-    }
-    var s = steps[i];
-    term.innerHTML += '<div class="terminal-line" style="color:' + s.color + '">' + s.msg + '</div>';
-    term.scrollTop = term.scrollHeight;
-    i++;
-    setTimeout(addStep, s.delay);
-  }
-  addStep();
+function simulateAttack(){
+var term=document.getElementById('defenseTerminal');
+term.innerHTML='';
+var steps=[
+{msg:'> تحليل الشبكة...',color:'#0a5a0a',delay:400},
+{msg:'[!] اكتشاف DDoS!',color:'#FFAA00',delay:700},
+{msg:'> تفعيل Firewall...',color:'#0a5a0a',delay:500},
+{msg:'[✓] صد 1000 طلب',color:'#00FF41',delay:600},
+{msg:'> حظر المصدر...',color:'#0a5a0a',delay:500},
+{msg:'[✓] تم الحظر!',color:'#00FF41',delay:600},
+{msg:'[✓] النظام آمن ✅',color:'#00FF41',delay:800}
+];
+var i=0;
+function addStep(){
+if(i>=steps.length){
+STATE.points+=75;
+saveState();
+term.innerHTML+='<div class="terminal-line" style="color:#FFD700">+75 نقطة</div>';
+showToast('✅ +75','gold');
+return;
+}
+var s=steps[i];
+term.innerHTML+='<div class="terminal-line" style="color:'+s.color+'">'+s.msg+'</div>';
+term.scrollTop=term.scrollHeight;
+i++;
+setTimeout(addStep,s.delay);
+}
+addStep();
 }
 
 // Market
-var MARKET = [
-  { id: 1, name: '⭐ ترقية Pro', price: 5000, icon: '👑' },
-  { id: 2, name: '🎨 ثيم Matrix', price: 500, icon: '🎨' },
-  { id: 3, name: '🏆 شارة خاصة', price: 1000, icon: '🏆' },
-  { id: 4, name: '🎁 صندوق حظ', price: 300, icon: '🎁' },
-  { id: 5, name: '📚 درس إضافي', price: 800, icon: '📚' }
+var MARKET=[
+{id:1,name:'⭐ ترقية Pro',price:5000,icon:'👑'},
+{id:2,name:'🎨 ثيم Matrix',price:500,icon:'🎨'},
+{id:3,name:'🏆 شارة خاصة',price:1000,icon:'🏆'},
+{id:4,name:'🎁 صندوق حظ',price:300,icon:'🎁'},
+{id:5,name:'🐲 ثيم Kali',price:800,icon:'🐲'}
 ];
 
-function renderMarket() {
-  var html = '';
-  for (var i = 0; i < MARKET.length; i++) {
-    var m = MARKET[i];
-    html += '<div class="tool-box">';
-    html += '<h3>' + m.icon + ' ' + m.name + '</h3>';
-    html += '<p style="color:#FFD700">💰 ' + m.price + ' نقطة</p>';
-    html += '<button class="tool-btn" style="margin-top:8px" onclick="buyItem(' + m.id + ',' + m.price + ')">🛒 شراء</button>';
-    html += '</div>';
-  }
-  document.getElementById('marketList').innerHTML = html;
+function renderMarket(){
+var html='';
+for(var i=0;i<MARKET.length;i++){
+var m=MARKET[i];
+html+='<div class="tool-box"><h3>'+m.icon+' '+m.name+'</h3>';
+html+='<p style="color:#FFD700">💰 '+m.price+' نقطة</p>';
+html+='<button class="tool-btn" style="margin-top:8px" onclick="buyItem('+m.id+','+m.price+')">🛒 شراء</button></div>';
+}
+document.getElementById('marketList').innerHTML=html;
 }
 
-function buyItem(id, price) {
-  if (STATE.points < price) { showToast('❌ نقاط غير كافية', 'error'); return; }
-  STATE.points -= price;
-  saveState();
-  showToast('✅ تم الشراء!', 'gold');
-  if (id === 1) STATE.isPro = true;
+function buyItem(id,price){
+if(STATE.points<price){showToast('❌ نقاط غير كافية','error');return;}
+STATE.points-=price;
+if(id===1)STATE.isPro=true;
+saveState();
+showToast('✅ تم الشراء!','gold');
 }
 
 // Library
-var LIBRARY = [
-  { name: 'Nmap', desc: 'فحص المنافذ', cmd: 'pkg install nmap' },
-  { name: 'Metasploit', desc: 'اختبار الاختراق', cmd: 'pkg install metasploit' },
-  { name: 'SQLMap', desc: 'كشف SQL Injection', cmd: 'pkg install sqlmap' },
-  { name: 'Wireshark', desc: 'تحليل الحزم', cmd: 'pkg install wireshark' },
-  { name: 'Hashcat', desc: 'كسر كلمات المرور', cmd: 'pkg install hashcat' },
-  { name: 'John', desc: 'كسر كلمات المرور', cmd: 'pkg install john' },
-  { name: 'Hydra', desc: 'هجوم القوة', cmd: 'pkg install hydra' },
-  { name: 'Aircrack', desc: 'شبكات Wi-Fi', cmd: 'pkg install aircrack-ng' }
+var LIBRARY=[
+{name:'Nmap',desc:'فحص المنافذ',cmd:'pkg install nmap'},
+{name:'Metasploit',desc:'اختبار الاختراق',cmd:'pkg install metasploit'},
+{name:'SQLMap',desc:'كشف SQLi',cmd:'pkg install sqlmap'},
+{name:'Wireshark',desc:'تحليل الحزم',cmd:'pkg install wireshark'},
+{name:'Hashcat',desc:'كسر المرور',cmd:'pkg install hashcat'},
+{name:'Hydra',desc:'هجوم القوة',cmd:'pkg install hydra'},
+{name:'Aircrack',desc:'Wi-Fi',cmd:'pkg install aircrack-ng'},
+{name:'Kali NetHunter',desc:'Kali للهاتف',cmd:'pkg install nethunter'}
 ];
 
-function renderLibrary() {
-  var html = '';
-  for (var i = 0; i < LIBRARY.length; i++) {
-    var t = LIBRARY[i];
-    html += '<div class="tool-box">';
-    html += '<h3>🔧 ' + t.name + '</h3>';
-    html += '<p style="color:#0a5a0a;font-size:12px">' + t.desc + '</p>';
-    html += '<div style="background:#000;padding:8px;border-radius:6px;font-family:monospace;font-size:11px;color:#00FF41;margin-top:8px;overflow-x:auto">$ ' + t.cmd + '</div>';
-    html += '<button class="tool-btn" style="margin-top:8px" onclick="copyCmd(\'' + t.cmd + '\')">📋 نسخ</button>';
-    html += '</div>';
-  }
-  document.getElementById('libraryList').innerHTML = html;
+function renderLibrary(){
+var html='';
+for(var i=0;i<LIBRARY.length;i++){
+var t=LIBRARY[i];
+html+='<div class="tool-box"><h3>🔧 '+t.name+'</h3>';
+html+='<p style="color:#0a5a0a;font-size:12px">'+t.desc+'</p>';
+html+='<div style="background:#000;padding:8px;border-radius:6px;font-family:monospace;font-size:11px;color:#00FF41;margin-top:8px;overflow-x:auto">$ '+t.cmd+'</div>';
+html+='<button class="tool-btn" style="margin-top:8px" onclick="copyCmd(\''+t.cmd+'\')">📋 نسخ</button></div>';
+}
+document.getElementById('libraryList').innerHTML=html;
 }
 
-function copyCmd(cmd) {
-  if (navigator.clipboard) {
-    navigator.clipboard.writeText(cmd);
-    showToast('📋 تم النسخ', 'gold');
-  }
+function copyCmd(cmd){
+if(navigator.clipboard){navigator.clipboard.writeText(cmd);showToast('📋 تم النسخ','gold');}
 }
 
 // Badges
-var BADGES = [
-  { id: 'first', name: 'أول درس', icon: '🥇' },
-  { id: 'lessons5', name: 'طالب', icon: '📚' },
-  { id: 'lessons10', name: 'متعلم', icon: '📖' },
-  { id: 'points500', name: '500 نقطة', icon: '⭐' },
-  { id: 'points1000', name: '1000 نقطة', icon: '🏆' },
-  { id: 'ai', name: 'AI Master', icon: '🤖' },
-  { id: 'hacker', name: 'هاكر', icon: '💻' },
-  { id: 'pro', name: 'Pro', icon: '👑' },
-  { id: 'daily', name: 'ملتزم', icon: '🔥' },
-  { id: 'update', name: 'محدّث', icon: '🔄' }
+var BADGES=[
+{id:'first',name:'أول درس',icon:'🥇'},
+{id:'lessons5',name:'طالب',icon:'📚'},
+{id:'lessons10',name:'متعلم',icon:'📖'},
+{id:'lessons20',name:'خبير',icon:'🎓'},
+{id:'lessons30',name:'معلّم',icon:'👨‍🏫'},
+{id:'points500',name:'500',icon:'⭐'},
+{id:'points1000',name:'1000',icon:'🏆'},
+{id:'points5000',name:'5000',icon:'💎'},
+{id:'ai',name:'AI Master',icon:'🤖'},
+{id:'kali',name:'Kali Expert',icon:'🐲'},
+{id:'hacker',name:'هاكر',icon:'💻'},
+{id:'pro',name:'Pro',icon:'👑'}
 ];
 
-function checkBadges() {
-  if (STATE.completedLessons.length >= 1) earn('first');
-  if (STATE.completedLessons.length >= 5) earn('lessons5');
-  if (STATE.completedLessons.length >= 10) earn('lessons10');
-  if (STATE.points >= 500) earn('points500');
-  if (STATE.points >= 1000) earn('points1000');
-  if (STATE.updateShown) earn('update');
+function checkBadges(){
+if(STATE.completedLessons.length>=1)earn('first');
+if(STATE.completedLessons.length>=5)earn('lessons5');
+if(STATE.completedLessons.length>=10)earn('lessons10');
+if(STATE.completedLessons.length>=20)earn('lessons20');
+if(STATE.completedLessons.length>=30)earn('lessons30');
+if(STATE.points>=500)earn('points500');
+if(STATE.points>=1000)earn('points1000');
+if(STATE.points>=5000)earn('points5000');
+if(STATE.isPro)earn('pro');
 }
 
-function earn(id) {
-  if (STATE.earnedBadges.indexOf(id) !== -1) return;
-  STATE.earnedBadges.push(id);
-  saveState();
-  var b = null;
-  for (var i = 0; i < BADGES.length; i++) { if (BADGES[i].id === id) b = BADGES[i]; }
-  if (b) showToast('🏆 ' + b.name, 'gold');
+function earn(id){
+if(STATE.earnedBadges.indexOf(id)!==-1)return;
+STATE.earnedBadges.push(id);
+saveState();
+var b=null;
+for(var i=0;i<BADGES.length;i++){if(BADGES[i].id===id)b=BADGES[i];}
+if(b)showToast('🏆 '+b.name,'gold');
 }
 
-function renderBadges() {
-  var html = '<div style="text-align:center;padding:15px;color:#00FF41;font-size:20px">' + STATE.earnedBadges.length + '/' + BADGES.length + '</div>';
-  html += '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">';
-  for (var i = 0; i < BADGES.length; i++) {
-    var b = BADGES[i];
-    var earned = STATE.earnedBadges.indexOf(b.id) !== -1;
-    html += '<div style="background:rgba(0,20,0,.5);border:1px solid ' + (earned ? '#FFD700' : 'rgba(0,255,65,.3)') + ';border-radius:10px;padding:12px;text-align:center;opacity:' + (earned ? 1 : 0.4) + '">';
-    html += '<div style="font-size:28px">' + b.icon + '</div>';
-    html += '<div style="font-size:10px;color:#00FF41;margin-top:6px">' + b.name + '</div>';
-    html += '</div>';
-  }
-  html += '</div>';
-  document.getElementById('badgesList').innerHTML = html;
+function renderBadges(){
+var html='<div style="text-align:center;padding:15px;color:#00FF41;font-size:20px">'+STATE.earnedBadges.length+'/'+BADGES.length+'</div>';
+html+='<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">';
+for(var i=0;i<BADGES.length;i++){
+var b=BADGES[i];
+var e=STATE.earnedBadges.indexOf(b.id)!==-1;
+html+='<div style="background:rgba(0,20,0,.5);border:1px solid '+(e?'#FFD700':'rgba(0,255,65,.3)')+';border-radius:10px;padding:12px;text-align:center;opacity:'+(e?1:.4)+'">';
+html+='<div style="font-size:28px">'+b.icon+'</div>';
+html+='<div style="font-size:10px;color:#00FF41;margin-top:6px">'+b.name+'</div></div>';
+}
+html+='</div>';
+document.getElementById('badgesList').innerHTML=html;
 }
 
 // Stats
-function renderStats() {
-  var html = '<div class="tool-box"><h3>📊 إحصائياتي</h3>';
-  html += '<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(0,255,65,.2);color:#00FF41"><span>النقاط</span><span>' + STATE.points + '</span></div>';
-  html += '<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(0,255,65,.2);color:#00FF41"><span>الدروس</span><span>' + STATE.completedLessons.length + '</span></div>';
-  html += '<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(0,255,65,.2);color:#00FF41"><span>الشارات</span><span>' + STATE.earnedBadges.length + '</span></div>';
-  html += '<div style="display:flex;justify-content:space-between;padding:8px 0;color:#00FF41"><span>Pro</span><span>' + (STATE.isPro ? '✅' : '❌') + '</span></div>';
-  html += '</div>';
-  html += '<div class="tool-box"><h3>⭐ قيّم التطبيق</h3>';
-  html += '<div class="star-rating">';
-  for (var i = 1; i <= 5; i++) {
-    html += '<span class="star" onclick="setRating(' + i + ')">★</span>';
-  }
-  html += '</div></div>';
-  document.getElementById('statsList').innerHTML = html;
+function renderStats(){
+var html='<div class="tool-box"><h3>📊 إحصائياتي</h3>';
+html+='<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(0,255,65,.2);color:#00FF41"><span>النقاط</span><span>'+STATE.points+'</span></div>';
+html+='<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(0,255,65,.2);color:#00FF41"><span>الدروس</span><span>'+STATE.completedLessons.length+'/30</span></div>';
+html+='<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(0,255,65,.2);color:#00FF41"><span>الشارات</span><span>'+STATE.earnedBadges.length+'</span></div>';
+html+='<div style="display:flex;justify-content:space-between;padding:8px 0;color:#00FF41"><span>Pro</span><span>'+(STATE.isPro?'✅':'❌')+'</span></div></div>';
+html+='<div class="tool-box"><h3>⭐ قيّم التطبيق</h3><div class="star-rating">';
+for(var i=1;i<=5;i++){html+='<span class="star" onclick="setRating('+i+')">★</span>';}
+html+='</div></div>';
+document.getElementById('statsList').innerHTML=html;
 }
 
-function setRating(n) {
-  var stars = document.querySelectorAll('.star');
-  for (var i = 0; i < stars.length; i++) {
-    if (i < n) stars[i].classList.add('active');
-    else stars[i].classList.remove('active');
-  }
-  showToast('✅ شكراً لتقييمك!', 'gold');
+function setRating(n){
+var stars=document.querySelectorAll('.star');
+for(var i=0;i<stars.length;i++){
+if(i<n)stars[i].classList.add('active');
+else stars[i].classList.remove('active');
+}
+showToast('✅ شكراً!','gold');
 }
 
 // Docs
-function renderDocs() {
-  var html = '<div class="tool-box"><h3>📄 الوثائق الكاملة</h3>';
-  html += '<p style="color:#8aFF8a;font-size:12px;line-height:1.8">';
-  html += '<b style="color:#00FF41">🚀 البدء:</b> سجل دخولك وابدأ التعلم<br><br>';
-  html += '<b style="color:#00FF41">⏱️ نظام التحديث:</b> بعد دقيقتين يظهر تحديث تلقائي<br><br>';
-  html += '<b style="color:#00FF41">🤖 AI Chat:</b> اسأل مدربك الذكي<br><br>';
-  html += '<b style="color:#00FF41">📚 الدروس:</b> 10 دروس تعليمية<br><br>';
-  html += '<b style="color:#00FF41">🎮 Sandbox:</b> مختبر اختراق آمن<br><br>';
-  html += '<b style="color:#00FF41">🛡️ Defense:</b> محاكي الحماية<br><br>';
-  html += '<b style="color:#00FF41">💰 Market:</b> متجر النقاط<br><br>';
-  html += '<b style="color:#00FF41">📚 Termux:</b> أوامر جاهزة<br><br>';
-  html += '<b style="color:#00FF41">🏆 الشارات:</b> 10 شارات<br><br>';
-  html += '<b style="color:#00FF41">👨‍💻 المطور:</b> أنس خشان<br>';
-  html += '📧 momoxmomox978@gmail.com<br>';
-  html += '📺 @amn_sirani';
-  html += '</p></div>';
-  document.getElementById('docsList').innerHTML = html;
+function renderDocs(){
+var html='<div class="tool-box"><h3>📄 الوثائق</h3>';
+html+='<p style="color:#8aFF8a;font-size:12px;line-height:1.8">';
+html+='<b style="color:#00FF41">🐲 Kali:</b> طرفية كاملة بأدوات اختراق<br><br>';
+html+='<b style="color:#00FF41">🤖 AI:</b> مدرب ذكي<br><br>';
+html+='<b style="color:#00FF41">📚 30 درس:</b> تعليم شامل<br><br>';
+html+='<b style="color:#00FF41">🎮 Sandbox:</b> مختبر آمن<br><br>';
+html+='<b style="color:#00FF41">🛡️ Defense:</b> محاكي حماية<br><br>';
+html+='<b style="color:#00FF41">💰 Market:</b> متجر النقاط<br><br>';
+html+='<b style="color:#00FF41">👨‍💻 المطور:</b> أنس خشان<br>';
+html+='📧 momoxmomox978@gmail.com<br>📺 @amn_sirani</p></div>';
+document.getElementById('docsList').innerHTML=html;
 }
 
 // Toast
-function showToast(msg, type) {
-  var t = document.getElementById('toast');
-  t.textContent = msg;
-  t.className = 'toast';
-  if (type) t.classList.add(type);
-  t.classList.add('show');
-  setTimeout(function() { t.classList.remove('show'); }, 2500);
+function showToast(msg,type){
+var t=document.getElementById('toast');
+t.textContent=msg;
+t.className='toast';
+if(type)t.classList.add(type);
+t.classList.add('show');
+setTimeout(function(){t.classList.remove('show');},2500);
 }
 
 // Auto Login
-window.addEventListener('load', function() {
-  try {
-    var u = localStorage.getItem('cyber_user');
-    if (u) {
-      var data = JSON.parse(u);
-      STATE.userName = data.userName;
-      loadState();
-      setTimeout(showApp, 300);
-    }
-  } catch (e) {}
+window.addEventListener('load',function(){
+try{
+var u=localStorage.getItem('cyber_user');
+if(u){
+var data=JSON.parse(u);
+STATE.userName=data.userName;
+STATE.isPro=data.isPro||false;
+loadState();
+setTimeout(showApp,300);
+}
+}catch(e){}
 });
 
-console.log('%c🛡️ SECURE SYSTEM v2.1.0', 'color:#00FF41;font-size:20px;font-weight:bold');
-console.log('%c👨‍💻 أنس خشان', 'color:#00FF41;font-size:14px');
-console.log('%c📧 momoxmomox978@gmail.com', 'color:#00E5FF;font-size:14px');
-console.log('%c📺 @amn_sirani', 'color:#0088CC;font-size:14px');
+console.log('%c🐲 SECURE SYSTEM v3.0.0','color:#FF6B35;font-size:22px;font-weight:bold');
+console.log('%c👨‍💻 أنس خشان','color:#00FF41;font-size:14px');
+console.log('%c📧 momoxmomox978@gmail.com','color:#00E5FF;font-size:14px');
+console.log('%c🐲 KALI LINUX EDITION','color:#367BF0;font-size:14px');
 </script>
 </body>
-   </html>
+  </html> 
