@@ -4,27 +4,30 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <meta name="theme-color" content="#00FF41">
-<title>SECURE SYSTEM - v3.0.0</title>
+<title>SECURE SYSTEM - v3.17.0 - FINAL</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Courier New',monospace;-webkit-tap-highlight-color:transparent}
-:root{--bg:#000308;--bg2:#0D1117;--border:#21262d;--text:#fff;--text2:#888;--matrix:#00FF41;--neon:#00E5FF;--gold:#FFD700;--danger:#f44336;--purple:#9C27B0;--pink:#E91E63;--kali:#367BF0}
+:root{--bg:#000308;--bg2:#0D1117;--border:#21262d;--text:#fff;--text2:#888;--matrix:#00FF41;--neon:#00E5FF;--gold:#FFD700;--danger:#f44336;--purple:#9C27B0;--pink:#E91E63;--kali:#367BF0;--dragon:#FF6B35}
 body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;user-select:none}
 #matrixCanvas{position:fixed;top:0;left:0;width:100%;height:100vh;z-index:-1;opacity:.15;pointer-events:none}
 .screen{position:fixed;inset:0;display:none;flex-direction:column;background:linear-gradient(135deg,#000308,#0a1620);z-index:10;overflow-y:auto}
 .screen.active{display:flex}
 
-/* Dragon Welcome */
-.dragon-screen{background:linear-gradient(135deg,#000308,#1a0000,#0a1620);align-items:center;justify-content:center;text-align:center;padding:20px}
-.dragon-emoji{font-size:140px;animation:dragonFloat 3s ease-in-out infinite;filter:drop-shadow(0 0 40px #FF3366) drop-shadow(0 0 80px #FF6B35);line-height:1}
+/* Final Notice Screen */
+.final-notice{background:linear-gradient(135deg,#000308,#1a0000,#0a1620);align-items:center;justify-content:center;text-align:center;padding:25px}
+.final-icon{font-size:130px;animation:dragonFloat 3s ease-in-out infinite;filter:drop-shadow(0 0 40px #FF6B35);line-height:1}
 @keyframes dragonFloat{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-20px) scale(1.08)}}
-.dragon-name{font-size:32px;color:#FF6B35;font-weight:bold;margin-top:25px;text-shadow:0 0 20px #FF6B35,0 0 40px #FF3366;letter-spacing:4px;animation:glowPulse 2s infinite}
-@keyframes glowPulse{0%,100%{text-shadow:0 0 20px #FF6B35,0 0 40px #FF3366}50%{text-shadow:0 0 30px #FF6B35,0 0 60px #FF3366,0 0 80px #FF3366}}
-.dragon-sub{font-size:14px;color:#8a5a3a;margin-top:10px;letter-spacing:2px}
-.dragon-dev{font-size:16px;color:var(--matrix);margin-top:30px;font-weight:bold;letter-spacing:1px}
-.dragon-btn{margin-top:40px;padding:18px 60px;background:linear-gradient(135deg,#FF6B35,#FF3366);color:#fff;border:none;border-radius:15px;font-size:18px;font-weight:bold;cursor:pointer;box-shadow:0 0 40px rgba(255,107,53,.6);font-family:inherit;letter-spacing:2px}
-.dragon-btn:active{transform:scale(.95)}
+.final-title{font-size:28px;color:var(--dragon);font-weight:bold;margin-top:25px;text-shadow:0 0 20px var(--dragon);letter-spacing:3px}
+.final-version{font-size:16px;color:var(--neon);margin-top:8px;letter-spacing:2px}
+.final-message{background:rgba(255,107,53,.1);border:2px solid var(--dragon);border-radius:15px;padding:20px;margin-top:30px;max-width:420px;text-align:right;line-height:1.9;color:#ffb894;font-size:14px}
+.final-message h3{color:var(--dragon);margin-bottom:12px;font-size:17px;text-align:center}
+.final-message strong{color:var(--neon)}
+.final-message .thanks{color:var(--matrix);font-weight:bold;display:block;margin-top:15px;padding-top:15px;border-top:1px solid rgba(255,107,53,.3);text-align:center;font-size:15px}
+.final-btn{margin-top:30px;padding:18px 60px;background:linear-gradient(135deg,#FF6B35,#FF3366);color:#fff;border:none;border-radius:15px;font-size:17px;font-weight:bold;cursor:pointer;box-shadow:0 0 40px rgba(255,107,53,.6);font-family:inherit;letter-spacing:2px}
+.final-btn:active{transform:scale(.95)}
+.final-dev{color:var(--matrix);font-size:14px;margin-top:25px;letter-spacing:1px}
 
-/* Kali Linux Login */
+/* Kali Login */
 .kali-screen{background:#0a0e14;padding:20px;font-family:'Courier New',monospace}
 .kali-window{max-width:500px;width:100%;margin:auto;background:#1a1f2e;border:1px solid #2c3e50;border-radius:8px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.8),0 0 60px rgba(54,123,240,.2)}
 .kali-titlebar{background:linear-gradient(180deg,#2c3e50,#1a2634);padding:10px 15px;display:flex;align-items:center;gap:10px;border-bottom:1px solid #000}
@@ -35,20 +38,19 @@ body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;u
 .kali-dot.green{background:#27c93f}
 .kali-title{flex:1;text-align:center;color:#8899aa;font-size:12px;letter-spacing:1px}
 .kali-body{padding:25px;background:#0a0e14}
-.kali-logo{text-align:center;margin-bottom:25px}
+.kali-logo{text-align:center;margin-bottom:20px}
 .kali-dragon{font-size:70px;filter:drop-shadow(0 0 20px #367BF0)}
 .kali-name{color:#367BF0;font-size:22px;font-weight:bold;margin-top:10px;letter-spacing:3px;text-shadow:0 0 15px #367BF0}
 .kali-version{color:#5a6b7a;font-size:12px;margin-top:5px}
-.kali-input-group{margin-bottom:15px;position:relative}
+.kali-input-group{margin-bottom:15px}
 .kali-input-group label{color:#5a6b7a;font-size:12px;display:block;margin-bottom:6px}
-.kali-input{width:100%;padding:12px 15px;background:#000;border:1px solid #2c3e50;border-radius:5px;color:#00FF41;font-size:14px;font-family:'Courier New',monospace;outline:none;transition:all .2s}
+.kali-input{width:100%;padding:12px 15px;background:#000;border:1px solid #2c3e50;border-radius:5px;color:#00FF41;font-size:14px;font-family:inherit;outline:none}
 .kali-input:focus{border-color:#367BF0;box-shadow:0 0 15px rgba(54,123,240,.4)}
 .kali-input::placeholder{color:#3a4a5a}
 .kali-btn{width:100%;padding:14px;margin-top:10px;background:linear-gradient(135deg,#367BF0,#2c5cc5);color:#fff;border:none;border-radius:5px;font-size:15px;font-weight:bold;cursor:pointer;font-family:inherit;letter-spacing:1px}
-.kali-btn:active{transform:scale(.98)}
-.kali-footer{color:#3a4a5a;font-size:11px;text-align:center;margin-top:15px}
 .kali-hint{background:rgba(54,123,240,.1);border:1px solid #2c3e50;border-radius:5px;padding:10px;color:#5a6b7a;font-size:11px;margin-bottom:15px;text-align:center}
 .kali-hint b{color:#367BF0}
+.kali-footer{color:#3a4a5a;font-size:11px;text-align:center;margin-top:15px}
 
 /* App */
 .header{display:flex;justify-content:space-between;align-items:center;padding:12px 15px;border-bottom:1px solid rgba(0,255,65,.3)}
@@ -79,6 +81,7 @@ body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;u
 .btn-stats{background:linear-gradient(135deg,#3F51B5,#5C6BC0)}
 .btn-telegram{background:linear-gradient(135deg,#0088CC,#00A0E0)}
 .btn-docs{background:linear-gradient(135deg,#795548,#A1887F)}
+.btn-thanks{background:linear-gradient(135deg,#FF6B35,#FF3366)}
 .page{position:fixed;inset:0;background:var(--bg);overflow-y:auto;padding:15px 15px 90px;display:none;z-index:100;animation:slide .3s}
 .page.active{display:block}
 @keyframes slide{from{transform:translateX(100%)}to{transform:translateX(0)}}
@@ -122,21 +125,26 @@ body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;u
 .star-rating{display:flex;justify-content:center;gap:8px;margin:15px 0;font-size:40px}
 .star{cursor:pointer;color:rgba(0,255,65,.2)}
 .star.active{color:var(--gold)}
-.timer-widget{position:fixed;top:8px;left:50%;transform:translateX(-50%);background:rgba(0,10,0,.9);border:1px solid var(--matrix);border-radius:20px;padding:5px 15px;color:var(--matrix);font-size:11px;font-weight:bold;z-index:999;display:none}
-.timer-widget.show{display:block}
 </style>
 </head>
 <body>
 <canvas id="matrixCanvas"></canvas>
-<div class="timer-widget" id="timerWidget">⏱️ <span id="timerDisplay">02:00</span></div>
 
-<!-- Dragon Welcome -->
-<div class="screen dragon-screen active" id="dragonScreen">
-<div class="dragon-emoji">🐲</div>
-<div class="dragon-name">ANS KHAN</div>
-<div class="dragon-sub">// SECURE SYSTEM v3.0.0</div>
-<div class="dragon-dev">🛡️ أنس خشان</div>
-<button class="dragon-btn" onclick="goToKali()">[ ENTER SYSTEM ]</button>
+<!-- Final Notice Screen -->
+<div class="screen final-notice active" id="finalScreen">
+<div class="final-icon">🐲</div>
+<div class="final-title">SECURE SYSTEM</div>
+<div class="final-version">v3.17.0 - FINAL EDITION</div>
+<div class="final-message">
+<h3>📢 رسالة من المطور</h3>
+مرحباً بك في <strong>النسخة النهائية</strong> من تطبيق SECURE SYSTEM.<br><br>
+هذه النسخة تحتوي على <strong>كل ما بنيناه</strong> منذ البداية — جميع الميزات، الدروس، التحديات، والأدوات.<br><br>
+<b style="color:#FF6B35">⚠️ لن يتم تطوير نسخ جديدة بعد اليوم</b><br><br>
+السبب: ناس لم تقدر التعب، ونحن تعبنا.<br><br>
+<span class="thanks">🙏 شكراً لكل من استخدم التطبيق ودعمنا</span>
+</div>
+<button class="final-btn" onclick="goToKali()">[ ENTER SYSTEM ]</button>
+<div class="final-dev">👨‍💻 أنس خشان • v3.17.0</div>
 </div>
 
 <!-- Kali Login -->
@@ -150,9 +158,9 @@ body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;u
 <div class="kali-logo">
 <div class="kali-dragon">🐲</div>
 <div class="kali-name">KALI LINUX</div>
-<div class="kali-version">SECURE SYSTEM EDITION v3.0.0</div>
+<div class="kali-version">SECURE SYSTEM EDITION v3.17.0</div>
 </div>
-<div class="kali-hint">💡 <b>للتجربة:</b> أي اسم + كلمة مرور<br>🔑 <b>Pro:</b> 0000 | <b>Beta:</b> BETA2025</div>
+<div class="kali-hint">💡 <b>للتجربة:</b> أي اسم + أي كلمة مرور<br>🔑 <b>Pro:</b> 0000 | <b>Beta:</b> BETA2025</div>
 <div class="kali-input-group">
 <label>┌─[ username ]</label>
 <input type="text" class="kali-input" id="username" placeholder="أنس خشان">
@@ -170,7 +178,7 @@ body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;u
 <!-- Main App -->
 <div class="screen" id="appScreen">
 <div class="header">
-<div class="header-left"><h1 id="welcomeTitle">🛡️ SECURE</h1><p id="welcomeSub">// مرحباً</p></div>
+<div class="header-left"><h1 id="welcomeTitle">🛡️ SECURE</h1><p id="welcomeSub">// v3.17.0 FINAL</p></div>
 <div class="header-btn" onclick="logout()">🚪</div>
 </div>
 <div class="app-content">
@@ -194,6 +202,7 @@ body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;u
 <button class="btn btn-library" onclick="openPage('libraryPage')"><span>📚 مكتبة Termux</span><span>←</span></button>
 <button class="btn btn-badges" onclick="openPage('badgesPage')"><span>🏆 الشارات</span><span>←</span></button>
 <button class="btn btn-stats" onclick="openPage('statsPage')"><span>📊 إحصائياتي</span><span>←</span></button>
+<button class="btn btn-thanks" onclick="openPage('thanksPage')"><span>💙 رسالة شكر</span><span>←</span></button>
 <button class="btn btn-docs" onclick="openPage('docsPage')"><span>📄 الوثائق</span><span>←</span></button>
 <a href="https://t.me/amn_sirani" class="btn btn-telegram"><span>📺 تلغرام</span><span>←</span></a>
 </div>
@@ -204,7 +213,7 @@ body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;u
 <div class="chat-container" id="chatScreen">
 <div class="chat-header"><button onclick="closeChat()">→</button><h3>🤖 AI Chat</h3></div>
 <div class="chat-messages" id="chatMessages">
-<div class="msg bot"><div class="msg-avatar">🤖</div><div class="msg-content">مرحباً! أنا AI مدربك. اسألني عن: فيشينغ، كلمات مرور، 2FA، VPN، تشفير، HTTPS، DDoS، هندسة اجتماعية.</div></div>
+<div class="msg bot"><div class="msg-avatar">🤖</div><div class="msg-content">مرحباً! أنا AI مدربك. اسألني عن: فيشينغ، كلمات مرور، 2FA، VPN، تشفير، HTTPS، DDoS، هندسة، Kali، nmap.</div></div>
 </div>
 <div class="chat-input-area">
 <input type="text" class="chat-input" id="chatInput" placeholder="اكتب..." onkeypress="if(event.key==='Enter')sendMessage()">
@@ -227,14 +236,34 @@ body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;u
 <div class="terminal" id="defenseTerminal" style="margin-top:12px"><div class="terminal-line">🛡️ في الاستعداد...</div></div>
 </div></div>
 <div class="page" id="kaliPage"><div class="page-header"><button class="back-btn" onclick="closePage('kaliPage')">→</button><div class="page-title">🐲 Kali Terminal</div></div>
-<div class="tool-box"><h3 style="color:#367BF0">🐲 KALI LINUX TERMINAL</h3>
-<div class="terminal" id="kaliTerminal" style="border-color:#367BF0;color:#5a9bff"><div class="terminal-line">┌──(kali㉿secure)-[~]</div><div class="terminal-line">└─$ SYSTEM READY</div><div class="terminal-line">└─$ اكتب help</div></div>
+<div class="tool-box"><h3 style="color:#367BF0">🐲 KALI LINUX</h3>
+<div class="terminal" id="kaliTerminal" style="border-color:#367BF0;color:#5a9bff"><div class="terminal-line">┌──(kali㉿secure)-[~]</div><div class="terminal-line">└─$ SYSTEM READY</div></div>
 <input type="text" class="tool-input" id="kaliInput" placeholder="kali@secure:~$" onkeypress="if(event.key==='Enter')execKali()" style="border-color:#367BF0;color:#5a9bff">
 </div></div>
 <div class="page" id="marketPage"><div class="page-header"><button class="back-btn" onclick="closePage('marketPage')">→</button><div class="page-title">💰 Marketplace</div></div><div id="marketList"></div></div>
 <div class="page" id="libraryPage"><div class="page-header"><button class="back-btn" onclick="closePage('libraryPage')">→</button><div class="page-title">📚 المكتبة</div></div><div id="libraryList"></div></div>
 <div class="page" id="badgesPage"><div class="page-header"><button class="back-btn" onclick="closePage('badgesPage')">→</button><div class="page-title">🏆 الشارات</div></div><div id="badgesList"></div></div>
 <div class="page" id="statsPage"><div class="page-header"><button class="back-btn" onclick="closePage('statsPage')">→</button><div class="page-title">📊 إحصائياتي</div></div><div id="statsList"></div></div>
+<div class="page" id="thanksPage"><div class="page-header"><button class="back-btn" onclick="closePage('thanksPage')">→</button><div class="page-title">💙 شكر</div></div>
+<div class="tool-box"><h3 style="color:#FF6B35">💙 رسالة شكر</h3>
+<p style="color:#ffb894;font-size:13px;line-height:2">
+شكراً لك على استخدام تطبيق <b>SECURE SYSTEM</b>.<br><br>
+هذه النسخة النهائية <b>v3.17.0</b>، تحتوي على كل ما بنيناه:<br>
+🐲 Kali Linux Terminal<br>
+🤖 AI Chat<br>
+📚 30 درس<br>
+🎮 Sandbox<br>
+🛡️ نظام الحماية<br>
+🏆 25 شارة<br>
+💰 Marketplace<br><br>
+<b style="color:#FF6B35">⚠️ لن يتم تطوير نسخ جديدة</b><br><br>
+<b>السبب:</b> ناس لم تقدر التعب، ونحن تعبنا.<br><br>
+<span style="color:#00FF41">🙏 شكراً لكل من دعمنا</span><br><br>
+<b style="color:#00E5FF">👨‍💻 أنس خشان</b><br>
+📧 momoxmomox978@gmail.com<br>
+📺 @amn_sirani
+</p>
+</div></div>
 <div class="page" id="docsPage"><div class="page-header"><button class="back-btn" onclick="closePage('docsPage')">→</button><div class="page-title">📄 الوثائق</div></div><div id="docsList"></div></div>
 
 <!-- Bottom Nav -->
@@ -281,7 +310,7 @@ dailyTasks:[],dailyDate:null
 
 // Navigation
 function goToKali(){
-document.getElementById('dragonScreen').classList.remove('active');
+document.getElementById('finalScreen').classList.remove('active');
 document.getElementById('kaliScreen').classList.add('active');
 }
 
@@ -290,7 +319,7 @@ var u=document.getElementById('username').value.trim();
 var p=document.getElementById('password').value;
 if(!u||!p){showToast('❌ املأ الحقول','error');return;}
 STATE.userName=u;
-if(p==='0000')STATE.isPro=true;
+if(p==='0000'||p==='BETA2025')STATE.isPro=true;
 localStorage.setItem('cyber_user',JSON.stringify({userName:u,isPro:STATE.isPro}));
 loadState();
 showToast('✅ مرحباً '+u,'gold');
@@ -310,7 +339,7 @@ try{var s=localStorage.getItem('cyber_state');if(s)Object.assign(STATE,JSON.pars
 function saveState(){try{localStorage.setItem('cyber_state',JSON.stringify(STATE));}catch(e){}}
 
 function showApp(){
-document.getElementById('dragonScreen').classList.remove('active');
+document.getElementById('finalScreen').classList.remove('active');
 document.getElementById('kaliScreen').classList.remove('active');
 document.getElementById('appScreen').classList.add('active');
 document.getElementById('bottomNav').style.display='flex';
@@ -373,22 +402,22 @@ setTimeout(function(){addMessage(getAIResponse(text),'bot');},600);
 function getAIResponse(msg){
 var lower=msg.toLowerCase();
 var responses={
-'فيشينغ':'الفيشينغ هو هجوم برسائل مزيفة لسرقة بياناتك. احذر: أخطاء إملائية، روابط غريبة، طلب عاجل.',
-'كلمة مرور':'12 حرفاً على الأقل، حروف كبيرة وصغيرة، أرقام ورموز. مثال: K9@mN2#pL8$',
+'فيشينغ':'الفيشينغ هجوم برسائل مزيفة. احذر: أخطاء إملائية، روابط غريبة، طلب عاجل.',
+'كلمة مرور':'12 حرفاً، حروف كبيرة وصغيرة، أرقام ورموز. مثال: K9@mN2#pL8$',
 '2fa':'التحقق بخطوتين: SMS، تطبيق، مفاتيح. فعّله في كل حساباتك!',
-'vpn':'VPN يشفر اتصالك ويخفي IP. استخدمه على Wi-Fi العام. ProtonVPN مجاني.',
-'تشفير':'التشفير يحول البيانات لصيغة غير مفهومة. HTTPS مشفر. 7-Zip للملفات.',
-'https':'HTTPS = HTTP + TLS. ابحث عن القفل 🔒 في المتصفح.',
-'ddos':'DDoS = إغراق موقع بطلبات حتى يتوقف. يستخدم Botnet.',
-'هندسة':'الهندسة الاجتماعية = خداع الناس. أساليب: استعجال، سلطة، عاطفة.',
-'kali':'Kali Linux نظام تشغيل للأمن السيبراني. يحتوي 600+ أداة اختبار اختراق.',
-'nmap':'Nmap أداة فحص المنافذ والشبكات. استخدمها لفحص شبكتك الخاصة فقط!',
-'help':'اسألني عن: فيشينغ، كلمات مرور، 2FA، VPN، تشفير، HTTPS، DDoS، هندسة، Kali، nmap.'
+'vpn':'VPN يشفر اتصالك. استخدمه على Wi-Fi العام.',
+'تشفير':'يحول البيانات لصيغة غير مفهومة. HTTPS مشفر.',
+'https':'HTTPS = HTTP + TLS. ابحث عن القفل 🔒.',
+'ddos':'إغراق موقع بطلبات حتى يتوقف.',
+'هندسة':'خداع الناس. أساليب: استعجال، سلطة، عاطفة.',
+'kali':'Kali Linux نظام للأمن السيبراني. 600+ أداة اختراق.',
+'nmap':'Nmap لفحص المنافذ والشبكات.',
+'help':'اسألني عن: فيشينغ، كلمات مرور، 2FA، VPN، تشفير، Kali، nmap.'
 };
 for(var key in responses){
 if(lower.indexOf(key)!==-1)return responses[key];
 }
-return 'سؤال ممتاز! اسألني عن: فيشينغ، كلمات مرور، 2FA، VPN، تشفير، Kali، nmap.';
+return 'اسألني عن: فيشينغ، كلمات مرور، 2FA، VPN، تشفير، Kali، nmap.';
 }
 
 function addMessage(text,type){
@@ -424,36 +453,36 @@ if(tab==='stats'){openPage('statsPage');return;}
 
 // Lessons
 var LESSONS=[
-{id:1,title:'ما هو الأمن السيبراني؟',points:50,content:'حماية الأنظمة والشبكات والبيانات من الهجمات الإلكترونية.'},
-{id:2,title:'أنواع الهجمات',points:60,content:'الفيشينغ، برامج الفدية، DDoS، الهندسة الاجتماعية.'},
-{id:3,title:'كلمات المرور القوية',points:75,content:'12 حرفاً، حروف كبيرة وصغيرة، أرقام ورموز.'},
-{id:4,title:'التحقق بخطوتين',points:80,content:'2FA طبقة إضافية عبر SMS أو تطبيق.'},
+{id:1,title:'ما هو الأمن السيبراني؟',points:50,content:'حماية الأنظمة والشبكات والبيانات.'},
+{id:2,title:'أنواع الهجمات',points:60,content:'الفيشينغ، الفدية، DDoS، الهندسة.'},
+{id:3,title:'كلمات المرور القوية',points:75,content:'12 حرفاً، كبير وصغير، أرقام ورموز.'},
+{id:4,title:'التحقق بخطوتين',points:80,content:'2FA طبقة إضافية.'},
 {id:5,title:'الفيشينغ',points:70,content:'رسائل مزيفة لسرقة بياناتك.'},
-{id:6,title:'حماية الشبكة',points:90,content:'غيّر كلمة سر الراوتر، استخدم WPA3.'},
+{id:6,title:'حماية الشبكة',points:90,content:'WPA3، غيّر كلمة الراوتر.'},
 {id:7,title:'التشفير',points:100,content:'تحويل البيانات لصيغة غير مفهومة.'},
-{id:8,title:'HTTPS',points:60,content:'النسخة المشفرة، ابحث عن القفل 🔒.'},
+{id:8,title:'HTTPS',points:60,content:'النسخة المشفرة، القفل 🔒.'},
 {id:9,title:'الهندسة الاجتماعية',points:85,content:'خداع الناس للحصول على معلوماتهم.'},
-{id:10,title:'أمان الهاتف',points:70,content:'قفل الشاشة، تحديث، نسخ احتياطية.'},
+{id:10,title:'أمان الهاتف',points:70,content:'قفل، تحديث، نسخ احتياطية.'},
 {id:11,title:'VPN',points:75,content:'يشفر اتصالك ويخفي IP.'},
 {id:12,title:'Firewall',points:80,content:'جدار ناري يصد الهجمات.'},
-{id:13,title:'Malware',points:70,content:'برامج ضارة: فيروسات، ديدان، أحصنة.'},
-{id:14,title:'Ransomware',points:90,content:'يشفر ملفاتك ويطلب فدية.'},
-{id:15,title:'Botnet',points:85,content:'شبكة أجهزة مصابة يتحكم بها مهاجم.'},
-{id:16,title:'Social Engineering',points:80,content:'استغلال البشر لا الأجهزة.'},
-{id:17,title:'Zero-Day',points:100,content:'ثغرة غير معروفة للمطور.'},
-{id:18,title:'SQL Injection',points:95,content:'حقن SQL في قواعد البيانات.'},
-{id:19,title:'XSS',points:95,content:'حقن JavaScript في صفحات الويب.'},
-{id:20,title:'MITM',points:100,content:'رجل في المنتصف يعترض الاتصال.'},
-{id:21,title:'PenTest',points:120,content:'اختبار الاختراق الأخلاقي.'},
-{id:22,title:'Wireshark',points:110,content:'تحليل حزم الشبكة.'},
-{id:23,title:'Nmap',points:100,content:'فحص المنافذ والشبكات.'},
-{id:24,title:'Metasploit',points:130,content:'إطار اختبار الاختراق.'},
-{id:25,title:'Kali Linux',points:120,content:'نظام تشغيل للأمن السيبراني.'},
-{id:26,title:'Termux',points:90,content:'محاكي طرفية على أندرويد.'},
-{id:27,title:'Python للأمن',points:110,content:'أتمتة المهام الأمنية.'},
-{id:28,title:'أمن السحابة',points:100,content:'حماية البيانات في السحابة.'},
-{id:29,title:'IoT Security',points:110,content:'أمن إنترنت الأشياء.'},
-{id:30,title:'مستقبل الأمن',points:150,content:'AI + Quantum + IoT.'}
+{id:13,title:'Malware',points:70,content:'برامج ضارة.'},
+{id:14,title:'Ransomware',points:90,content:'يشفر ويطلب فدية.'},
+{id:15,title:'Botnet',points:85,content:'شبكة أجهزة مصابة.'},
+{id:16,title:'Social Engineering',points:80,content:'استغلال البشر.'},
+{id:17,title:'Zero-Day',points:100,content:'ثغرة مجهولة.'},
+{id:18,title:'SQL Injection',points:95,content:'حقن SQL.'},
+{id:19,title:'XSS',points:95,content:'حقن JavaScript.'},
+{id:20,title:'MITM',points:100,content:'رجل في المنتصف.'},
+{id:21,title:'PenTest',points:120,content:'اختبار الاختراق.'},
+{id:22,title:'Wireshark',points:110,content:'تحليل الحزم.'},
+{id:23,title:'Nmap',points:100,content:'فحص المنافذ.'},
+{id:24,title:'Metasploit',points:130,content:'إطار الاختراق.'},
+{id:25,title:'Kali Linux',points:120,content:'نظام للأمن.'},
+{id:26,title:'Termux',points:90,content:'محاكي طرفية.'},
+{id:27,title:'Python للأمن',points:110,content:'أتمتة.'},
+{id:28,title:'أمن السحابة',points:100,content:'حماية البيانات.'},
+{id:29,title:'IoT Security',points:110,content:'إنترنت الأشياء.'},
+{id:30,title:'مستقبل الأمن',points:150,content:'AI + Quantum.'}
 ];
 
 function renderLessons(){
@@ -487,7 +516,7 @@ renderLessons();
 var VIDEOS=[
 {id:1,title:'مقدمة الأمن السيبراني',duration:'10:30',free:true},
 {id:2,title:'كلمات مرور قوية',duration:'8:15',free:true},
-{id:3,title:'التعرف على الفيشينغ',duration:'12:20',free:true},
+{id:3,title:'الفيشينغ',duration:'12:20',free:true},
 {id:4,title:'حماية شبكتك',duration:'15:00',free:true},
 {id:5,title:'التشفير المبسط',duration:'18:45',free:false},
 {id:6,title:'Kali Linux من الصفر',duration:'25:00',free:false}
@@ -603,9 +632,9 @@ if(c==='help')return 'ls, pwd, whoami, nmap, msfconsole, sqlmap, hydra, hashcat,
 if(c==='ls')return 'Desktop  Documents  Downloads  tools  exploits';
 if(c==='pwd')return '/home/kali';
 if(c==='whoami')return 'kali';
-if(c==='nmap'||c.indexOf('nmap ')===0)return 'Starting Nmap 7.94\nNmap scan report for target\nPORT     STATE SERVICE\n22/tcp   open  ssh\n80/tcp   open  http\n443/tcp  open  https';
+if(c==='nmap'||c.indexOf('nmap ')===0)return 'Starting Nmap 7.94\nPORT     STATE SERVICE\n22/tcp   open  ssh\n80/tcp   open  http\n443/tcp  open  https';
 if(c==='msfconsole')return 'Metasploit Framework v6.3\nmsf6 > _';
-if(c==='sqlmap'||c.indexOf('sqlmap')===0)return 'sqlmap v1.7\n[INFO] testing connection\n[CRITICAL] vulnerable!';
+if(c==='sqlmap'||c.indexOf('sqlmap')===0)return 'sqlmap v1.7\n[INFO] testing\n[CRITICAL] vulnerable!';
 if(c==='hydra')return 'Hydra v9.5\n[STATUS] attacking...\n[SUCCESS] password found';
 if(c==='hashcat')return 'hashcat v6.2\n[INFO] cracking...\n[FOUND] admin123';
 if(c==='clear'){document.getElementById('kaliTerminal').innerHTML='<div class="terminal-line">┌──(kali㉿secure)-[~]</div>';return '';}
@@ -774,14 +803,16 @@ showToast('✅ شكراً!','gold');
 
 // Docs
 function renderDocs(){
-var html='<div class="tool-box"><h3>📄 الوثائق</h3>';
+var html='<div class="tool-box"><h3>📄 الوثائق - v3.17.0 FINAL</h3>';
 html+='<p style="color:#8aFF8a;font-size:12px;line-height:1.8">';
-html+='<b style="color:#00FF41">🐲 Kali:</b> طرفية كاملة بأدوات اختراق<br><br>';
+html+='<b style="color:#00FF41">🐲 Kali:</b> طرفية كاملة<br><br>';
 html+='<b style="color:#00FF41">🤖 AI:</b> مدرب ذكي<br><br>';
 html+='<b style="color:#00FF41">📚 30 درس:</b> تعليم شامل<br><br>';
 html+='<b style="color:#00FF41">🎮 Sandbox:</b> مختبر آمن<br><br>';
 html+='<b style="color:#00FF41">🛡️ Defense:</b> محاكي حماية<br><br>';
 html+='<b style="color:#00FF41">💰 Market:</b> متجر النقاط<br><br>';
+html+='<b style="color:#FF6B35">⚠️ النسخة النهائية</b><br>';
+html+='لن يتم تطوير نسخ جديدة<br><br>';
 html+='<b style="color:#00FF41">👨‍💻 المطور:</b> أنس خشان<br>';
 html+='📧 momoxmomox978@gmail.com<br>📺 @amn_sirani</p></div>';
 document.getElementById('docsList').innerHTML=html;
@@ -811,10 +842,11 @@ setTimeout(showApp,300);
 }catch(e){}
 });
 
-console.log('%c🐲 SECURE SYSTEM v3.0.0','color:#FF6B35;font-size:22px;font-weight:bold');
+console.log('%c🐲 SECURE SYSTEM v3.17.0 - FINAL','color:#FF6B35;font-size:22px;font-weight:bold');
 console.log('%c👨‍💻 أنس خشان','color:#00FF41;font-size:14px');
 console.log('%c📧 momoxmomox978@gmail.com','color:#00E5FF;font-size:14px');
-console.log('%c🐲 KALI LINUX EDITION','color:#367BF0;font-size:14px');
+console.log('%c📺 @amn_sirani','color:#0088CC;font-size:14px');
+console.log('%c💙 شكراً لكل من دعم','color:#FF6B35;font-size:14px');
 </script>
 </body>
   </html> 
