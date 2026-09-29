@@ -7,16 +7,19 @@
 <meta name="referrer" content="no-referrer">
 <meta name="color-scheme" content="dark">
 <meta name="theme-color" content="#03050d">
-<meta name="description" content="أنس خشان × نور 900 — محرك القوة الآمن المبني على Google Gemini AI">
-<title>⚡ أنس خشان × نور 900 — محرك القوة الأسطوري</title>
+<meta name="description" content="أنس خشان × نور 900 — محرك البحث الآمن المدعوم بـ Google Gemini AI">
+<meta property="og:title" content="أنس خشان × نور 900 — محرك القوة">
+<meta property="og:description" content="ابحث بذكاء خارق — Google Gemini AI + حماية خارقة">
+<meta property="og:type" content="website">
+<title>⚡ أنس خشان × نور 900 — محرك القوة الاحترافي</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&family=JetBrains+Mono:wght@400;700&family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&family=JetBrains+Mono:wght@400;700&family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
 <style>
 /* ============================================================
-   أنس خشان × نور 900 — v11.0 الأسطوري
-   التصميم العريض • Google Gemini AI • Kali Mode
+   أنس خشان × نور 900 — v12.0 PRO
+   الإصدار النهائي الجاهز للإعلان
    ============================================================ */
 :root{
   --bg-0:#03050d; --bg-1:#070b18; --bg-2:#0c1225; --bg-3:#111a33;
@@ -30,6 +33,7 @@
   --kali:#00ff9d; --kali-2:#00d4ff; --kali-3:#ff0080;
   --gold:#ffd700; --ok:#22c55e; --warn:#f59e0b; --err:#ef4444;
   --gemini-1:#4285f4; --gemini-2:#9b72cb; --gemini-3:#d96570;
+  --visit:#10b981; --visit-2:#059669;
   --radius:20px; --radius-sm:14px; --radius-lg:28px;
   --transition:.26s cubic-bezier(.22,.61,.36,1);
   --shadow-sm:0 4px 12px -4px rgba(0,0,0,.5);
@@ -38,6 +42,7 @@
   --glow-acc:0 0 24px rgba(77,140,255,.45);
   --glow-kali:0 0 28px rgba(0,255,157,.5);
   --glow-gemini:0 0 30px rgba(155,114,203,.5);
+  --glow-visit:0 0 24px rgba(16,185,129,.5);
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html{scroll-behavior:smooth}
@@ -198,7 +203,7 @@ body.kali-mode .hero .subtitle{
 .hero .stats span b{color:var(--acc);font-weight:900;font-size:15px}
 body.kali-mode .hero .stats span b{color:var(--kali)}
 
-/* ============ Search (عريض) ============ */
+/* ============ Search ============ */
 .search-wrap{margin-top:40px;position:relative}
 .searchbox{
   display:flex;align-items:center;gap:12px;
@@ -254,7 +259,7 @@ body.kali-mode .s-btn{
   color:#001a10;box-shadow:0 12px 32px -10px rgba(0,255,157,.65);
 }
 
-/* ============ Chips (عريضة وواضحة) ============ */
+/* ============ Chips ============ */
 .tools{
   display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:24px;
 }
@@ -350,18 +355,19 @@ body.kali-mode .answer h3{color:var(--kali)}
   margin-inline-start:auto;letter-spacing:.5px;
 }
 
-/* ============ Results (عريضة) ============ */
+/* ============ Results ============ */
 .results{
   margin-top:32px;display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(560px,1fr));
-  gap:20px;
+  grid-template-columns:repeat(auto-fill,minmax(600px,1fr));
+  gap:22px;
 }
-@media(max-width:1180px){.results{grid-template-columns:1fr}}
+@media(max-width:1240px){.results{grid-template-columns:1fr}}
 .card{
   background:var(--card);border:1.5px solid var(--border);border-radius:24px;
   padding:28px;transition:var(--transition);
   animation:rise .4s ease backwards;backdrop-filter:blur(14px);
   position:relative;overflow:hidden;
+  display:flex;flex-direction:column;
 }
 .card::before{
   content:"";position:absolute;top:0;right:0;width:5px;height:0;
@@ -382,19 +388,29 @@ body.kali-mode .card:hover{
   border-color:rgba(0,255,157,.45);
   box-shadow:0 26px 60px -28px rgba(0,255,157,.75);
 }
-.card-head{display:flex;gap:20px;align-items:flex-start}
+.card-head{display:flex;gap:20px;align-items:flex-start;margin-bottom:16px}
 .thumb{
   width:110px;height:110px;border-radius:18px;object-fit:cover;flex-shrink:0;
   border:1.5px solid var(--border);background:#111a30;
 }
+.card-title-wrap{flex:1;min-width:0}
 .card h3{
-  font-size:21px;font-weight:900;margin-bottom:12px;
+  font-size:21px;font-weight:900;margin-bottom:8px;
   line-height:1.5;color:var(--txt);
 }
-.card p{color:var(--txt-2);line-height:2.05;font-size:15.5px}
+.card .site-url{
+  font-size:12.5px;color:var(--kali);
+  font-family:'JetBrains Mono',monospace;
+  word-break:break-all;
+  opacity:.85;
+  display:flex;align-items:center;gap:6px;
+}
+.card p{color:var(--txt-2);line-height:2.05;font-size:15.5px;margin-bottom:18px}
 .card .meta{
-  margin-top:18px;display:flex;gap:10px;align-items:center;
+  display:flex;gap:10px;align-items:center;
   font-size:13px;color:var(--txt-3);flex-wrap:wrap;
+  padding-top:16px;border-top:1px dashed var(--border);
+  margin-top:auto;
 }
 .tag{
   padding:6px 14px;border-radius:99px;background:rgba(77,140,255,.14);
@@ -408,20 +424,56 @@ body.kali-mode .card:hover{
   background:linear-gradient(135deg,rgba(66,133,244,.16),rgba(217,101,112,.16));
   color:#c4b5fd;border-color:rgba(155,114,203,.4);
 }
-.read-btn{
-  margin-inline-start:auto;border:1.5px solid var(--border-2);
-  background:transparent;color:var(--txt);padding:11px 22px;
-  border-radius:13px;font-family:inherit;font-size:13.5px;
-  font-weight:800;cursor:pointer;transition:var(--transition);
+
+/* ============ Action Buttons (NEW!) ============ */
+.actions{
+  display:flex;gap:10px;flex-wrap:wrap;
+  margin-inline-start:auto;
+}
+.action-btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:11px 20px;border-radius:13px;border:1.5px solid var(--border-2);
+  background:transparent;color:var(--txt);
+  font-family:inherit;font-size:13.5px;font-weight:800;
+  cursor:pointer;transition:var(--transition);
+  text-decoration:none;
   letter-spacing:.2px;
+  white-space:nowrap;
 }
-.read-btn:hover{
+.action-btn:hover{transform:translateY(-2px)}
+.action-btn.visit{
+  background:linear-gradient(135deg,var(--visit),var(--visit-2));
+  color:#fff;border-color:transparent;
+  box-shadow:0 10px 24px -10px rgba(16,185,129,.75);
+}
+.action-btn.visit:hover{
+  box-shadow:0 14px 32px -10px rgba(16,185,129,.95);
+  filter:brightness(1.1);
+}
+.action-btn.read{
   background:linear-gradient(135deg,var(--acc),var(--acc-2));
-  border-color:transparent;color:#fff;transform:translateY(-1px);
+  color:#fff;border-color:transparent;
+  box-shadow:0 10px 24px -10px rgba(77,140,255,.75);
 }
-body.kali-mode .read-btn:hover{
+.action-btn.read:hover{
+  box-shadow:0 14px 32px -10px rgba(77,140,255,.95);
+  filter:brightness(1.1);
+}
+body.kali-mode .action-btn.read{
   background:linear-gradient(135deg,var(--kali),var(--kali-2));
   color:#001a10;
+  box-shadow:0 10px 24px -10px rgba(0,255,157,.65);
+}
+body.kali-mode .action-btn.read:hover{
+  box-shadow:0 14px 32px -10px rgba(0,255,157,.9);
+}
+.action-btn.copy{
+  border-color:rgba(255,215,0,.35);
+  color:var(--gold);
+}
+.action-btn.copy:hover{
+  background:rgba(255,215,0,.12);
+  border-color:rgba(255,215,0,.55);
 }
 
 /* ============ Modal ============ */
@@ -442,13 +494,22 @@ body.kali-mode .modal-box{
   border-color:rgba(0,255,157,.28);
 }
 .modal-box h2{
-  font-size:32px;margin-bottom:26px;padding-inline-end:56px;
+  font-size:32px;margin-bottom:8px;padding-inline-end:56px;
   font-weight:900;line-height:1.35;
+}
+.modal-box .modal-url{
+  font-size:13px;color:var(--kali);margin-bottom:22px;
+  font-family:'JetBrains Mono',monospace;word-break:break-all;
+  padding-bottom:16px;border-bottom:1px dashed var(--border);
 }
 .modal-box .body{
   line-height:2.3;color:var(--txt-2);font-size:17px;
-  white-space:pre-wrap;max-height:70vh;overflow-y:auto;
+  white-space:pre-wrap;max-height:60vh;overflow-y:auto;
   padding-inline-end:10px;
+}
+.modal-actions{
+  display:flex;gap:12px;margin-top:26px;flex-wrap:wrap;
+  padding-top:22px;border-top:1px solid var(--border);
 }
 .close{
   position:absolute;top:24px;inset-inline-end:24px;width:46px;height:46px;
@@ -567,6 +628,9 @@ body.kali-mode footer .sig{
   border-color:rgba(155,114,203,.5);
   background:linear-gradient(135deg,rgba(66,133,244,.15),rgba(155,114,203,.15));
 }
+.toast.visit{
+  border-color:rgba(16,185,129,.5);color:#34d399;
+}
 @keyframes slideIn{from{opacity:0;transform:translateX(34px)}to{opacity:1;transform:none}}
 
 /* ============ Boot ============ */
@@ -594,7 +658,7 @@ body.kali-mode footer .sig{
   box-shadow:0 0 20px rgba(0,255,157,.7);
 }
 
-/* ============ Gemini API Modal ============ */
+/* ============ API Key Modal ============ */
 .api-modal{
   position:fixed;inset:0;background:rgba(2,4,10,.92);
   backdrop-filter:blur(14px);display:none;z-index:250;
@@ -662,6 +726,21 @@ body.kali-mode footer .sig{
   border:1px solid rgba(245,158,11,.35);
 }
 
+/* ============ Loading Skeleton ============ */
+.skeleton{
+  background:linear-gradient(90deg,
+    rgba(255,255,255,.05) 25%,
+    rgba(255,255,255,.1) 50%,
+    rgba(255,255,255,.05) 75%);
+  background-size:200% 100%;
+  animation:shimmer 1.5s infinite;
+  border-radius:8px;
+}
+@keyframes shimmer{
+  0%{background-position:200% 0}
+  100%{background-position:-200% 0}
+}
+
 /* ============ Responsive ============ */
 @media(max-width:900px){
   .wrap{padding:0 18px 100px}
@@ -688,6 +767,8 @@ body.kali-mode footer .sig{
   .card{padding:22px}
   .card-head{flex-direction:column;gap:14px}
   .thumb{width:100%;height:auto;max-height:220px}
+  .actions{width:100%}
+  .action-btn{flex:1;justify-content:center;font-size:13px;padding:12px 16px}
   .modal-box{padding:22px;border-radius:22px}
   .modal-box h2{font-size:24px;padding-inline-end:44px}
   .modal-box .body{font-size:15.5px}
@@ -719,7 +800,7 @@ body.kali-mode footer .sig{
       <div class="logo">⚡</div>
       <div class="brand-text">
         <b>أنس خشان × نور 900</b>
-        <small id="modeLabel">محرك القوة • v11.0 أسطوري</small>
+        <small id="modeLabel">محرك القوة • v12.0 PRO</small>
       </div>
     </div>
     <div class="top-actions">
@@ -737,12 +818,11 @@ body.kali-mode footer .sig{
       <span class="dot"></span>
       <span id="secStatus">محرك مدمج • Google Gemini AI • Kali Mode</span>
     </div>
-    <div class="subtitle">🔥 الإصدار الأسطوري v11.0</div>
+    <div class="subtitle">🔥 الإصدار الاحترافي v12.0 PRO</div>
     <h1>ابحث بذكاء خارق</h1>
     <p>
       محرك بحث من الجيل القادم — مدعوم بـ <b style="color:var(--gemini-2)">Google Gemini AI</b>،
-      مع حماية أمنية خارقة، بحث صوتي، طرفية متقدمة، ووضع Kali كامل.
-      بدون إعلانات، بدون تتبع، بسرعة الضوء.
+      مع أزرار زيارة المواقع والقراءة الداخلية، حماية خارقة، بحث صوتي، وطرفية متقدمة.
     </p>
     <div class="stats">
       <span>⚡ السرعة: <b id="statSpeed">~0ms</b></span>
@@ -778,10 +858,10 @@ body.kali-mode footer .sig{
   <div class="results" id="results"></div>
 
   <footer>
-    <div class="sig">⚡ أنس خشان × نور 900 — v11.0 أسطوري</div>
+    <div class="sig">⚡ أنس خشان × نور 900 — v12.0 PRO</div>
     <b>محرك القوة الآمن — مدعوم بـ Google Gemini AI</b><br>
-    ✨ ذكاء اصطناعي • ⚡ بحث فوري • 🛡️ حماية متقدمة • 🚫 بدون إعلانات • 🔒 بدون تتبع<br>
-    🐧 دعم Kali Linux • 🌐 متعدد المصادر • 💯 يعمل بلا سيرفر<br>
+    ✨ ذكاء اصطناعي • 🔗 زيارة المواقع • 📖 قراءة داخلية • 🛡️ حماية متقدمة<br>
+    🚫 بدون إعلانات • 🔒 بدون تتبع • 🐧 دعم Kali Linux • 💯 يعمل بلا سيرفر<br>
     <span style="opacity:.6;font-size:12px">© 2025 أنس خشان — جميع الحقوق محفوظة</span>
   </footer>
 </div>
@@ -808,7 +888,7 @@ body.kali-mode footer .sig{
     <div style="cursor:pointer" id="closeTerm">✕</div>
   </div>
   <div class="terminal-body" id="termBody">
-    <div><span class="info">مرحباً في طرفية نور 900 v11.0 الأسطوري</span></div>
+    <div><span class="info">مرحباً في طرفية نور 900 v12.0 PRO</span></div>
     <div>اكتب <span class="prompt">help</span> لعرض الأوامر المتاحة</div>
     <div><span class="gold">💡 نصيحة: جرّب "ai ما هي عاصمة المغرب؟"</span></div>
   </div>
@@ -823,7 +903,9 @@ body.kali-mode footer .sig{
   <div class="modal-box">
     <button class="close" id="closeModal">✕</button>
     <h2 id="mTitle"></h2>
+    <div class="modal-url" id="mUrl"></div>
     <div class="body" id="mBody"></div>
+    <div class="modal-actions" id="mActions"></div>
   </div>
 </div>
 
@@ -858,8 +940,9 @@ body.kali-mode footer .sig{
 <script>
 "use strict";
 /* ============================================================
-   ⚡ أنس خشان × نور 900 — v11.0 الأسطوري
-   Google Gemini AI + Kali Mode + Terminal + Security
+   ⚡ أنس خشان × نور 900 — v12.0 PRO
+   الإصدار الاحترافي الجاهز للإعلان
+   أزرار زيارة الموقع + قراءة داخلية + Gemini AI
    ============================================================ */
 
 /* ============ DOM ============ */
@@ -873,7 +956,9 @@ const statusEl   = $("#status");
 const answerEl   = $("#answer");
 const modal      = $("#modal");
 const mTitle     = $("#mTitle");
+const mUrl       = $("#mUrl");
 const mBody      = $("#mBody");
+const mActions   = $("#mActions");
 const historyEl  = $("#history");
 const toastWrap  = $("#toastWrap");
 const kaliPanel  = $("#kaliPanel");
@@ -894,8 +979,8 @@ const State = {
   shield: true,
   busy: false,
   geminiKey: localStorage.getItem("anas_gemini_key") || "",
-  history: load("anas_noor900_v11", []),
-  stats: { xss:0, bot:0, ai:0, searches:0, blocked:0, gemini:0, keys:[] },
+  history: load("anas_noor900_v12", []),
+  stats: { xss:0, bot:0, ai:0, searches:0, blocked:0, gemini:0, visits:0, reads:0, keys:[] },
   cache: new Map(),
   geminiCache: new Map()
 };
@@ -918,11 +1003,29 @@ function save(k, v){
 function rand(a, b){ return Math.floor(Math.random()*(b-a+1))+a; }
 function sleep(ms){ return new Promise(r => setTimeout(r, ms)); }
 
+/* استخراج الدومين من الرابط */
+function getDomain(url){
+  try{
+    const u = new URL(url);
+    return u.hostname.replace("www.", "");
+  }catch{ return ""; }
+}
+
+/* اختصار الرابط للعرض */
+function shortUrl(url, max = 60){
+  if (!url) return "";
+  try{
+    const u = new URL(url);
+    const display = u.hostname + (u.pathname !== "/" ? u.pathname : "");
+    return display.length > max ? display.slice(0, max) + "…" : display;
+  }catch{ return url.length > max ? url.slice(0, max) + "…" : url; }
+}
+
 /* ============ Toast ============ */
 function toast(msg, type="ok", ms=3000){
   const el = document.createElement("div");
   el.className = "toast " + type;
-  const ico = {ok:"✓", warn:"⚠", err:"✕", kali:"🛡️", gemini:"✨"}[type] || "ℹ";
+  const ico = {ok:"✓", warn:"⚠", err:"✕", kali:"🛡️", gemini:"✨", visit:"🔗"}[type] || "ℹ";
   el.innerHTML = `<span>${ico}</span><span>${esc(msg)}</span>`;
   toastWrap.appendChild(el);
   setTimeout(() => {
@@ -1066,7 +1169,6 @@ const Gemini = {
       throw new Error("مفتاح Gemini غير مفعّل — اضغط ✨ لإضافته");
     }
 
-    // Cache
     const key = question.toLowerCase().trim();
     if (State.geminiCache.has(key)){
       const c = State.geminiCache.get(key);
@@ -1105,7 +1207,6 @@ const Gemini = {
     });
 
     if (!res.ok){
-      const errText = await res.text();
       if (res.status === 400) throw new Error("مفتاح Gemini غير صحيح");
       if (res.status === 403) throw new Error("مفتاح Gemini مرفوض أو منتهي");
       if (res.status === 429) throw new Error("تجاوزت حد استخدام Gemini");
@@ -1150,7 +1251,7 @@ async function searchWikiAR(q, opts = {}){
     .map(pg => ({
       title: pg.title || "",
       snippet: (pg.extract || "").trim(),
-      url: pg.fullurl || "",
+      url: pg.fullurl || `https://ar.wikipedia.org/wiki/${encodeURIComponent(pg.title || "")}`,
       thumb: pg.thumbnail?.source || "",
       source: "Wikipedia AR"
     }))
@@ -1177,7 +1278,7 @@ async function searchWikiEN(q, opts = {}){
       .map(pg => ({
         title: pg.title || "",
         snippet: (pg.extract || "").trim(),
-        url: pg.fullurl || "",
+        url: pg.fullurl || `https://en.wikipedia.org/wiki/${encodeURIComponent(pg.title || "")}`,
         thumb: pg.thumbnail?.source || "",
         source: "Wikipedia EN"
       }))
@@ -1197,7 +1298,7 @@ async function searchDDG(q){
       out.push({
         title: data.Heading || q,
         snippet: data.AbstractText,
-        url: data.AbstractURL,
+        url: data.AbstractURL || `https://duckduckgo.com/?q=${encodeURIComponent(q)}`,
         thumb: data.Image ? `https://duckduckgo.com${data.Image}` : "",
         source: "DuckDuckGo"
       });
@@ -1268,7 +1369,7 @@ function render(results, query, aiText = null){
   resultsEl.innerHTML = "";
   answerEl.classList.remove("show");
 
-  // Gemini AI Answer (يظهر أولاً)
+  // Gemini AI Answer
   if (aiText){
     answerEl.className = "answer gemini show";
     answerEl.innerHTML = `
@@ -1304,31 +1405,80 @@ function render(results, query, aiText = null){
     const card = document.createElement("div");
     card.className = "card";
     card.style.animationDelay = (i * 0.05) + "s";
+
     const img = (r.thumb && State.images)
       ? `<img class="thumb" src="${escAttr(r.thumb)}" alt="" loading="lazy" onerror="this.style.display='none'">`
       : "";
+
+    const domain = getDomain(r.url);
+    const safeUrl = escAttr(r.url);
+    const safeTitle = escAttr(r.title);
+    const displayUrl = shortUrl(r.url, 70);
+
     card.innerHTML = `
       <div class="card-head">
         ${img}
-        <div style="flex:1;min-width:0">
+        <div class="card-title-wrap">
           <h3>${esc(r.title)}</h3>
-          <p>${esc(r.snippet)}</p>
+          ${r.url ? `<div class="site-url">🌐 ${esc(displayUrl)}</div>` : ""}
         </div>
       </div>
+      <p>${esc(r.snippet)}</p>
       <div class="meta">
         <span class="tag">#${i+1}</span>
         ${r.source ? `<span class="tag src">${esc(r.source)}</span>` : ""}
         ${State.pro ? '<span class="tag pro">900 ⚡</span>' : ""}
         ${State.kaliMode ? '<span class="tag kali">KALI 🛡️</span>' : ""}
-        <span>${(r.snippet||"").length} حرف</span>
-        <button class="read-btn" data-title="${escAttr(r.title)}">📖 اقرأ هنا</button>
+        <div class="actions">
+          ${r.url ? `
+            <a class="action-btn visit" href="${safeUrl}" target="_blank" rel="noopener noreferrer" data-action="visit">
+              🔗 زيارة الموقع
+            </a>
+          ` : ""}
+          <button class="action-btn read" data-title="${safeTitle}" data-action="read">
+            📖 اقرأ هنا
+          </button>
+          ${r.url ? `
+            <button class="action-btn copy" data-url="${safeUrl}" data-action="copy" title="نسخ الرابط">
+              📋 نسخ
+            </button>
+          ` : ""}
+        </div>
       </div>
     `;
     resultsEl.appendChild(card);
   });
 
-  resultsEl.querySelectorAll(".read-btn").forEach(b => {
-    b.addEventListener("click", () => openReader(b.dataset.title));
+  // ربط الأزرار
+  resultsEl.querySelectorAll('[data-action="read"]').forEach(btn => {
+    btn.addEventListener("click", () => openReader(btn.dataset.title));
+  });
+
+  resultsEl.querySelectorAll('[data-action="visit"]').forEach(a => {
+    a.addEventListener("click", () => {
+      State.stats.visits++;
+      updateKali();
+      toast("🔗 جارٍ فتح الموقع…", "visit", 1500);
+    });
+  });
+
+  resultsEl.querySelectorAll('[data-action="copy"]').forEach(btn => {
+    btn.addEventListener("click", async () => {
+      const url = btn.dataset.url;
+      try{
+        await navigator.clipboard.writeText(url);
+        toast("📋 تم نسخ الرابط", "ok", 1800);
+      }catch{
+        // fallback
+        const ta = document.createElement("textarea");
+        ta.value = url;
+        document.body.appendChild(ta);
+        ta.select();
+        try{ document.execCommand("copy"); toast("📋 تم نسخ الرابط", "ok", 1800); }
+        catch{ toast("تعذّر النسخ", "err", 1800); }
+        ta.remove();
+      }
+    });
   });
 }
 
@@ -1339,10 +1489,35 @@ function hideStatus(){ statusEl.classList.remove("show"); }
 async function openReader(title){
   modal.classList.add("show");
   mTitle.textContent = title;
+  mUrl.textContent = "";
+  mActions.innerHTML = "";
   mBody.textContent = "جارٍ التحميل…";
+  State.stats.reads++;
+  updateKali();
+
   try{
     const full = await fetchFullArticle(title);
     mBody.textContent = full;
+
+    // رابط ويكيبيديا للعنوان
+    const wikiUrl = `https://ar.wikipedia.org/wiki/${encodeURIComponent(title)}`;
+    mUrl.textContent = "🌐 " + shortUrl(wikiUrl, 80);
+
+    mActions.innerHTML = `
+      <a class="action-btn visit" href="${escAttr(wikiUrl)}" target="_blank" rel="noopener noreferrer">
+        🔗 فتح في ويكيبيديا
+      </a>
+      <button class="action-btn copy" id="copyArticleUrl" data-url="${escAttr(wikiUrl)}">
+        📋 نسخ الرابط
+      </button>
+    `;
+
+    $("#copyArticleUrl")?.addEventListener("click", async () => {
+      try{
+        await navigator.clipboard.writeText(wikiUrl);
+        toast("📋 تم نسخ الرابط", "ok", 1800);
+      }catch{ toast("تعذّر النسخ", "err", 1800); }
+    });
   }catch{
     mBody.textContent = "تعذّر تحميل المقال.";
   }
@@ -1363,7 +1538,7 @@ function renderHistory(){
 }
 function addHistory(t){
   State.history = [t, ...State.history.filter(x => x !== t)].slice(0, 15);
-  save("anas_noor900_v11", State.history);
+  save("anas_noor900_v12", State.history);
   renderHistory();
 }
 
@@ -1403,7 +1578,6 @@ async function doSearch(){
   let aiText = null;
 
   try{
-    // تشغيل Gemini + المصادر بالتوازي
     const promises = [
       search(q, { pro: State.pro, images: State.images, multi: State.multiSource })
     ];
@@ -1482,7 +1656,7 @@ $("#kaliChip").addEventListener("click", () => $("#kaliBtn").click());
 /* ---- Clear ---- */
 $("#clearBtn").addEventListener("click", () => {
   State.history = [];
-  save("anas_noor900_v11", []);
+  save("anas_noor900_v12", []);
   renderHistory();
   resultsEl.innerHTML = ""; answerEl.classList.remove("show"); hideStatus();
   State.cache.clear();
@@ -1497,7 +1671,7 @@ $("#kaliBtn").addEventListener("click", function(){
   this.classList.toggle("active", State.kaliMode);
   kaliPanel.classList.toggle("show", State.kaliMode);
   $("#kaliChip").classList.toggle("on", State.kaliMode);
-  $("#modeLabel").textContent = State.kaliMode ? "KALI MODE • نشط 🛡️" : "محرك القوة • v11.0 أسطوري";
+  $("#modeLabel").textContent = State.kaliMode ? "KALI MODE • نشط 🛡️" : "محرك القوة • v12.0 PRO";
   $("#statMode").textContent = State.kaliMode ? "KALI 900" : "Noor 900";
   updateKali();
   toast(State.kaliMode ? "🛡️ وضع Kali مفعّل" : "تم إيقاف Kali",
@@ -1602,6 +1776,7 @@ const Commands = {
     termOut(`  <span class="prompt">help</span>        — هذه القائمة`);
     termOut(`  <span class="prompt">search</span> X    — بحث عادي`);
     termOut(`  <span class="prompt">ai</span> X        — سؤال Gemini AI`);
+    termOut(`  <span class="prompt">open</span> X      — فتح رابط`);
     termOut(`  <span class="prompt">kali</span>          — تبديل Kali Mode`);
     termOut(`  <span class="prompt">shield</span>        — حالة الدرع`);
     termOut(`  <span class="prompt">stats</span>         — الإحصائيات`);
@@ -1632,12 +1807,23 @@ const Commands = {
       const answer = await Gemini.ask(q);
       termOut(`<span class="gold">✨ Gemini:</span>`);
       termOut(esc(answer));
-      // عرض أيضاً في النتائج
       qEl.value = q;
       doSearch();
     }catch(err){
       termOut(`<span class="err">خطأ: ${esc(err.message)}</span>`);
     }
+  },
+  open(args){
+    const url = args.join(" ");
+    if (!url){
+      termOut(`<span class="err">الاستخدام: open https://example.com</span>`);
+      return;
+    }
+    const full = url.startsWith("http") ? url : `https://${url}`;
+    termOut(`<span class="info">🔗 جارٍ فتح: ${esc(full)}</span>`);
+    setTimeout(() => window.open(full, "_blank", "noopener,noreferrer"), 300);
+    State.stats.visits++;
+    updateKali();
   },
   kali(){
     $("#kaliBtn").click();
@@ -1653,6 +1839,8 @@ const Commands = {
     termOut(`  AI:       ${State.stats.ai}`);
     termOut(`  Searches: ${State.stats.searches}`);
     termOut(`  Gemini:   ${State.stats.gemini}`);
+    termOut(`  Visits:   ${State.stats.visits}`);
+    termOut(`  Reads:    ${State.stats.reads}`);
   },
   whoami(){
     const info = detectOS();
@@ -1813,9 +2001,9 @@ healthCheck();
 setInterval(healthCheck, 30000);
 qEl.focus();
 
-console.log("%c⚡ أنس خشان × نور 900 v11.0 الأسطوري",
+console.log("%c⚡ أنس خشان × نور 900 v12.0 PRO",
   "background:linear-gradient(135deg,#4285f4,#9b72cb,#d96570);color:#fff;padding:12px 24px;border-radius:12px;font-weight:900;font-size:17px;");
-console.log("%c✨ Google Gemini AI + Kali Mode + Terminal + Security 100%",
+console.log("%c✨ Google Gemini AI + أزرار زيارة + قراءة داخلية + حماية 100%",
   "color:#9b72cb;font-size:14px;font-weight:700;");
 console.log("%cاختصارات: Ctrl+K بحث • Ctrl+Shift+K كالي • Ctrl+Shift+T طرفية • Ctrl+Shift+G Gemini",
   "color:#4285f4;font-size:12px;");
@@ -1829,4 +2017,4 @@ setTimeout(() => {
 }, 1500);
 </script>
 </body>
-</html>
+   </html>
