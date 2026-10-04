@@ -5,16 +5,13 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=5">
 <meta name="color-scheme" content="dark light">
 <meta name="theme-color" content="#03050d">
-<meta name="description" content="نور 900 v17.0 — محرك بحث عربي آمن يركز على تجربة البحث والحماية">
-<title>⚡ نور 900 — v17.0 Security Edition</title>
+<meta name="description" content="نور 900 v17.1 — محرك بحث عربي آمن">
+<title>⚡ نور 900 — v17.1 Security Edition</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
 <style>
-/* ============================================================
-   نور 900 v17.0 — Security Edition
-   ============================================================ */
 :root{
   --bg-0:#03050d; --bg-1:#070b18; --bg-2:#0c1225; --bg-3:#111a33;
   --card:rgba(255,255,255,.05); --card-2:rgba(255,255,255,.08);
@@ -26,7 +23,6 @@
   --visit:#10b981;
   --radius:18px; --radius-lg:24px;
   --transition:.22s cubic-bezier(.22,.61,.36,1);
-  --shadow-sm:0 4px 12px -4px rgba(0,0,0,.4);
   --shadow-md:0 12px 32px -12px rgba(0,0,0,.7);
   --shadow-lg:0 24px 60px -26px rgba(0,0,0,.9);
 }
@@ -112,77 +108,9 @@ body.kali ::-webkit-scrollbar-thumb{background:linear-gradient(180deg,var(--kali
 .splash-bar span{
   display:block;height:100%;width:0;
   background:linear-gradient(90deg,#4d8cff,#8b5cf6);
-  border-radius:99px;animation:load 1.8s ease forwards;
+  border-radius:99px;animation:load 1.5s ease forwards;
 }
 @keyframes load{to{width:100%}}
-
-/* ===== شاشة الدخول ===== */
-#login{
-  position:fixed;inset:0;z-index:1000;
-  display:grid;place-items:center;padding:18px;
-  background:radial-gradient(900px 500px at 20% 15%, #1a2c66 0%, transparent 55%),
-             radial-gradient(700px 500px at 80% 85%, #3a1d63 0%, transparent 55%),
-             #03050d;
-  overflow-y:auto;
-}
-#login.hide{display:none}
-.login-box{
-  width:100%;max-width:400px;
-  background:rgba(12,18,37,.85);
-  border:1.5px solid rgba(255,255,255,.15);
-  border-radius:24px;padding:32px 26px;
-  backdrop-filter:blur(20px);
-  box-shadow:0 40px 100px -30px rgba(0,0,0,.9);
-  margin:auto;
-}
-.login-logo{
-  width:64px;height:64px;margin:0 auto 16px;
-  border-radius:18px;display:grid;place-items:center;
-  background:linear-gradient(135deg,#4d8cff,#8b5cf6);
-  box-shadow:0 0 36px rgba(77,140,255,.5);
-  font-size:30px;
-}
-.login-title{
-  text-align:center;font-size:22px;font-weight:900;margin-bottom:4px;
-  background:linear-gradient(135deg,#fff,#8bb4ff,#c4a6ff);
-  -webkit-background-clip:text;background-clip:text;color:transparent;
-}
-.login-sub{text-align:center;color:#7c8bb3;font-size:12.5px;margin-bottom:20px}
-.tabs{display:flex;gap:4px;background:rgba(255,255,255,.05);border-radius:12px;padding:4px;margin-bottom:18px}
-.tab{
-  flex:1;padding:10px;border:0;background:transparent;color:#7c8bb3;
-  font-family:inherit;font-weight:800;font-size:13px;border-radius:9px;cursor:pointer;
-  transition:.2s;
-}
-.tab.active{background:linear-gradient(135deg,#4d8cff,#8b5cf6);color:#fff}
-.field{margin-bottom:12px}
-.field label{display:block;font-size:12px;font-weight:800;color:#b9c6e6;margin-bottom:5px}
-.field input{
-  width:100%;background:rgba(255,255,255,.04);
-  border:1.5px solid rgba(255,255,255,.15);border-radius:11px;
-  padding:12px 14px;color:#eef3ff;font-family:inherit;font-size:15px;outline:0;
-  transition:.2s;
-}
-.field input:focus{border-color:#4d8cff;box-shadow:0 0 0 3px rgba(77,140,255,.15)}
-.btn{
-  width:100%;padding:13px;border:0;border-radius:12px;
-  background:linear-gradient(135deg,#4d8cff,#8b5cf6);color:#fff;
-  font-family:inherit;font-weight:900;font-size:14.5px;cursor:pointer;
-  transition:.2s;margin-top:4px;
-}
-.btn:hover{transform:translateY(-1px);filter:brightness(1.1)}
-.btn:disabled{opacity:.5;cursor:not-allowed}
-.btn-ghost{
-  width:100%;padding:11px;border:1.5px solid rgba(255,255,255,.15);
-  border-radius:12px;background:transparent;color:#b9c6e6;
-  font-family:inherit;font-weight:800;font-size:13.5px;cursor:pointer;
-  transition:.2s;margin-top:8px;
-}
-.btn-ghost:hover{background:rgba(255,255,255,.06);color:#fff}
-.msg{margin-top:12px;padding:10px 14px;border-radius:10px;font-size:12.5px;font-weight:700;text-align:center;display:none}
-.msg.show{display:block}
-.msg.err{background:rgba(239,68,68,.12);color:#fca5a5;border:1px solid rgba(239,68,68,.3)}
-.msg.ok{background:rgba(34,197,94,.12);color:#86efac;border:1px solid rgba(34,197,94,.3)}
 
 /* ===== التطبيق ===== */
 #app{display:none;padding-bottom:80px}
@@ -200,6 +128,7 @@ header{
   border-bottom:1px solid var(--border);
 }
 body.light header{background:rgba(245,247,252,.85)}
+body.kali header{background:rgba(3,5,13,.85)}
 .brand{display:flex;align-items:center;gap:9px;cursor:pointer;flex-shrink:0}
 .logo{
   width:40px;height:40px;border-radius:12px;display:grid;place-items:center;
@@ -221,17 +150,6 @@ body.kali .logo{background:linear-gradient(135deg,#00ff9d,#00d4ff)}
 .icon:hover{background:var(--card-2);color:var(--txt)}
 .icon.on{background:linear-gradient(135deg,var(--acc),var(--acc-2));color:#fff;border-color:transparent}
 body.kali .icon.on{background:linear-gradient(135deg,var(--kali),var(--kali-2));color:#001a10}
-.user{
-  display:flex;align-items:center;gap:6px;padding:6px 11px;
-  border-radius:99px;background:var(--card);border:1px solid var(--border);
-  font-size:12px;font-weight:800;color:var(--txt-2);
-  cursor:pointer;
-}
-.user .av{
-  width:22px;height:22px;border-radius:50%;display:grid;place-items:center;
-  background:linear-gradient(135deg,var(--acc),var(--acc-2));color:#fff;
-  font-size:10px;font-weight:900;
-}
 
 /* ===== البحث ===== */
 .search-section{padding:16px 0 8px;position:relative}
@@ -291,7 +209,7 @@ body.kali .suggestions{background:#071a14}
   cursor:pointer;transition:var(--transition);
   font-size:14.5px;
 }
-.sugg:hover,.sugg.active{background:var(--card-2)}
+.sugg:hover{background:var(--card-2)}
 .sugg .ico{font-size:15px;flex-shrink:0;color:var(--txt-3)}
 .sugg .txt{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .sugg .arrow{color:var(--txt-4);font-size:12px}
@@ -334,7 +252,6 @@ body.kali .tab-btn.on{background:linear-gradient(135deg,var(--kali),var(--kali-2
 .chip:hover{color:var(--txt);border-color:var(--border-2)}
 .chip.on{background:linear-gradient(135deg,var(--acc),var(--acc-2));color:#fff;border-color:transparent}
 body.kali .chip.on{background:linear-gradient(135deg,var(--kali),var(--kali-2));color:#001a10}
-.chip.danger.on{background:linear-gradient(135deg,#ef4444,#dc2626)}
 
 /* ===== History ===== */
 .history{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
@@ -378,7 +295,7 @@ body.kali .spin{border-top-color:var(--kali)}
   color:var(--txt);font-family:inherit;font-weight:800;font-size:13px;
   cursor:pointer;transition:var(--transition);
 }
-.retry-btn:hover{background:var(--card-2);border-color:var(--border-3)}
+.retry-btn:hover{background:var(--card-2)}
 
 /* ===== بطاقة الموقع الرسمي ===== */
 .official{
@@ -386,7 +303,6 @@ body.kali .spin{border-top-color:var(--kali)}
   background:linear-gradient(135deg,rgba(16,185,129,.13),rgba(59,130,246,.09));
   border:1.5px solid rgba(16,185,129,.4);
   animation:rise .35s ease;
-  position:relative;
 }
 .official-badge{
   display:inline-flex;align-items:center;gap:6px;
@@ -453,7 +369,6 @@ body.kali .results-bar b{color:var(--kali)}
   border-radius:16px;padding:16px;
   transition:var(--transition);
   animation:rise .3s ease backwards;
-  position:relative;
 }
 .card:hover{
   border-color:rgba(77,140,255,.4);
@@ -744,9 +659,44 @@ footer{
   border-top:1px solid var(--border);
 }
 footer b{color:var(--txt-2)}
-footer a{color:var(--acc);text-decoration:none}
 
-/* ===== Mobile-first responsiveness ===== */
+/* ===== Welcome empty (initial screen) ===== */
+.welcome{
+  text-align:center;padding:60px 20px;
+}
+.welcome-logo{
+  width:80px;height:80px;margin:0 auto 20px;
+  border-radius:24px;display:grid;place-items:center;
+  background:linear-gradient(135deg,var(--acc),var(--acc-2));
+  font-size:38px;
+  box-shadow:0 12px 40px -12px rgba(77,140,255,.7);
+  animation:pulse 3s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+.welcome h2{
+  font-size:26px;font-weight:900;margin-bottom:10px;
+  background:linear-gradient(135deg,#fff,#8bb4ff,#c4a6ff);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+body.kali .welcome h2{background:linear-gradient(135deg,#fff,#00ff9d,#00d4ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.welcome p{color:var(--txt-3);font-size:14.5px;margin-bottom:24px;max-width:480px;margin-inline:auto}
+.welcome-quick{
+  display:flex;gap:8px;flex-wrap:wrap;justify-content:center;
+}
+.welcome-quick button{
+  padding:9px 16px;border-radius:12px;
+  background:var(--card);border:1px solid var(--border);
+  color:var(--txt-2);font-family:inherit;font-size:13px;
+  font-weight:800;cursor:pointer;transition:var(--transition);
+}
+.welcome-quick button:hover{
+  background:var(--card-2);
+  color:var(--txt);
+  transform:translateY(-1px);
+  border-color:var(--border-2);
+}
+
+/* ===== Mobile ===== */
 @media(max-width:500px){
   body{font-size:15px}
   .wrap{padding:10px 12px 0}
@@ -755,8 +705,6 @@ footer a{color:var(--acc);text-decoration:none}
   .brand small{font-size:9px}
   .logo{width:36px;height:36px;font-size:17px;border-radius:11px}
   .icon{width:36px;height:36px;font-size:14px}
-  .user{padding:5px 9px;font-size:11.5px}
-  .user span.un{display:none}
   .search{padding:5px 5px 5px 14px;border-radius:16px}
   .search input{font-size:15.5px;padding:11px 0}
   .search button.go{padding:11px 18px;font-size:13px}
@@ -771,12 +719,11 @@ footer a{color:var(--acc);text-decoration:none}
   .modal-box h2{font-size:17px}
   .kali-stats{grid-template-columns:repeat(2,1fr)}
   .kali-panel{padding:12px}
+  .welcome{padding:40px 16px}
+  .welcome h2{font-size:22px}
 }
-
 @media(max-width:380px){
   .search button.go{padding:10px 14px}
-  .card-foot{gap:5px}
-  .btn-mini{padding:5px 8px;font-size:10.5px}
 }
 </style>
 </head>
@@ -787,54 +734,9 @@ footer a{color:var(--acc);text-decoration:none}
   <div class="splash-inner">
     <div class="splash-logo">⚡</div>
     <div class="splash-title">نور 900</div>
-    <div class="splash-version">v17.0</div>
+    <div class="splash-version">v17.1</div>
     <div class="splash-edition">SECURITY EDITION</div>
     <div class="splash-bar"><span></span></div>
-  </div>
-</div>
-
-<!-- ===== شاشة الدخول ===== -->
-<div id="login" style="display:none">
-  <div class="login-box">
-    <div class="login-logo">⚡</div>
-    <div class="login-title">نور 900</div>
-    <div class="login-sub">محرك بحث عربي آمن — v17.0 Security Edition</div>
-
-    <div class="tabs">
-      <button class="tab active" data-tab="login">تسجيل الدخول</button>
-      <button class="tab" data-tab="reg">حساب جديد</button>
-    </div>
-
-    <div id="form-login">
-      <div class="field">
-        <label>👤 اسم المستخدم</label>
-        <input id="lgUser" type="text" placeholder="أدخل اسم المستخدم" autocomplete="username" maxlength="32">
-      </div>
-      <div class="field">
-        <label>🔒 كلمة المرور</label>
-        <input id="lgPass" type="password" placeholder="أدخل كلمة المرور" autocomplete="current-password" maxlength="64">
-      </div>
-      <button class="btn" id="btnLogin">دخول</button>
-      <button class="btn-ghost" id="btnGuest">الدخول كزائر</button>
-    </div>
-
-    <div id="form-reg" style="display:none">
-      <div class="field">
-        <label>👤 اسم المستخدم</label>
-        <input id="rgUser" type="text" placeholder="3-32 حرفاً" autocomplete="username" maxlength="32">
-      </div>
-      <div class="field">
-        <label>🔒 كلمة المرور</label>
-        <input id="rgPass" type="password" placeholder="6 أحرف على الأقل" autocomplete="new-password" maxlength="64">
-      </div>
-      <div class="field">
-        <label>🔐 تأكيد كلمة المرور</label>
-        <input id="rgPass2" type="password" placeholder="أعد كتابتها" autocomplete="new-password" maxlength="64">
-      </div>
-      <button class="btn" id="btnReg">إنشاء الحساب</button>
-    </div>
-
-    <div class="msg" id="authMsg"></div>
   </div>
 </div>
 
@@ -847,15 +749,11 @@ footer a{color:var(--acc);text-decoration:none}
         <div class="logo">⚡</div>
         <div>
           <b>نور 900</b>
-          <small id="modeLabel">v17.0 • Security Edition</small>
+          <small id="modeLabel">v17.1 • Security Edition</small>
         </div>
       </div>
       <div class="actions">
-        <div class="user" id="userBtn">
-          <span class="av" id="userAv">?</span>
-          <span class="un" id="userName">—</span>
-        </div>
-        <button class="icon" id="kaliBtn" title="Kali Monitor" aria-label="لوحة المراقبة الأمنية">🛡️</button>
+        <button class="icon" id="kaliBtn" title="Kali Monitor" aria-label="لوحة المراقبة">🛡️</button>
         <button class="icon" id="settingsBtn" title="الإعدادات" aria-label="الإعدادات">⚙️</button>
       </div>
     </header>
@@ -879,13 +777,12 @@ footer a{color:var(--acc);text-decoration:none}
       <button class="tab-btn" data-tab="sites">🔗 المواقع <span class="badge" id="cntSites">0</span></button>
       <button class="tab-btn" data-tab="news">📰 الأخبار <span class="badge" id="cntNews">0</span></button>
       <button class="tab-btn" data-tab="images">🖼️ الصور <span class="badge" id="cntImages">0</span></button>
-      <button class="tab-btn" data-tab="videos">📺 الفيديو <span class="badge" id="cntVideos">0</span></button>
       <button class="tab-btn" data-tab="wiki">📚 ويكيبيديا <span class="badge" id="cntWiki">0</span></button>
     </div>
 
     <!-- أدوات سريعة -->
     <div class="quick">
-      <button class="chip on" id="chipOfficial">🎯 كشف الموقع الرسمي</button>
+      <button class="chip on" id="chipOfficial">🎯 الموقع الرسمي</button>
       <button class="chip on" id="chipAnswer">🧠 ملخص</button>
       <button class="chip on" id="chipSafe">🛡️ Safe Search</button>
       <button class="chip" id="chipPrivate">🕶️ بحث خاص</button>
@@ -897,6 +794,9 @@ footer a{color:var(--acc);text-decoration:none}
     <!-- الحالة -->
     <div class="status" id="status"></div>
 
+    <!-- الشاشة الترحيبية -->
+    <div id="welcomeBox"></div>
+
     <!-- البطاقات -->
     <div id="officialBox"></div>
     <div class="answer" id="answerBox"></div>
@@ -905,7 +805,7 @@ footer a{color:var(--acc);text-decoration:none}
     <div class="results" id="results"></div>
 
     <footer>
-      <b>⚡ نور 900 v17.0 — Security Edition</b><br>
+      <b>⚡ نور 900 v17.1 — Security Edition</b><br>
       محرك بحث عربي يركز على تجربة البحث والحماية<br>
       <span style="opacity:.7;font-size:11px">© 2025 أنس خشان — جميع الحقوق محفوظة</span>
     </footer>
@@ -967,9 +867,9 @@ footer a{color:var(--acc);text-decoration:none}
 <script>
 "use strict";
 /* ============================================================
-   نور 900 v17.0 — Security Edition
+   نور 900 v17.1 — Security Edition (بدون تسجيل دخول)
    ============================================================ */
-const VERSION = "17.0";
+const VERSION = "17.1";
 
 /* ============ أدوات ============ */
 const $ = s => document.querySelector(s);
@@ -977,11 +877,8 @@ const $$ = s => Array.from(document.querySelectorAll(s));
 
 function esc(s){
   return String(s ?? "")
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
+    .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;").replace(/'/g,"&#039;");
 }
 function safeUrl(u){
   try{
@@ -999,10 +896,8 @@ function load(k, d){
 function save(k, v){
   try{ localStorage.setItem(k, JSON.stringify(v)); }catch{}
 }
-function sleep(ms){ return new Promise(r => setTimeout(r, ms)); }
 function now(){
-  const d = new Date();
-  return d.toLocaleTimeString("ar-MA", { hour:"2-digit", minute:"2-digit" });
+  return new Date().toLocaleTimeString("ar-MA", { hour:"2-digit", minute:"2-digit" });
 }
 function getHost(url){
   try{ return new URL(url).hostname.replace("www.",""); }catch{ return ""; }
@@ -1035,7 +930,7 @@ function toast(msg, type="ok", ms=2500){
   }, ms);
 }
 
-/* ============ الحالة العامة ============ */
+/* ============ الحالة ============ */
 const State = {
   official: true,
   answer: true,
@@ -1045,14 +940,13 @@ const State = {
   busy: false,
   theme: "dark",
   tab: "all",
-  suggestions: [],
   currentResults: [],
-  history: load("noor17_history", []),
-  blockedKeywords: load("noor17_blockedKW", [
+  history: load("noor171_history", []),
+  blockedKeywords: load("noor171_blockedKW", [
     "porn","xxx","sex","adult","casino","bet","gambling","drugs"
   ]),
-  blockedSites: load("noor17_blockedSites", []),
-  reports: load("noor17_reports", []),
+  blockedSites: load("noor171_blockedSites", []),
+  reports: load("noor171_reports", []),
   stats: {
     searches: 0,
     blocked: 0,
@@ -1063,46 +957,6 @@ const State = {
   },
   cache: new Map(),
   suggTimeout: null
-};
-
-/* ============ شاشة الدخول ============ */
-const Auth = {
-  users(){ return load("noor17_users", {}); },
-  saveUsers(u){ save("noor17_users", u); },
-  async hash(password, salt){
-    const buf = new TextEncoder().encode(password + "::" + salt);
-    const h = await crypto.subtle.digest("SHA-256", buf);
-    return Array.from(new Uint8Array(h)).map(b => b.toString(16).padStart(2,"0")).join("");
-  },
-  async register(username, password, confirm){
-    if (!username || username.length < 3) return { ok:false, msg:"اسم المستخدم: 3 أحرف على الأقل" };
-    if (username.length > 32) return { ok:false, msg:"اسم المستخدم طويل جداً" };
-    if (!/^[\u0600-\u06FFa-zA-Z0-9_]+$/.test(username)) return { ok:false, msg:"أحرف غير مسموحة في الاسم" };
-    if (!password || password.length < 6) return { ok:false, msg:"كلمة المرور: 6 أحرف على الأقل" };
-    if (password !== confirm) return { ok:false, msg:"كلمتا المرور غير متطابقتين" };
-    const users = this.users();
-    if (users[username.toLowerCase()]) return { ok:false, msg:"الاسم مسجّل مسبقاً" };
-    const salt = crypto.randomUUID();
-    const hash = await this.hash(password, salt);
-    users[username.toLowerCase()] = { username, hash, salt, createdAt: Date.now() };
-    this.saveUsers(users);
-    return { ok:true, user: users[username.toLowerCase()] };
-  },
-  async login(username, password){
-    if (!username) return { ok:false, msg:"أدخل اسم المستخدم" };
-    if (!password) return { ok:false, msg:"أدخل كلمة المرور" };
-    const users = this.users();
-    const u = users[username.toLowerCase()];
-    if (!u) return { ok:false, msg:"اسم المستخدم غير موجود" };
-    const hash = await this.hash(password, u.salt);
-    if (hash !== u.hash) return { ok:false, msg:"كلمة المرور غير صحيحة" };
-    return { ok:true, user: u };
-  },
-  setSession(user, isGuest=false){
-    save("noor17_session", { username: user.username, isGuest, ts: Date.now() });
-  },
-  getSession(){ return load("noor17_session", null); },
-  clear(){ try{ localStorage.removeItem("noor17_session"); }catch{} }
 };
 
 /* ============ Safe Search ============ */
@@ -1143,7 +997,7 @@ const SafeSearch = {
   }
 };
 
-/* ============ فحص الروابط ============ */
+/* ============ Link Checker ============ */
 const LinkChecker = {
   suspicious: ["free-", "-free", "click-here", "prize", "winner", "congrats",
     "verify-account", "login-secure", "update-info", "bit.ly", "tinyurl"],
@@ -1160,7 +1014,7 @@ const LinkChecker = {
   }
 };
 
-/* ============ قاعدة المواقع الرسمية ============ */
+/* ============ المواقع الرسمية ============ */
 const OFFICIAL_SITES = {
   google:"https://www.google.com","جوجل":"https://www.google.com",
   youtube:"https://www.youtube.com","يوتيوب":"https://www.youtube.com",
@@ -1290,7 +1144,6 @@ async function searchDDG(q){
   }catch{ return []; }
 }
 
-/* بحث الأخبار (عبر Wikipedia أخبار) */
 async function searchNews(q){
   try{
     const params = new URLSearchParams({
@@ -1316,7 +1169,6 @@ async function searchNews(q){
   }catch{ return []; }
 }
 
-/* بحث الصور */
 async function searchImages(q){
   try{
     const params = new URLSearchParams({
@@ -1342,7 +1194,6 @@ async function searchImages(q){
   }catch{ return []; }
 }
 
-/* ============ البحث الرئيسي ============ */
 async function doSearchAll(q){
   const key = q.toLowerCase().trim();
   if (State.cache.has(key)){
@@ -1358,8 +1209,6 @@ async function doSearchAll(q){
   ]);
 
   const combined = [...wiki, ...ddg, ...news, ...imgs];
-
-  // إزالة التكرار
   const seen = new Set();
   const unique = combined.filter(r => {
     if (!r.url || !r.title) return false;
@@ -1389,6 +1238,37 @@ const hiddenNote  = $("#hiddenNote");
 const resultsEl   = $("#results");
 const historyEl   = $("#history");
 const suggestions = $("#suggestions");
+const welcomeBox  = $("#welcomeBox");
+
+/* ============ Welcome Screen ============ */
+function showWelcome(){
+  welcomeBox.innerHTML = `
+    <div class="welcome">
+      <div class="welcome-logo">⚡</div>
+      <h2>مرحباً بك في نور 900</h2>
+      <p>ابحث في الويب، اكتشف المواقع الرسمية، وشاهد النتائج من مصادر متعددة — كل ذلك بحماية كاملة.</p>
+      <div class="welcome-quick">
+        <button data-q="الرباط">🇲🇦 الرباط</button>
+        <button data-q="فيسبوك">📘 فيسبوك</button>
+        <button data-q="الجزيرة">📺 الجزيرة</button>
+        <button data-q="هسبريس">📰 هسبريس</button>
+        <button data-q="تعلم البرمجة">💻 تعلم البرمجة</button>
+        <button data-q="أخبار المغرب">📢 أخبار المغرب</button>
+      </div>
+    </div>
+  `;
+  welcomeBox.querySelectorAll("[data-q]").forEach(b => {
+    b.addEventListener("click", () => {
+      qEl.value = b.dataset.q;
+      clearBtn.classList.add("show");
+      doSearch();
+    });
+  });
+}
+
+function hideWelcome(){
+  welcomeBox.innerHTML = "";
+}
 
 /* ============ عرض النتائج ============ */
 function setStatus(html, sub="", retry=null){
@@ -1460,7 +1340,7 @@ function renderResults(results){
     card.style.animationDelay = (i * 0.025) + "s";
     const host = getHost(r.url);
     const check = LinkChecker.check(r.url);
-    const officialDomain = r.url && Object.values(OFFICIAL_SITES).includes(r.url.replace(/\/$/,"")) ? true : false;
+    const officialDomain = Object.values(OFFICIAL_SITES).some(u => u === r.url.replace(/\/$/,""));
 
     card.innerHTML = `
       <div class="card-head">
@@ -1526,19 +1406,15 @@ function fallbackCopy(text){
 }
 
 async function shareText(url, title){
-  const shareData = { title: title || "نور 900", text: title || "", url };
+  const data = { title: title || "نور 900", text: title || "", url };
   if (navigator.share){
-    try{
-      await navigator.share(shareData);
-      toast("📤 تمت المشاركة", "ok", 1500);
-    }catch{}
+    try{ await navigator.share(data); toast("📤 تمت المشاركة", "ok", 1500); }catch{}
   } else {
     copyText(url);
-    toast("📋 الرابط منسوخ للمشاركة", "ok", 1800);
+    toast("📋 الرابط منسوخ", "ok", 1800);
   }
 }
 
-/* ============ الملخص ============ */
 function showSummary(idx){
   const r = State.currentResults[idx];
   if (!r) return;
@@ -1562,7 +1438,6 @@ function showSummary(idx){
   bindCardActions(modal);
 }
 
-/* ============ الإبلاغ ============ */
 function showReport(idx){
   const r = State.currentResults[idx];
   if (!r) return;
@@ -1570,7 +1445,7 @@ function showReport(idx){
     <h2>🚩 الإبلاغ عن نتيجة</h2>
     <div class="modal-body">
       <p style="color:var(--txt-3);font-size:13px;margin-bottom:14px">
-        اختر سبب الإبلاغ. البلاغ سيُحفظ محلياً في متصفحك فقط.
+        اختر سبب الإبلاغ. سيُحفظ محلياً في متصفحك.
       </p>
       <div style="display:flex;flex-direction:column;gap:8px">
         <button class="btn-sm" data-reason="رابط مشبوه" style="text-align:right;padding:12px">🔗 رابط مشبوه</button>
@@ -1583,13 +1458,8 @@ function showReport(idx){
   `);
   modal.querySelectorAll("[data-reason]").forEach(b => {
     b.addEventListener("click", () => {
-      State.reports.push({
-        reason: b.dataset.reason,
-        url: r.url,
-        title: r.title,
-        ts: Date.now()
-      });
-      save("noor17_reports", State.reports);
+      State.reports.push({ reason: b.dataset.reason, url: r.url, title: r.title, ts: Date.now() });
+      save("noor171_reports", State.reports);
       closeModal();
       toast("✓ تم حفظ البلاغ محلياً", "ok", 2200);
     });
@@ -1602,15 +1472,13 @@ function openModal(html){
   $("#modalContent").innerHTML = html;
   modal.classList.add("show");
 }
-function closeModal(){
-  modal.classList.remove("show");
-}
+function closeModal(){ modal.classList.remove("show"); }
 $("#modalClose").addEventListener("click", closeModal);
 modal.addEventListener("click", e => { if (e.target === modal) closeModal(); });
 
-/* ============ التبويبات ============ */
+/* ============ Tabs ============ */
 function countByType(results){
-  const c = { all: results.length, sites: 0, news: 0, images: 0, videos: 0, wiki: 0 };
+  const c = { all: results.length, sites: 0, news: 0, images: 0, wiki: 0 };
   results.forEach(r => {
     if (r.type === "wiki") c.wiki++;
     else if (r.type === "news") c.news++;
@@ -1626,7 +1494,6 @@ function updateTabCounts(results){
   $("#cntSites").textContent = c.sites;
   $("#cntNews").textContent = c.news;
   $("#cntImages").textContent = c.images;
-  $("#cntVideos").textContent = c.videos;
   $("#cntWiki").textContent = c.wiki;
 }
 
@@ -1635,7 +1502,7 @@ function applyTab(){
     renderResults(State.currentResults);
     return;
   }
-  const filtered = State.currentResults.filter(r => r.type === State.tab || (State.tab === "sites" && !r.type));
+  const filtered = State.currentResults.filter(r => r.type === State.tab);
   renderResults(filtered);
 }
 
@@ -1650,30 +1517,21 @@ $$(".tab-btn").forEach(btn => {
 
 /* ============ الاقتراحات ============ */
 const QUICK_SUGGESTIONS = [
-  "الرباط", "الدار البيضاء", "المغرب", "مراكش", "أكادير",
-  "فيسبوك", "يوتيوب", "الجزيرة", "هسبريس", "ويكيبيديا",
-  "أخبار المغرب", "الطقس", "أسعار الصرف", "مباريات اليوم",
-  "تعلم البرمجة", "كيف أتعلم الإنجليزية", "أفضل مطاعم"
+  "الرباط","الدار البيضاء","المغرب","مراكش","أكادير","فاس","طنجة",
+  "فيسبوك","يوتيوب","الجزيرة","هسبريس","ويكيبيديا",
+  "أخبار المغرب","الطقس","أسعار الصرف","مباريات اليوم",
+  "تعلم البرمجة","كيف أتعلم الإنجليزية","أفضل مطاعم"
 ];
 
 function showSuggestions(query){
   const q = query.toLowerCase().trim();
   if (!q){ suggestions.classList.remove("show"); return; }
 
-  // اقتراحات من السجل + اقتراحات سريعة
-  const fromHistory = State.history
-    .filter(h => h.toLowerCase().includes(q))
-    .slice(0, 4);
-  const fromQuick = QUICK_SUGGESTIONS
-    .filter(s => s.toLowerCase().includes(q))
-    .slice(0, 5);
-
+  const fromHistory = State.history.filter(h => h.toLowerCase().includes(q)).slice(0, 4);
+  const fromQuick = QUICK_SUGGESTIONS.filter(s => s.toLowerCase().includes(q)).slice(0, 5);
   const combined = [...new Set([...fromHistory, ...fromQuick])].slice(0, 8);
 
-  if (!combined.length){
-    suggestions.classList.remove("show");
-    return;
-  }
+  if (!combined.length){ suggestions.classList.remove("show"); return; }
 
   suggestions.innerHTML = combined.map(s => `
     <div class="sugg" data-sugg="${esc(s)}">
@@ -1687,6 +1545,7 @@ function showSuggestions(query){
   suggestions.querySelectorAll(".sugg").forEach(el => {
     el.addEventListener("click", () => {
       qEl.value = el.dataset.sugg;
+      clearBtn.classList.add("show");
       suggestions.classList.remove("show");
       doSearch();
     });
@@ -1716,7 +1575,7 @@ clearBtn.addEventListener("click", () => {
   qEl.focus();
 });
 
-/* ============ السجل ============ */
+/* ============ History ============ */
 function renderHistory(){
   historyEl.innerHTML = "";
   if (!State.history.length) return;
@@ -1731,12 +1590,13 @@ function renderHistory(){
     item.addEventListener("click", e => {
       if (e.target.dataset.del) return;
       qEl.value = t;
+      clearBtn.classList.add("show");
       doSearch();
     });
     item.querySelector("[data-del]").addEventListener("click", e => {
       e.stopPropagation();
       State.history = State.history.filter(x => x !== t);
-      save("noor17_history", State.history);
+      save("noor171_history", State.history);
       renderHistory();
       toast("✓ تم حذف البحث", "ok", 1500);
     });
@@ -1750,7 +1610,7 @@ function renderHistory(){
     clearAll.addEventListener("click", () => {
       if (confirm("مسح سجل البحث بالكامل؟")){
         State.history = [];
-        save("noor17_history", []);
+        save("noor171_history", []);
         renderHistory();
         toast("✓ تم مسح السجل", "ok", 1500);
       }
@@ -1762,7 +1622,7 @@ function renderHistory(){
 function addHistory(q){
   if (State.private) return;
   State.history = [q, ...State.history.filter(x => x !== q)].slice(0, 20);
-  save("noor17_history", State.history);
+  save("noor171_history", State.history);
   renderHistory();
 }
 
@@ -1778,6 +1638,7 @@ async function doSearch(){
 
   State.busy = true;
   goEl.disabled = true;
+  hideWelcome();
   officialBox.innerHTML = "";
   answerBox.classList.remove("show");
   resultsBar.style.display = "none";
@@ -1788,7 +1649,6 @@ async function doSearch(){
   const t0 = performance.now();
 
   try{
-    // كشف الموقع الرسمي
     let official = null;
     const detected = detectOfficial(q);
     if (detected){
@@ -1796,20 +1656,16 @@ async function doSearch(){
       renderOfficial(official);
     }
 
-    // البحث
     let results = await doSearchAll(q);
-
-    // فحص آمن
     const filtered = SafeSearch.filterResults(results);
 
     const ms = Math.round(performance.now() - t0);
     State.currentResults = filtered.visible;
     State.stats.searches++;
-    State.stats.lastSearch = now() + " — " + q;
+    State.stats.lastSearch = now() + " — " + q.slice(0, 30);
     State.stats.lastScan = now();
     updateKali();
 
-    // عرض
     if (filtered.visible.length){
       hideStatus();
       renderAnswer(filtered.visible[0]);
@@ -1828,7 +1684,6 @@ async function doSearch(){
       hideStatus();
     }
 
-    // ملاحظة الحظر
     if (filtered.hidden.length){
       hiddenNote.innerHTML = `
         <div class="hidden-note">
@@ -1860,7 +1715,7 @@ qEl.addEventListener("keydown", e => {
   }
 });
 
-/* ============ الشرائح السريعة ============ */
+/* ============ Quick chips ============ */
 $("#chipOfficial").addEventListener("click", function(){
   State.official = !State.official;
   this.classList.toggle("on", State.official);
@@ -1886,7 +1741,7 @@ $("#chipSafe").addEventListener("click", function(){
 $("#chipPrivate").addEventListener("click", function(){
   State.private = !State.private;
   this.classList.toggle("on", State.private);
-  toast(State.private ? "🕶️ وضع البحث الخاص — لن يتم حفظ البحث" : "وضع البحث العادي", State.private ? "kali" : "ok", 2200);
+  toast(State.private ? "🕶️ وضع البحث الخاص" : "وضع البحث العادي", State.private ? "kali" : "ok", 2200);
 });
 
 /* ============ Kali Monitor ============ */
@@ -1913,7 +1768,7 @@ function toggleKali(){
 $("#kaliBtn").addEventListener("click", toggleKali);
 $("#kaliClose").addEventListener("click", toggleKali);
 
-/* ============ الإعدادات ============ */
+/* ============ Settings ============ */
 function renderBlockedKeywords(){
   if (!State.blockedKeywords.length) return '<p style="color:var(--txt-3);font-size:12.5px;margin:8px 0">لا توجد كلمات محظورة.</p>';
   return State.blockedKeywords.map(kw => `
@@ -1946,7 +1801,7 @@ function openSettings(){
           <div class="toggle ${State.safeSearch ? 'on' : ''}" id="setSafe"></div>
         </div>
         <div class="setting-row">
-          <div><div class="name">البحث الخاص</div><div class="desc">لا يتم حفظ عمليات البحث في السجل المحلي</div></div>
+          <div><div class="name">البحث الخاص</div><div class="desc">لا يتم حفظ عمليات البحث في السجل</div></div>
           <div class="toggle ${State.private ? 'on' : ''}" id="setPrivate"></div>
         </div>
         <div class="setting-row">
@@ -1992,7 +1847,7 @@ function openSettings(){
           <span style="color:var(--acc);font-weight:900">v${VERSION}</span>
         </div>
         <div class="setting-row">
-          <div><div class="name">حول نور 900</div><div class="desc">محرك بحث عربي يركز على الحماية</div></div>
+          <div><div class="name">حول نور 900</div></div>
           <button class="btn-sm" id="aboutBtn">عرض</button>
         </div>
         <div class="setting-row">
@@ -2004,7 +1859,6 @@ function openSettings(){
     </div>
   `);
 
-  // Events
   $("#setSafe").addEventListener("click", function(){
     State.safeSearch = !State.safeSearch;
     this.classList.toggle("on", State.safeSearch);
@@ -2022,24 +1876,23 @@ function openSettings(){
     State.theme = State.theme === "light" ? "dark" : "light";
     document.body.classList.toggle("light", State.theme === "light");
     this.classList.toggle("on", State.theme === "light");
-    save("noor17_theme", State.theme);
+    save("noor171_theme", State.theme);
   });
 
   $("#clearHistoryBtn").addEventListener("click", () => {
     if (confirm("مسح كل سجل البحث؟")){
       State.history = [];
-      save("noor17_history", []);
+      save("noor171_history", []);
       renderHistory();
       closeModal();
       toast("✓ تم مسح السجل", "ok", 1800);
     }
   });
 
-  // Keywords
   modal.querySelectorAll("[data-del-kw]").forEach(b => {
     b.addEventListener("click", () => {
       State.blockedKeywords = State.blockedKeywords.filter(x => x !== b.dataset.delKw);
-      save("noor17_blockedKW", State.blockedKeywords);
+      save("noor171_blockedKW", State.blockedKeywords);
       openSettings();
       toast("✓ تم حذف الكلمة", "ok", 1500);
     });
@@ -2049,16 +1902,15 @@ function openSettings(){
     if (!v) return;
     if (State.blockedKeywords.includes(v)){ toast("موجودة مسبقاً", "warn", 1500); return; }
     State.blockedKeywords.push(v);
-    save("noor17_blockedKW", State.blockedKeywords);
+    save("noor171_blockedKW", State.blockedKeywords);
     openSettings();
     toast("✓ تمت الإضافة", "ok", 1500);
   });
 
-  // Sites
   modal.querySelectorAll("[data-del-site]").forEach(b => {
     b.addEventListener("click", () => {
       State.blockedSites = State.blockedSites.filter(x => x !== b.dataset.delSite);
-      save("noor17_blockedSites", State.blockedSites);
+      save("noor171_blockedSites", State.blockedSites);
       openSettings();
       toast("✓ تم حذف الموقع", "ok", 1500);
     });
@@ -2068,23 +1920,21 @@ function openSettings(){
     if (!v) return;
     if (State.blockedSites.includes(v)){ toast("موجود مسبقاً", "warn", 1500); return; }
     State.blockedSites.push(v);
-    save("noor17_blockedSites", State.blockedSites);
+    save("noor171_blockedSites", State.blockedSites);
     openSettings();
     toast("✓ تمت الإضافة", "ok", 1500);
   });
 
-  // Reports
   const clearRep = $("#clearReports");
   if (clearRep){
     clearRep.addEventListener("click", () => {
       State.reports = [];
-      save("noor17_reports", []);
+      save("noor171_reports", []);
       openSettings();
       toast("✓ تم مسح البلاغات", "ok", 1500);
     });
   }
 
-  // About / Privacy
   $("#aboutBtn").addEventListener("click", showAbout);
   $("#privacyBtn").addEventListener("click", showPrivacy);
 }
@@ -2098,13 +1948,12 @@ function showAbout(){
       <p>v${VERSION} — Security Edition</p>
       <div class="label">المطور</div>
       <p>أنس خشان</p>
-      <div class="label">التقنيات المستخدمة</div>
-      <p>HTML + CSS + JavaScript (Vanilla)<br>
-      Wikipedia API • DuckDuckGo Instant Answers<br>
-      Wikimedia Commons API • SubtleCrypto (SHA-256)<br>
+      <div class="label">التقنيات</div>
+      <p>HTML + CSS + JavaScript<br>
+      Wikipedia API • DuckDuckGo • Wikimedia Commons<br>
       LocalStorage للحفظ المحلي</p>
       <div class="label">الخصوصية</div>
-      <p>كل البيانات محفوظة محلياً في متصفحك. لا يوجد سيرفر خلفي. لا يتم إرسال أي بيانات إلى أي جهة خارجية.</p>
+      <p>كل البيانات محفوظة محلياً في متصفحك. لا يوجد سيرفر خلفي.</p>
     </div>
   `);
 }
@@ -2114,125 +1963,16 @@ function showPrivacy(){
     <h2>🔒 سياسة الخصوصية</h2>
     <div class="modal-body">
       <div class="label">البيانات المحفوظة محلياً</div>
-      <p>• اسم المستخدم وكلمة المرور المشفّرة (SHA-256)<br>
-      • سجل البحث (يمكن مسحه في أي وقت)<br>
-      • قائمة الكلمات والمواقع المحظورة<br>
-      • البلاغات المحلية<br>
-      • تفضيلات الإعدادات</p>
+      <p>• سجل البحث<br>• الكلمات والمواقع المحظورة<br>• البلاغات<br>• تفضيلات الإعدادات</p>
       <div class="label">ما لا نقوم به</div>
-      <p>• لا نرسل بياناتك لأي جهة خارجية<br>
-      • لا نتتبع سلوكك<br>
-      • لا نستخدم ملفات تعريف ارتباط تتبعية</p>
+      <p>• لا نرسل بياناتك لأي جهة<br>• لا نتتبع سلوكك<br>• لا نستخدم ملفات تعريف ارتباط</p>
       <div class="label">مصادر البحث</div>
-      <p>عند البحث، يُرسل الاستعلام مباشرة إلى Wikipedia API وDuckDuckGo API من متصفحك. كل خدمة لها سياسة خصوصية خاصة بها.</p>
-      <div class="label">ملاحظة البحث الخاص</div>
-      <p>وضع البحث الخاص يمنع حفظ الاستعلامات الجديدة في السجل المحلي فقط. لا يخفي نشاطك على مستوى الشبكة أو من خدمات البحث الخارجية.</p>
+      <p>عند البحث، يُرسل الاستعلام مباشرة إلى Wikipedia API وDuckDuckGo API من متصفحك.</p>
     </div>
   `);
 }
 
 $("#settingsBtn").addEventListener("click", openSettings);
-
-/* ============ تسجيل الدخول ============ */
-const loginEl = $("#login");
-const appEl = $("#app");
-const authMsg = $("#authMsg");
-
-function showMsg(text, type="err"){
-  authMsg.textContent = text;
-  authMsg.className = "msg show " + type;
-}
-
-$$(".tab").forEach(tab => {
-  tab.addEventListener("click", () => {
-    $$(".tab").forEach(t => t.classList.remove("active"));
-    tab.classList.add("active");
-    const isLogin = tab.dataset.tab === "login";
-    $("#form-login").style.display = isLogin ? "block" : "none";
-    $("#form-reg").style.display   = isLogin ? "none"  : "block";
-    authMsg.classList.remove("show");
-  });
-});
-
-$("#btnLogin").addEventListener("click", async () => {
-  const btn = $("#btnLogin");
-  btn.disabled = true; btn.textContent = "جارٍ الدخول…";
-  const res = await Auth.login($("#lgUser").value.trim(), $("#lgPass").value);
-  if (res.ok){
-    Auth.setSession(res.user, false);
-    showMsg("مرحباً بك ✓", "ok");
-    await sleep(300);
-    enterApp({ username: res.user.username, isGuest: false });
-  } else {
-    showMsg(res.msg, "err");
-    btn.disabled = false; btn.textContent = "دخول";
-  }
-});
-
-$("#btnReg").addEventListener("click", async () => {
-  const btn = $("#btnReg");
-  btn.disabled = true; btn.textContent = "جارٍ الإنشاء…";
-  const res = await Auth.register(
-    $("#rgUser").value.trim(),
-    $("#rgPass").value,
-    $("#rgPass2").value
-  );
-  if (res.ok){
-    Auth.setSession(res.user, false);
-    showMsg("تم إنشاء الحساب ✓", "ok");
-    await sleep(300);
-    enterApp({ username: res.user.username, isGuest: false });
-  } else {
-    showMsg(res.msg, "err");
-    btn.disabled = false; btn.textContent = "إنشاء الحساب";
-  }
-});
-
-$("#btnGuest").addEventListener("click", () => {
-  Auth.setSession({ username: "زائر" }, true);
-  enterApp({ username: "زائر", isGuest: true });
-});
-
-["#lgUser","#lgPass"].forEach(s => {
-  $(s).addEventListener("keydown", e => { if (e.key === "Enter") $("#btnLogin").click(); });
-});
-["#rgUser","#rgPass","#rgPass2"].forEach(s => {
-  $(s).addEventListener("keydown", e => { if (e.key === "Enter") $("#btnReg").click(); });
-});
-
-/* ============ الدخول للتطبيق ============ */
-function enterApp(session){
-  loginEl.classList.add("hide");
-  appEl.classList.add("show");
-  $("#userName").textContent = session.isGuest ? "زائر" : session.username;
-  $("#userAv").textContent = session.isGuest ? "👤" : session.username.charAt(0).toUpperCase();
-
-  updateKali();
-  renderHistory();
-
-  // كشف Kali
-  const ua = navigator.userAgent;
-  const isKali = /kali/i.test(ua) || /kali/i.test(navigator.platform || "");
-  if (isKali){
-    setTimeout(() => {
-      toggleKali();
-      toast("🐧 مرحباً بك يا مستخدم Kali Linux!", "kali", 3500);
-    }, 900);
-  } else if (session.isGuest){
-    setTimeout(() => toast("أنت في وضع الزائر", "warn", 2200), 900);
-  } else {
-    setTimeout(() => toast(`أهلاً ${session.username} 👋`, "ok", 1800), 500);
-  }
-
-  qEl.focus();
-}
-
-/* ============ شاشة الدخول عند النقر على المستخدم ============ */
-$("#userBtn").addEventListener("click", () => {
-  if (!confirm("هل تريد تسجيل الخروج؟")) return;
-  Auth.clear();
-  location.reload();
-});
 
 $("#brandBtn").addEventListener("click", () => {
   qEl.value = "";
@@ -2243,10 +1983,11 @@ $("#brandBtn").addEventListener("click", () => {
   hiddenNote.innerHTML = "";
   resultsEl.innerHTML = "";
   hideStatus();
+  showWelcome();
   qEl.focus();
 });
 
-/* ============ اختصارات ============ */
+/* ============ Keyboard ============ */
 document.addEventListener("keydown", e => {
   if ((e.ctrlKey || e.metaKey) && e.key === "k"){
     e.preventDefault();
@@ -2265,28 +2006,37 @@ document.addEventListener("keydown", e => {
 
 /* ============ بدء التشغيل ============ */
 (function init(){
-  // المظهر المحفوظ
-  State.theme = load("noor17_theme", "dark");
+  // المظهر
+  State.theme = load("noor171_theme", "dark");
   if (State.theme === "light") document.body.classList.add("light");
 
-  // Splash Screen
+  // Splash → App مباشرة (بدون تسجيل دخول)
   setTimeout(() => {
     $("#splash").classList.add("hide");
+    $("#app").classList.add("show");
 
-    // بعد الـ splash، إما الدخول أو شاشة تسجيل الدخول
-    const session = Auth.getSession();
-    if (session){
-      enterApp(session);
-    } else {
-      loginEl.style.display = "grid";
+    updateKali();
+    renderHistory();
+    showWelcome();
+
+    // كشف Kali
+    const ua = navigator.userAgent;
+    const isKali = /kali/i.test(ua) || /kali/i.test(navigator.platform || "");
+    if (isKali){
+      setTimeout(() => {
+        toggleKali();
+        toast("🐧 مرحباً بك يا مستخدم Kali Linux!", "kali", 3500);
+      }, 900);
     }
-  }, 2000);
+
+    qEl.focus();
+  }, 1800);
 
   console.log("%c⚡ نور 900 v" + VERSION + " — Security Edition",
     "background:linear-gradient(135deg,#4d8cff,#8b5cf6);color:#fff;padding:10px 20px;border-radius:10px;font-weight:900;font-size:14px;");
-  console.log("%c✅ Safe Search • Kali Monitor • تلميحات فورية • تبويبات حقيقية",
+  console.log("%c✅ فتح مباشر • Safe Search • Kali Monitor • تبويبات • اقتراحات",
     "color:#10b981;font-size:13px;font-weight:700;");
 })();
 </script>
 </body>
-</html>
+   </html>
