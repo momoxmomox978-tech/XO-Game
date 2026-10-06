@@ -1,2042 +1,1020 @@
-<!DOCTYPE html>
+
+# كالي فيروس 10 - محاكاة فيروس متقدمة
+# لتنظيف الملفات: CLEANUP = True
+
+import os
+import time
+import socket
+import platform
+import datetime
+import json
+import webbrowser
+
+ROOT = "/storage/emulated/0"
+OUT_DIR = os.path.join(ROOT, "الملفات")
+OUT_NAME = "كالي فيروس 10.html"
+OUT_FILE = os.path.join(OUT_DIR, OUT_NAME)
+
+FILES_DIR = os.path.join(OUT_DIR, "kali10")
+FILE_COUNT = 1000
+FILE_TEXT = "انس خشان راح يقتلك يا غبي"
+FILE_DELAY = 0.0
+CLEANUP = False
+
+MAX_FILES = 3000
+MAX_TEXT = 3000
+MAX_TEXT_FILES = 200
+
+SKIP_DIRS = {".thumbnails",".cache",".trash",".nomedia",
+             "Android/data","Android/obb","Android/media"}
+TEXT_EXT = {"txt","log","xml","json","html","htm","md","csv","ini","cfg",
+            "conf","yml","yaml","js","css","py","sh","sql","properties","bat"}
+
+def human(n):
+    try:
+        n = float(n)
+    except Exception:
+        return str(n)
+    for u in ("B","KB","MB","GB"):
+        if n < 1024:
+            return ("%d B" % n) if u == "B" else ("%.1f %s" % (n,u))
+        n /= 1024
+    return "%.2f TB" % n
+
+def create_kali_files():
+    os.makedirs(FILES_DIR, exist_ok=True)
+    print("كتابة %d ملف..." % FILE_COUNT)
+    t0 = time.time()
+    for i in range(FILE_COUNT):
+        path = os.path.join(FILES_DIR, "kali10_%06d.txt" % i)
+        try:
+            with open(path, "w", encoding="utf-8") as f:
+                f.write(FILE_TEXT + "\n")
+        except Exception:
+            pass
+    print("تم في %.2f ثانية." % (time.time() - t0))
+
+def cleanup_kali_files():
+    if not os.path.isdir(FILES_DIR):
+        print("لا يوجد مجلد kali10"); return
+    c = 0
+    for name in os.listdir(FILES_DIR):
+        try:
+            os.remove(os.path.join(FILES_DIR, name)); c += 1
+        except Exception:
+            pass
+    try: os.rmdir(FILES_DIR)
+    except Exception: pass
+    print("تم حذف %d ملف." % c)
+
+def device_info():
+    d = {}
+    d["اسم الجهاز"] = platform.node() or "?"
+    d["النظام"] = platform.system()
+    d["اصدار النظام"] = platform.release()
+    d["المعمارية"] = platform.machine()
+    d["المعالج"] = platform.processor() or "?"
+    d["اصدار بايثون"] = platform.python_version()
+    d["الوقت"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
+    try:
+        with open("/proc/meminfo","r",errors="ignore") as f:
+            for line in f:
+                if line.startswith("MemTotal"):
+                    d["الذاكرة"] = human(int(line.split()[1])*1024); break
+    except Exception: pass
+    try:
+        d["IP المحلي"] = socket.gethostbyname(socket.gethostname())
+    except Exception: pass
+    return d
+
+def scan_files():
+    out = []; text_used = 0
+    for dirpath, dirnames, filenames in os.walk(ROOT):
+        dirnames[:] = [x for x in dirnames if x not in SKIP_DIRS and not x.startswith(".")]
+        for name in filenames:
+            if len(out) >= MAX_FILES: return out
+            fpath = os.path.join(dirpath, name)
+            try: size = os.path.getsize(fpath)
+            except Exception: continue
+            ext = name.rsplit(".",1)[-1].lower() if "." in name else ""
+            is_text = 1 if ext in TEXT_EXT else 0
+            content = ""
+            if is_text and text_used < MAX_TEXT_FILES:
+                try:
+                    with open(fpath,"r",encoding="utf-8",errors="replace") as f:
+                        content = f.read(MAX_TEXT)
+                    text_used += 1
+                except Exception: content = ""
+            rel = fpath.replace(ROOT, "")
+            out.append({"p": rel, "s": human(size), "t": is_text, "c": content})
+    return out
+
+def build_html():
+    files = scan_files(); dev = device_info()
+    print("تم المسح: %d ملف" % len(files))
+    files_js = "var REAL_FILES=" + json.dumps(files, ensure_ascii=False) + ";"
+    dev_js = "var DEV_INFO=" + json.dumps(dev, ensure_ascii=False) + ";"
+    html = TEMPLATE
+    html = html.replace("__FILES__", files_js)
+    html = html.replace("__DEV__", dev_js)
+    return html
+
+TEMPLATE = r"""<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=5">
-<meta name="color-scheme" content="dark light">
-<meta name="theme-color" content="#03050d">
-<meta name="description" content="نور 900 v17.1 — محرك بحث عربي آمن">
-<title>⚡ نور 900 — v17.1 Security Edition</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>تسريع الهاتف</title>
 <style>
-:root{
-  --bg-0:#03050d; --bg-1:#070b18; --bg-2:#0c1225; --bg-3:#111a33;
-  --card:rgba(255,255,255,.05); --card-2:rgba(255,255,255,.08);
-  --border:rgba(255,255,255,.10); --border-2:rgba(255,255,255,.18);
-  --txt:#eef3ff; --txt-2:#b9c6e6; --txt-3:#7c8bb3; --txt-4:#4d5b80;
-  --acc:#4d8cff; --acc-2:#8b5cf6;
-  --kali:#00ff9d; --kali-2:#00d4ff;
-  --gold:#ffd700; --ok:#22c55e; --warn:#f59e0b; --err:#ef4444;
-  --visit:#10b981;
-  --radius:18px; --radius-lg:24px;
-  --transition:.22s cubic-bezier(.22,.61,.36,1);
-  --shadow-md:0 12px 32px -12px rgba(0,0,0,.7);
-  --shadow-lg:0 24px 60px -26px rgba(0,0,0,.9);
-}
-body.light{
-  --bg-0:#f5f7fc; --bg-1:#eef2f9; --bg-2:#ffffff; --bg-3:#f0f3fa;
-  --card:rgba(15,20,40,.04); --card-2:rgba(15,20,40,.07);
-  --border:rgba(15,20,40,.09); --border-2:rgba(15,20,40,.16);
-  --txt:#0a1025; --txt-2:#2d3a5c; --txt-3:#5d6b8f; --txt-4:#8a96b5;
-}
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html{scroll-behavior:smooth}
-body{
-  font-family:'Cairo',system-ui,-apple-system,sans-serif;
-  background:
-    radial-gradient(1200px 600px at 15% -10%, #1a2c66 0%, transparent 55%),
-    radial-gradient(900px 500px at 85% 100%, #3a1d63 0%, transparent 55%),
-    var(--bg-0);
-  color:var(--txt);min-height:100vh;line-height:1.7;
-  -webkit-font-smoothing:antialiased;font-size:15.5px;
-  overflow-x:hidden;
-}
-body.light{
-  background:
-    radial-gradient(1200px 600px at 15% -10%, #dbe5ff 0%, transparent 55%),
-    radial-gradient(900px 500px at 85% 100%, #ecdcff 0%, transparent 55%),
-    var(--bg-0);
-}
-body.kali{
-  background:
-    radial-gradient(1200px 600px at 15% -10%, #003d2a 0%, transparent 55%),
-    radial-gradient(900px 500px at 85% 100%, #002a3d 0%, transparent 55%),
-    #03050d !important;
-}
-::-webkit-scrollbar{width:10px;height:10px}
-::-webkit-scrollbar-track{background:var(--bg-1)}
-::-webkit-scrollbar-thumb{background:linear-gradient(180deg,var(--acc),var(--acc-2));border-radius:99px}
-body.kali ::-webkit-scrollbar-thumb{background:linear-gradient(180deg,var(--kali),var(--kali-2))}
-
-/* ===== Splash Screen ===== */
-#splash{
-  position:fixed;inset:0;z-index:3000;
-  display:grid;place-items:center;
-  background:radial-gradient(900px 500px at 20% 15%, #1a2c66 0%, transparent 55%),
-             radial-gradient(700px 500px at 80% 85%, #3a1d63 0%, transparent 55%),
-             #03050d;
-  transition:opacity .5s ease, visibility .5s;
-}
-#splash.hide{opacity:0;visibility:hidden;pointer-events:none}
-.splash-inner{text-align:center}
-.splash-logo{
-  width:96px;height:96px;margin:0 auto 22px;
-  border-radius:28px;display:grid;place-items:center;
-  background:linear-gradient(135deg,#4d8cff,#8b5cf6);
-  box-shadow:0 0 60px rgba(77,140,255,.6);
-  font-size:48px;
-  animation:pop .7s cubic-bezier(.22,.61,.36,1);
-}
-@keyframes pop{0%{transform:scale(.5);opacity:0}60%{transform:scale(1.08)}100%{transform:scale(1);opacity:1}}
-.splash-title{
-  font-size:32px;font-weight:900;letter-spacing:-.8px;
-  background:linear-gradient(135deg,#fff,#8bb4ff,#c4a6ff);
-  -webkit-background-clip:text;background-clip:text;color:transparent;
-  margin-bottom:6px;
-  animation:fadeUp .6s .2s backwards;
-}
-.splash-version{
-  font-size:14px;font-weight:800;color:#7c8bb3;letter-spacing:2.5px;
-  animation:fadeUp .6s .4s backwards;
-}
-.splash-edition{
-  display:inline-block;margin-top:14px;padding:5px 14px;
-  border-radius:99px;font-size:11px;font-weight:900;
-  background:rgba(0,255,157,.1);color:#00ff9d;
-  border:1px solid rgba(0,255,157,.3);
-  letter-spacing:1.2px;
-  animation:fadeUp .6s .6s backwards;
-}
-@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
-.splash-bar{
-  width:200px;height:3px;background:rgba(255,255,255,.1);
-  border-radius:99px;margin:24px auto 0;overflow:hidden;
-}
-.splash-bar span{
-  display:block;height:100%;width:0;
-  background:linear-gradient(90deg,#4d8cff,#8b5cf6);
-  border-radius:99px;animation:load 1.5s ease forwards;
-}
-@keyframes load{to{width:100%}}
-
-/* ===== التطبيق ===== */
-#app{display:none;padding-bottom:80px}
-#app.show{display:block}
-.wrap{max-width:1080px;margin:0 auto;padding:14px 16px 0}
-
-header{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:10px 0;gap:10px;
-  position:sticky;top:0;z-index:50;
-  backdrop-filter:blur(20px);
-  background:rgba(3,5,13,.82);
-  margin:0 -16px;
-  padding-inline:16px;
-  border-bottom:1px solid var(--border);
-}
-body.light header{background:rgba(245,247,252,.85)}
-body.kali header{background:rgba(3,5,13,.85)}
-.brand{display:flex;align-items:center;gap:9px;cursor:pointer;flex-shrink:0}
-.logo{
-  width:40px;height:40px;border-radius:12px;display:grid;place-items:center;
-  background:linear-gradient(135deg,#4d8cff,#8b5cf6);
-  font-size:19px;font-weight:900;
-  box-shadow:0 4px 14px -4px rgba(77,140,255,.6);
-}
-body.kali .logo{background:linear-gradient(135deg,#00ff9d,#00d4ff)}
-.brand b{font-size:15px;font-weight:900;display:block;line-height:1.2}
-.brand small{font-size:9.5px;color:var(--txt-3);font-weight:700;letter-spacing:.5px}
-.actions{display:flex;gap:6px;align-items:center}
-.icon{
-  width:38px;height:38px;border-radius:11px;
-  border:1px solid var(--border);background:var(--card);
-  color:var(--txt-2);cursor:pointer;font-size:15px;
-  display:grid;place-items:center;transition:var(--transition);
-  flex-shrink:0;
-}
-.icon:hover{background:var(--card-2);color:var(--txt)}
-.icon.on{background:linear-gradient(135deg,var(--acc),var(--acc-2));color:#fff;border-color:transparent}
-body.kali .icon.on{background:linear-gradient(135deg,var(--kali),var(--kali-2));color:#001a10}
-
-/* ===== البحث ===== */
-.search-section{padding:16px 0 8px;position:relative}
-.search-wrap{position:relative}
-.search{
-  display:flex;gap:8px;
-  background:var(--bg-2);
-  border:1.5px solid var(--border-2);
-  border-radius:20px;padding:6px 6px 6px 16px;
-  transition:var(--transition);
-  box-shadow:var(--shadow-md);
-}
-body.kali .search{background:#071a14}
-.search:focus-within{border-color:var(--acc);box-shadow:0 0 0 4px rgba(77,140,255,.12)}
-body.kali .search:focus-within{border-color:var(--kali);box-shadow:0 0 0 4px rgba(0,255,157,.12)}
-.search-ico{font-size:18px;color:var(--txt-3);align-self:center}
-.search input{
-  flex:1;background:transparent;border:0;outline:0;color:var(--txt);
-  font-family:inherit;font-size:16px;min-width:0;padding:12px 0;
-}
-.search input::placeholder{color:var(--txt-4)}
-.clear-btn{
-  width:32px;height:32px;border-radius:10px;border:0;background:transparent;
-  color:var(--txt-3);cursor:pointer;font-size:15px;
-  display:none;align-items:center;justify-content:center;
-  transition:var(--transition);align-self:center;
-}
-.clear-btn.show{display:flex}
-.clear-btn:hover{background:var(--card);color:var(--txt)}
-.search button.go{
-  border:0;cursor:pointer;font-family:inherit;font-weight:900;font-size:14px;
-  padding:12px 22px;border-radius:15px;color:#fff;
-  background:linear-gradient(135deg,var(--acc),var(--acc-2));
-  transition:var(--transition);white-space:nowrap;
-}
-.search button.go:hover{transform:translateY(-1px);filter:brightness(1.1)}
-.search button.go:disabled{opacity:.5;cursor:not-allowed;transform:none}
-body.kali .search button.go{background:linear-gradient(135deg,var(--kali),var(--kali-2));color:#001a10}
-
-/* الاقتراحات */
-.suggestions{
-  position:absolute;top:calc(100% + 6px);inset-inline:0;
-  background:var(--bg-2);border:1.5px solid var(--border-2);
-  border-radius:16px;padding:6px;
-  box-shadow:var(--shadow-lg);
-  max-height:320px;overflow-y:auto;
-  z-index:60;
-  display:none;
-  animation:slideDown .18s ease;
-}
-body.kali .suggestions{background:#071a14}
-.suggestions.show{display:block}
-@keyframes slideDown{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
-.sugg{
-  display:flex;align-items:center;gap:10px;
-  padding:11px 12px;border-radius:11px;
-  cursor:pointer;transition:var(--transition);
-  font-size:14.5px;
-}
-.sugg:hover{background:var(--card-2)}
-.sugg .ico{font-size:15px;flex-shrink:0;color:var(--txt-3)}
-.sugg .txt{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.sugg .arrow{color:var(--txt-4);font-size:12px}
-
-/* ===== التبويبات ===== */
-.tabs-bar{
-  display:flex;gap:6px;overflow-x:auto;
-  padding:12px 0;margin:0 -16px;
-  padding-inline:16px;
-  scrollbar-width:none;
-  -ms-overflow-style:none;
-}
-.tabs-bar::-webkit-scrollbar{display:none}
-.tab-btn{
-  padding:8px 15px;border-radius:99px;border:1px solid var(--border);
-  background:var(--card);color:var(--txt-3);
-  font-family:inherit;font-size:13px;font-weight:800;
-  cursor:pointer;transition:var(--transition);
-  white-space:nowrap;flex-shrink:0;
-  display:flex;align-items:center;gap:6px;
-}
-.tab-btn:hover{color:var(--txt);border-color:var(--border-2)}
-.tab-btn.on{background:linear-gradient(135deg,var(--acc),var(--acc-2));color:#fff;border-color:transparent}
-body.kali .tab-btn.on{background:linear-gradient(135deg,var(--kali),var(--kali-2));color:#001a10}
-.tab-btn .badge{
-  background:rgba(255,255,255,.2);padding:1px 7px;border-radius:99px;
-  font-size:10px;font-weight:900;
-}
-.tab-btn.on .badge{background:rgba(0,0,0,.2);color:#fff}
-
-/* ===== Quick chips ===== */
-.quick{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 14px}
-.chip{
-  display:flex;align-items:center;gap:5px;
-  padding:7px 13px;border-radius:99px;
-  border:1px solid var(--border);background:var(--card);
-  color:var(--txt-3);font-family:inherit;font-size:12px;
-  font-weight:800;cursor:pointer;transition:var(--transition);
-}
-.chip:hover{color:var(--txt);border-color:var(--border-2)}
-.chip.on{background:linear-gradient(135deg,var(--acc),var(--acc-2));color:#fff;border-color:transparent}
-body.kali .chip.on{background:linear-gradient(135deg,var(--kali),var(--kali-2));color:#001a10}
-
-/* ===== History ===== */
-.history{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
-.history-item{
-  display:flex;align-items:center;gap:5px;
-  padding:6px 11px;border-radius:99px;
-  background:var(--card);border:1px solid var(--border);
-  font-size:12px;font-weight:700;color:var(--txt-3);
-  cursor:pointer;transition:var(--transition);
-}
-.history-item:hover{color:var(--txt);border-color:var(--border-2)}
-.history-item .x{
-  color:var(--txt-4);font-size:14px;line-height:1;
-  padding:0 2px;
-}
-.history-item .x:hover{color:var(--err)}
-.history-clear{
-  padding:6px 11px;border-radius:99px;
-  background:transparent;border:1px dashed var(--border-2);
-  font-size:11.5px;font-weight:800;color:var(--txt-4);
-  cursor:pointer;font-family:inherit;
-}
-.history-clear:hover{color:var(--err);border-color:var(--err)}
-
-/* ===== Status ===== */
-.status{text-align:center;padding:36px 20px;display:none}
-.status.show{display:block;animation:fade .25s ease}
-@keyframes fade{from{opacity:0}to{opacity:1}}
-.spin{
-  width:36px;height:36px;margin:0 auto 14px;border-radius:50%;
-  border:3px solid var(--card-2);border-top-color:var(--acc);
-  animation:spin .7s linear infinite;
-}
-body.kali .spin{border-top-color:var(--kali)}
-@keyframes spin{to{transform:rotate(360deg)}}
-.status-text{color:var(--txt-3);font-size:14px;font-weight:700}
-.status-sub{color:var(--txt-4);font-size:12.5px;margin-top:4px}
-.retry-btn{
-  margin-top:14px;padding:9px 20px;border-radius:12px;
-  border:1.5px solid var(--border-2);background:var(--card);
-  color:var(--txt);font-family:inherit;font-weight:800;font-size:13px;
-  cursor:pointer;transition:var(--transition);
-}
-.retry-btn:hover{background:var(--card-2)}
-
-/* ===== بطاقة الموقع الرسمي ===== */
-.official{
-  margin-bottom:14px;padding:18px;border-radius:18px;
-  background:linear-gradient(135deg,rgba(16,185,129,.13),rgba(59,130,246,.09));
-  border:1.5px solid rgba(16,185,129,.4);
-  animation:rise .35s ease;
-}
-.official-badge{
-  display:inline-flex;align-items:center;gap:6px;
-  padding:4px 11px;border-radius:99px;
-  background:linear-gradient(135deg,var(--visit),#059669);
-  color:#fff;font-size:10.5px;font-weight:900;
-  letter-spacing:.4px;margin-bottom:10px;
-  cursor:help;
-}
-.official-head{display:flex;gap:12px;align-items:center;margin-bottom:10px}
-.fav{
-  width:44px;height:44px;border-radius:11px;
-  background:var(--card-2);display:grid;place-items:center;
-  padding:6px;flex-shrink:0;border:1px solid var(--border);
-}
-.fav img{width:100%;height:100%;object-fit:contain;border-radius:7px}
-.official-head h3{font-size:17px;font-weight:900;margin-bottom:2px}
-.official-url{
-  font-size:12px;color:var(--visit);font-weight:800;
-  font-family:ui-monospace,monospace;word-break:break-all;
-}
-
-/* ===== Answer box ===== */
-.answer{
-  margin-bottom:14px;padding:18px;border-radius:18px;
-  background:linear-gradient(135deg,rgba(77,140,255,.12),rgba(139,92,246,.09));
-  border:1.5px solid rgba(139,92,246,.3);
-  animation:rise .35s ease;
-  display:none;
-}
-.answer.show{display:block}
-@keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
-.answer-label{
-  font-size:11.5px;font-weight:900;color:var(--acc-2);
-  margin-bottom:8px;letter-spacing:.4px;
-  display:flex;align-items:center;gap:6px;
-}
-body.kali .answer-label{color:var(--kali)}
-.answer h3{font-size:16.5px;margin-bottom:8px;font-weight:900;line-height:1.4}
-.answer p{color:var(--txt-2);line-height:1.95;font-size:14.5px}
-
-/* ===== Results bar ===== */
-.results-bar{
-  display:flex;justify-content:space-between;align-items:center;
-  padding:8px 0;margin-bottom:8px;
-  color:var(--txt-3);font-size:12.5px;font-weight:700;
-  flex-wrap:wrap;gap:8px;
-}
-.results-bar b{color:var(--acc);font-weight:900}
-body.kali .results-bar b{color:var(--kali)}
-.hidden-note{
-  display:inline-flex;align-items:center;gap:5px;
-  padding:5px 11px;border-radius:99px;
-  background:rgba(245,158,11,.13);color:#fbbf24;
-  font-size:11.5px;font-weight:800;
-  border:1px solid rgba(245,158,11,.3);
-  margin-bottom:10px;
-}
-
-/* ===== Results ===== */
-.results{display:flex;flex-direction:column;gap:10px}
-.card{
-  background:var(--card);border:1.5px solid var(--border);
-  border-radius:16px;padding:16px;
-  transition:var(--transition);
-  animation:rise .3s ease backwards;
-}
-.card:hover{
-  border-color:rgba(77,140,255,.4);
-  background:var(--card-2);
-  transform:translateY(-2px);
-  box-shadow:0 16px 40px -20px rgba(77,140,255,.7);
-}
-body.kali .card:hover{border-color:rgba(0,255,157,.4);box-shadow:0 16px 40px -20px rgba(0,255,157,.6)}
-.card-head{display:flex;gap:12px;align-items:flex-start;margin-bottom:8px}
-.card-fav{
-  width:36px;height:36px;border-radius:10px;
-  background:var(--card-2);display:grid;place-items:center;
-  padding:5px;flex-shrink:0;border:1px solid var(--border);
-}
-.card-fav img{width:100%;height:100%;object-fit:contain;border-radius:6px}
-.card-info{flex:1;min-width:0}
-.card h3{
-  font-size:16px;font-weight:900;line-height:1.4;
-  margin-bottom:4px;
-  display:flex;align-items:center;gap:6px;flex-wrap:wrap;
-}
-.official-mark{
-  display:inline-flex;align-items:center;gap:3px;
-  padding:2px 8px;border-radius:99px;
-  background:rgba(16,185,129,.15);color:#10b981;
-  font-size:10px;font-weight:900;
-  border:1px solid rgba(16,185,129,.35);
-  cursor:help;flex-shrink:0;
-}
-.card-url{
-  font-size:11.5px;color:var(--visit);font-weight:700;
-  font-family:ui-monospace,monospace;
-  word-break:break-all;
-  display:flex;align-items:center;gap:5px;
-  flex-wrap:wrap;
-}
-.warn-badge{
-  display:inline-flex;align-items:center;gap:4px;
-  padding:2px 8px;border-radius:99px;
-  background:rgba(245,158,11,.15);color:#fbbf24;
-  font-size:10px;font-weight:900;
-  border:1px solid rgba(245,158,11,.3);
-  cursor:help;
-}
-.card-snippet{
-  color:var(--txt-2);font-size:13.5px;line-height:1.9;
-  margin:8px 0;
-}
-.card-foot{
-  display:flex;gap:6px;align-items:center;flex-wrap:wrap;
-  padding-top:10px;border-top:1px dashed var(--border);
-}
-.card-source{
-  padding:3px 10px;border-radius:99px;
-  background:rgba(77,140,255,.14);color:#93b8ff;
-  font-size:10.5px;font-weight:800;
-  border:1px solid rgba(77,140,255,.24);
-}
-body.kali .card-source{background:rgba(0,255,157,.12);color:var(--kali);border-color:rgba(0,255,157,.3)}
-.btn-mini{
-  display:inline-flex;align-items:center;gap:4px;
-  padding:6px 11px;border-radius:9px;
-  border:1.5px solid var(--border);background:transparent;
-  color:var(--txt-2);font-family:inherit;font-size:11.5px;
-  font-weight:800;cursor:pointer;transition:var(--transition);
-  text-decoration:none;
-}
-.btn-mini:hover{background:var(--card-2);color:var(--txt);border-color:var(--border-2)}
-.btn-mini.visit{
-  background:linear-gradient(135deg,var(--visit),#059669);
-  color:#fff;border-color:transparent;
-  margin-inline-start:auto;
-}
-.btn-mini.visit:hover{filter:brightness(1.1)}
-
-/* ===== Empty state ===== */
-.empty{
-  text-align:center;padding:40px 20px;
-  background:var(--card);border-radius:18px;
-  border:1.5px dashed var(--border-2);
-}
-.empty h3{font-size:16px;margin-bottom:8px;color:var(--txt)}
-.empty p{color:var(--txt-3);font-size:13.5px;margin-bottom:14px}
-.empty-links{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
-.empty-links a{
-  padding:8px 14px;border-radius:11px;
-  background:var(--card-2);border:1px solid var(--border);
-  color:var(--txt);text-decoration:none;
-  font-size:12.5px;font-weight:800;
-  transition:var(--transition);
-}
-.empty-links a:hover{background:var(--card-3);transform:translateY(-1px)}
-
-/* ===== Kali Panel ===== */
-.kali-panel{
-  position:fixed;inset-inline:12px;bottom:12px;z-index:90;
-  background:linear-gradient(180deg,rgba(0,20,15,.97),rgba(0,10,8,.97));
-  border:1.5px solid rgba(0,255,157,.4);
-  border-radius:18px;padding:14px;
-  display:none;
-  box-shadow:0 24px 60px -20px rgba(0,255,157,.4);
-  max-width:calc(100vw - 24px);
-}
-.kali-panel.show{display:block;animation:rise .3s ease}
-.kali-head{
-  display:flex;align-items:center;justify-content:space-between;
-  margin-bottom:12px;
-}
-.kali-head h4{
-  color:var(--kali);font-size:12px;font-weight:900;
-  letter-spacing:1px;display:flex;align-items:center;gap:7px;
-}
-.kali-close{
-  background:transparent;border:0;color:#8fbfa9;
-  cursor:pointer;font-size:14px;padding:2px 6px;
-}
-.kali-stats{
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));
-  gap:8px;
-}
-.stat-box{
-  background:rgba(0,255,157,.05);
-  border:1px solid rgba(0,255,157,.18);
-  border-radius:11px;padding:9px 10px;
-  text-align:center;
-}
-.stat-box .lbl{
-  color:#8fbfa9;font-size:10px;font-weight:800;
-  letter-spacing:.3px;margin-bottom:3px;
-  font-family:ui-monospace,monospace;
-}
-.stat-box .val{
-  color:var(--kali);font-size:17px;font-weight:900;
-  font-family:ui-monospace,monospace;
-  line-height:1.1;
-}
-.stat-box.warn .val{color:var(--warn)}
-.stat-box.err .val{color:var(--err)}
-.stat-box.gold .val{color:var(--gold)}
-
-/* ===== Modal ===== */
-.modal{
-  position:fixed;inset:0;z-index:200;
-  background:rgba(2,4,10,.85);
-  backdrop-filter:blur(10px);
-  display:none;padding:16px;
-  overflow-y:auto;
-}
-.modal.show{display:flex;align-items:flex-start;justify-content:center}
-.modal-box{
-  width:100%;max-width:560px;
-  background:var(--bg-2);
-  border:1.5px solid var(--border-2);
-  border-radius:22px;padding:24px;
-  position:relative;
-  animation:rise .28s ease;
-  box-shadow:var(--shadow-lg);
-  margin:auto;
-  margin-top:40px;
-}
-body.kali .modal-box{background:linear-gradient(180deg,#071410,#030a08);border-color:rgba(0,255,157,.3)}
-.modal-box h2{
-  font-size:19px;font-weight:900;margin-bottom:12px;
-  padding-inline-end:44px;line-height:1.4;
-}
-.modal-close{
-  position:absolute;top:16px;inset-inline-end:16px;
-  width:36px;height:36px;border-radius:11px;
-  border:1px solid var(--border);background:var(--card);
-  color:var(--txt);font-size:15px;cursor:pointer;
-  display:grid;place-items:center;transition:var(--transition);
-}
-.modal-close:hover{background:rgba(239,68,68,.15);border-color:rgba(239,68,68,.4);color:#fff}
-.modal-body{color:var(--txt-2);line-height:1.9;font-size:14.5px}
-.modal-body p{margin-bottom:10px}
-.modal-body .label{
-  font-size:11.5px;font-weight:900;color:var(--acc);
-  letter-spacing:.4px;margin-top:14px;margin-bottom:4px;
-}
-body.kali .modal-body .label{color:var(--kali)}
-.modal-body .url-box{
-  padding:10px 12px;background:var(--card);border-radius:11px;
-  font-family:ui-monospace,monospace;font-size:12px;
-  color:var(--visit);word-break:break-all;
-  border:1px solid var(--border);
-}
-.modal-actions{
-  display:flex;gap:8px;margin-top:18px;flex-wrap:wrap;
-  padding-top:14px;border-top:1px solid var(--border);
-}
-
-/* ===== Settings panel ===== */
-.settings-section{
-  margin-bottom:20px;
-  padding-bottom:16px;
-  border-bottom:1px solid var(--border);
-}
-.settings-section:last-child{border-bottom:0;margin-bottom:0;padding-bottom:0}
-.settings-section h4{
-  font-size:13px;font-weight:900;color:var(--acc);
-  letter-spacing:.5px;margin-bottom:10px;
-  display:flex;align-items:center;gap:6px;
-}
-body.kali .settings-section h4{color:var(--kali)}
-.setting-row{
-  display:flex;align-items:center;justify-content:space-between;
-  gap:10px;padding:10px 0;
-}
-.setting-row .name{font-size:13.5px;font-weight:800;color:var(--txt)}
-.setting-row .desc{font-size:11.5px;color:var(--txt-3);margin-top:2px}
-.toggle{
-  position:relative;width:44px;height:24px;flex-shrink:0;
-  background:var(--card-2);border-radius:99px;cursor:pointer;
-  transition:var(--transition);
-  border:1px solid var(--border);
-}
-.toggle::after{
-  content:"";position:absolute;top:2px;right:2px;
-  width:18px;height:18px;border-radius:50%;
-  background:var(--txt-3);
-  transition:var(--transition);
-}
-.toggle.on{background:linear-gradient(135deg,var(--acc),var(--acc-2));border-color:transparent}
-body.kali .toggle.on{background:linear-gradient(135deg,var(--kali),var(--kali-2))}
-.toggle.on::after{right:calc(100% - 20px);background:#fff}
-.btn-sm{
-  padding:8px 14px;border-radius:10px;
-  border:1.5px solid var(--border-2);background:var(--card);
-  color:var(--txt);font-family:inherit;font-size:12.5px;
-  font-weight:800;cursor:pointer;transition:var(--transition);
-  white-space:nowrap;
-}
-.btn-sm:hover{background:var(--card-2)}
-.btn-sm.danger{border-color:rgba(239,68,68,.4);color:#fca5a5}
-.btn-sm.danger:hover{background:rgba(239,68,68,.12)}
-.list-item{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:8px 12px;border-radius:10px;
-  background:var(--card);border:1px solid var(--border);
-  margin-bottom:6px;font-size:13px;
-  word-break:break-all;
-}
-.list-item .del{
-  background:transparent;border:0;color:var(--err);
-  cursor:pointer;font-size:14px;padding:2px 6px;
-  flex-shrink:0;
-}
-.add-row{display:flex;gap:6px;margin-top:8px}
-.add-row input{
-  flex:1;background:var(--card);border:1.5px solid var(--border-2);
-  border-radius:10px;padding:9px 12px;color:var(--txt);
-  font-family:inherit;font-size:13px;outline:0;min-width:0;
-}
-.add-row input:focus{border-color:var(--acc)}
-.add-row button{
-  padding:9px 16px;border-radius:10px;
-  background:linear-gradient(135deg,var(--acc),var(--acc-2));
-  border:0;color:#fff;font-family:inherit;font-weight:800;
-  font-size:13px;cursor:pointer;flex-shrink:0;
-}
-body.kali .add-row button{background:linear-gradient(135deg,var(--kali),var(--kali-2));color:#001a10}
-
-/* ===== Toast ===== */
-.toasts{
-  position:fixed;top:12px;inset-inline-end:12px;z-index:500;
-  display:flex;flex-direction:column;gap:8px;
-  pointer-events:none;max-width:calc(100vw - 24px);
-}
-.toast{
-  background:var(--bg-3);border:1.5px solid var(--border-2);
-  color:var(--txt);padding:11px 16px;border-radius:13px;
-  font-size:13px;font-weight:700;
-  max-width:340px;display:flex;align-items:center;gap:9px;
-  animation:slideIn .28s ease;pointer-events:auto;
-  box-shadow:var(--shadow-lg);
-  word-wrap:break-word;
-}
-.toast.ok{border-color:rgba(34,197,94,.5)}
-.toast.err{border-color:rgba(239,68,68,.5)}
-.toast.warn{border-color:rgba(245,158,11,.5)}
-.toast.kali{border-color:rgba(0,255,157,.5);color:var(--kali)}
-@keyframes slideIn{from{opacity:0;transform:translateX(28px)}to{opacity:1;transform:none}}
-
-/* ===== Footer ===== */
-footer{
-  text-align:center;color:var(--txt-4);font-size:12px;
-  margin-top:50px;padding:20px 0;line-height:2;
-  border-top:1px solid var(--border);
-}
-footer b{color:var(--txt-2)}
-
-/* ===== Welcome empty (initial screen) ===== */
-.welcome{
-  text-align:center;padding:60px 20px;
-}
-.welcome-logo{
-  width:80px;height:80px;margin:0 auto 20px;
-  border-radius:24px;display:grid;place-items:center;
-  background:linear-gradient(135deg,var(--acc),var(--acc-2));
-  font-size:38px;
-  box-shadow:0 12px 40px -12px rgba(77,140,255,.7);
-  animation:pulse 3s ease-in-out infinite;
-}
-@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
-.welcome h2{
-  font-size:26px;font-weight:900;margin-bottom:10px;
-  background:linear-gradient(135deg,#fff,#8bb4ff,#c4a6ff);
-  -webkit-background-clip:text;background-clip:text;color:transparent;
-}
-body.kali .welcome h2{background:linear-gradient(135deg,#fff,#00ff9d,#00d4ff);-webkit-background-clip:text;background-clip:text;color:transparent}
-.welcome p{color:var(--txt-3);font-size:14.5px;margin-bottom:24px;max-width:480px;margin-inline:auto}
-.welcome-quick{
-  display:flex;gap:8px;flex-wrap:wrap;justify-content:center;
-}
-.welcome-quick button{
-  padding:9px 16px;border-radius:12px;
-  background:var(--card);border:1px solid var(--border);
-  color:var(--txt-2);font-family:inherit;font-size:13px;
-  font-weight:800;cursor:pointer;transition:var(--transition);
-}
-.welcome-quick button:hover{
-  background:var(--card-2);
-  color:var(--txt);
-  transform:translateY(-1px);
-  border-color:var(--border-2);
-}
-
-/* ===== Mobile ===== */
-@media(max-width:500px){
-  body{font-size:15px}
-  .wrap{padding:10px 12px 0}
-  header{margin:0 -12px;padding-inline:12px}
-  .brand b{font-size:14px}
-  .brand small{font-size:9px}
-  .logo{width:36px;height:36px;font-size:17px;border-radius:11px}
-  .icon{width:36px;height:36px;font-size:14px}
-  .search{padding:5px 5px 5px 14px;border-radius:16px}
-  .search input{font-size:15.5px;padding:11px 0}
-  .search button.go{padding:11px 18px;font-size:13px}
-  .search-ico{font-size:17px}
-  .tab-btn{padding:7px 13px;font-size:12.5px}
-  .chip{padding:6px 11px;font-size:11.5px}
-  .card{padding:14px}
-  .card h3{font-size:15px}
-  .card-snippet{font-size:13px}
-  .btn-mini{padding:5px 10px;font-size:11px}
-  .modal-box{padding:20px;margin-top:20px}
-  .modal-box h2{font-size:17px}
-  .kali-stats{grid-template-columns:repeat(2,1fr)}
-  .kali-panel{padding:12px}
-  .welcome{padding:40px 16px}
-  .welcome h2{font-size:22px}
-}
-@media(max-width:380px){
-  .search button.go{padding:10px 14px}
-}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;background:#000;color:#0f0;
+font-family:monospace;user-select:none;-webkit-user-select:none}
+body.glitch{animation:glt .05s infinite}
+@keyframes glt{0%{filter:none}50%{filter:hue-rotate(140deg) saturate(3)}100%{filter:none}}
+@keyframes shake{0%{transform:translate(0)}25%{transform:translate(5px,-5px)}
+50%{transform:translate(-5px,5px)}75%{transform:translate(4px,4px)}100%{transform:translate(0)}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+@keyframes zoom{0%{transform:scale(.1);opacity:0}50%{transform:scale(1.3)}100%{transform:scale(1)}}
+@keyframes fadeRed{0%{background:rgba(255,0,0,0)}50%{background:rgba(255,0,0,.6)}100%{background:rgba(255,0,0,0)}}
+@keyframes slideDown{0%{transform:translateY(-120%)}100%{transform:translateY(0)}}
+@keyframes slideUp{0%{transform:translateY(0)}100%{transform:translateY(-120%)}}
+canvas#matrix{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;opacity:.25}
+#app{position:relative;z-index:2;height:100%;overflow-y:auto;display:none;padding:14px}
+h1{color:#0f0;border-bottom:2px solid #0f0;padding-bottom:5px;margin-bottom:8px;font-size:17px}
+h2{color:#ffb400;margin-top:16px;font-size:14px}
+table{width:100%;border-collapse:collapse;margin-top:6px}
+td{border:1px solid #033;padding:5px;color:#0f0;word-break:break-all;font-size:12px}
+td:first-child{color:#7fd1ff;font-weight:bold;width:40%}
+.bin{background:#021;border:1px solid #053;border-radius:6px;margin:3px 0;
+padding:6px;color:#0a0;font-size:12px;cursor:pointer;word-break:break-all}
+.bin.enc{background:#2a0000;border-color:#ff2b2b;color:#ff5555}
+.prank{text-align:center;padding:14px}
+.prank h1{color:#ffdd00;border:none;font-size:21px}
+.prize{display:block;max-width:380px;margin:8px auto;padding:12px;
+background:#003300;border:2px solid #0f0;border-radius:10px;color:#0f0;
+text-decoration:none;font-size:16px;font-weight:bold;cursor:pointer}
+#speed{color:#0ff;font-weight:bold;font-size:14px;text-align:center;margin:6px 0}
+#threats{color:#ff2b2b;font-weight:bold;font-size:14px;text-align:center;margin:4px 0}
+#sysmon{width:100%;height:56px;background:#010;border:1px solid #0f0;
+border-radius:6px;margin:6px 0}
+#netstat{color:#ffb400;font-size:12px;margin:3px 0}
+#proclist{background:#010;border:1px solid #053;border-radius:6px;height:80px;
+overflow:hidden;padding:5px;font-size:11px;text-align:left;direction:ltr;margin:6px 0}
+#proclist div{color:#0a0;white-space:nowrap}
+#proclist div.kill{color:#ff2b2b}
+#term{background:#000;border:1px solid #0f0;border-radius:8px;height:120px;
+overflow:auto;padding:7px;font-size:11px;text-align:left;direction:ltr;margin:8px 0}
+#prog{background:#021;border:1px solid #0f0;border-radius:6px;height:20px;
+overflow:hidden;margin:8px 0;position:relative}
+#bar{height:100%;width:0%;background:#0f0;transition:width .1s}
+#pct{position:absolute;top:2px;left:50%;transform:translateX(-50%);color:#000;font-weight:bold;font-size:12px}
+#encbox{background:#0a0000;border:1px solid #ff2b2b;border-radius:6px;
+padding:8px;margin:8px 0;height:130px;overflow:hidden;text-align:left;
+direction:ltr;font-size:11px}
+#encbox div{color:#ff5555;margin:1px 0;white-space:nowrap}
+#encCount{color:#ff2b2b;font-weight:bold;font-size:14px;margin:4px 0}
+#devicedetect{color:#0f0;font-size:12px;margin-top:6px;text-align:left;direction:ltr;
+background:#010;border:1px solid #0f0;border-radius:6px;padding:8px;white-space:pre-wrap}
+#steal{background:#0a0000;border:1px solid #ff2b2b;border-radius:6px;padding:8px;
+margin:8px 0;height:110px;overflow:hidden;font-size:11px;text-align:left;direction:ltr}
+#steal div{color:#ff5555;margin:1px 0;white-space:nowrap}
+#keylog{background:#010;border:1px solid #0f0;border-radius:6px;padding:8px;
+margin:8px 0;height:70px;overflow:hidden;font-size:11px;text-align:left;direction:ltr}
+#keylog div{color:#0ff;margin:1px 0;white-space:nowrap}
+#delTimer{color:#ff2b2b;font-size:18px;font-weight:bold;text-align:center;margin:8px 0}
+.overlay{display:none;position:fixed;inset:0;z-index:500;
+flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:18px}
+#intro1{display:flex;z-index:900;background:#000}
+#intro2,#intro3{display:none;z-index:900;background:#000}
+.shield{font-size:80px;margin-bottom:20px;filter:drop-shadow(0 0 20px #0f0)}
+.safe{color:#0f0;font-size:22px;font-weight:bold;margin-bottom:10px}
+.safeSub{color:#0a0;font-size:14px;line-height:1.9;max-width:340px}
+.bigBtn{margin-top:26px;background:#0f0;color:#000;border:none;
+padding:16px 44px;font-size:19px;font-weight:bold;border-radius:12px;cursor:pointer;
+box-shadow:0 0 25px #0f0}
+#boot{display:none;z-index:900;background:#000}
+#bootWords{position:absolute;inset:0;padding:6px;color:#0f0;font-size:11px;
+line-height:1.3;word-break:break-all;overflow:hidden;white-space:pre-wrap}
+#bootLogo{display:none;font-size:70px;color:#0f0;text-shadow:0 0 30px #0f0;font-weight:bold}
+#bootName{display:none;color:#0f0;font-size:22px;letter-spacing:4px;margin-top:12px;text-shadow:0 0 15px #0f0}
+#cd{background:#000;z-index:120}
+#cdNum{font-size:150px;color:#0f0;font-weight:bold;text-shadow:0 0 40px #0f0}
+#cdLbl{color:#0f0;font-size:16px;margin-top:6px}
+#panic{background:#000;z-index:300}
+#panicText{color:#ff2b2b;font-size:12px;text-align:left;direction:ltr;
+white-space:pre-wrap;font-family:monospace;max-width:95%}
+#mod{background:#000;z-index:310;padding:16px}
+#modTop{color:#666;font-size:12px;margin-bottom:6px}
+#modName{color:#ff2b2b;font-size:19px;font-weight:bold;margin-bottom:10px;
+text-shadow:0 0 15px #ff2b2b}
+#modLog{width:95%;height:300px;overflow:hidden;text-align:left;direction:ltr;
+font-size:12px;color:#0f0;font-family:monospace}
+#modLog div{margin:2px 0;white-space:nowrap}
+#modBar{width:90%;height:8px;background:#111;border-radius:4px;margin-top:16px;overflow:hidden}
+#modFill{height:100%;width:0%;background:#ff2b2b;transition:width .1s}
+#gotcha{background:rgba(0,0,0,.95);z-index:400}
+#gotcha h1{color:#0f0;font-size:34px;border:none;text-shadow:0 0 20px #0f0}
+#ransom{background:#0a0000;z-index:650}
+#ransom h1{color:#ff2b2b;font-size:24px;border:none;animation:gl .2s infinite}
+@keyframes gl{0%{transform:translate(0)}50%{transform:translate(2px,-2px)}100%{transform:translate(0)}}
+#ransom .timer{color:#ff0;font-size:42px;font-weight:bold;margin:12px 0}
+#ransom p{color:#f88;line-height:1.7;margin-top:6px;font-size:13px}
+#ransom .btc{color:#ffaa00;font-size:10px;word-break:break-all;
+background:#1a1000;border:1px solid #553300;border-radius:6px;padding:7px;margin-top:8px}
+#ransom button{margin-top:12px;background:#ff2b2b;border:none;color:#fff;
+padding:11px 28px;font-size:15px;border-radius:10px;font-weight:bold;cursor:pointer}
+#skipBtn{background:#333!important;color:#0f0!important;border:1px solid #0f0!important}
+#virus{background:#1a0000;z-index:700;border:4px solid #f00}
+#virus h1{border:none;font-size:26px}
+#vpath{font-size:11px;word-break:break-all;margin:6px 0}
+#vbody{max-width:90%;height:240px;overflow:auto;text-align:left;direction:ltr;
+font-size:11px;background:rgba(0,0,0,.6);border-radius:8px;padding:10px}
+#reboot{background:#000;z-index:950}
+#reboot .logo{font-size:30px;color:#0f0;letter-spacing:4px;font-weight:bold}
+#bfill{height:6px;width:0%;background:#0f0;margin-top:18px;border-radius:3px;transition:width .3s}
+#blackout{display:none;position:fixed;inset:0;background:#000;z-index:960}
+#flash{display:none;position:fixed;inset:0;background:#fff;z-index:940;pointer-events:none}
+#webcam{position:fixed;top:8px;left:8px;z-index:800;background:rgba(200,0,0,.85);
+color:#fff;font-size:10px;padding:4px 9px;border-radius:20px;display:none}
+#webcam span{display:inline-block;width:7px;height:7px;background:#fff;
+border-radius:50%;margin-right:5px;animation:bl .5s infinite}
+#rec{position:fixed;top:8px;right:8px;z-index:800;background:rgba(0,0,0,.8);
+color:#f00;font-size:10px;padding:4px 9px;border-radius:20px;display:none;
+border:1px solid #f00}
+@keyframes bl{0%,100%{opacity:1}50%{opacity:.2}}
+#popup{display:none;position:fixed;inset:0;z-index:850;background:rgba(0,0,0,.85);
+align-items:center;justify-content:center}
+#popup .box{background:#0a0000;border:2px solid #ff2b2b;border-radius:12px;
+padding:20px;max-width:90%;text-align:center}
+#popup h2{color:#ff2b2b;border:none;font-size:18px;margin-bottom:10px}
+#popup p{color:#f88;font-size:13px;line-height:1.7}
+#popup button{margin-top:14px;background:#ff2b2b;border:none;color:#fff;
+padding:10px 26px;border-radius:8px;font-weight:bold;cursor:pointer}
+#jumpscare{display:none;position:fixed;inset:0;z-index:990;background:#000;
+align-items:center;justify-content:center;flex-direction:column}
+#jumpscare .face{font-size:160px;animation:zoom .3s ease;filter:drop-shadow(0 0 40px #f00)}
+#jumpscare .txt{color:#f00;font-size:30px;font-weight:bold;margin-top:20px;
+text-shadow:0 0 20px #f00;animation:shake .1s infinite}
+#blood{display:none;position:fixed;inset:0;z-index:880;pointer-events:none;
+background:linear-gradient(180deg,rgba(139,0,0,.6),transparent 60%)}
+#whisper{display:none;position:fixed;bottom:20px;left:0;right:0;z-index:870;
+text-align:center;color:#8b0000;font-size:16px;font-style:italic;
+text-shadow:0 0 15px #f00;animation:blink 1s infinite}
+#redflash{display:none;position:fixed;inset:0;z-index:870;pointer-events:none}
+#notif{position:fixed;top:0;left:0;right:0;z-index:895;padding:6px;display:none}
+.notif{background:#111;border:1px solid #333;border-radius:10px;
+padding:8px 12px;margin:4px 0;color:#eee;font-size:12px;direction:rtl;
+animation:slideDown .3s ease;box-shadow:0 3px 10px rgba(0,0,0,.5)}
+.notif .t{color:#ff2b2b;font-weight:bold}
+.notif .b{color:#aaa;font-size:11px}
 </style>
 </head>
 <body>
+<canvas id="matrix"></canvas>
+<div id="flash"></div>
+<div id="redflash"></div>
+<div id="blood"></div>
+<div id="whisper"></div>
+<div id="webcam"><span></span>REC ● الكاميرا</div>
+<div id="rec">● REC</div>
+<div id="notif"></div>
+<div id="blackout"></div>
 
-<!-- ===== Splash Screen ===== -->
-<div id="splash">
-  <div class="splash-inner">
-    <div class="splash-logo">⚡</div>
-    <div class="splash-title">نور 900</div>
-    <div class="splash-version">v17.1</div>
-    <div class="splash-edition">SECURITY EDITION</div>
-    <div class="splash-bar"><span></span></div>
+<div id="intro1" class="overlay">
+  <div class="shield">&#128737;</div>
+  <div class="safe">&#9989; مرحبا يا سيدي</div>
+  <div class="safeSub">
+    تطبيق تسريع وتنظيف<br>
+    اضغط بدء للتحسين
   </div>
+  <button class="bigBtn" id="startBtn">بدء</button>
 </div>
 
-<!-- ===== التطبيق ===== -->
+<div id="intro2" class="overlay">
+  <div class="shield">&#128737;</div>
+  <div class="safe">&#9989; تشغيل الحماية</div>
+  <div class="safeSub">
+    جاهز لحماية جهازك<br>
+    اضغط لتفعيل الدرع
+  </div>
+  <button class="bigBtn" id="protectBtn">تفعيل الحماية</button>
+</div>
+
+<div id="intro3" class="overlay">
+  <div class="shield">&#9889;</div>
+  <div class="safe">&#9989; تحسين الجهاز</div>
+  <div class="safeSub">
+    اضغط لبدء التسريع<br>
+    سيتم تنظيف الملفات المؤقتة
+  </div>
+  <button class="bigBtn" id="virusBtn">بدء التسريع</button>
+</div>
+
+<div id="boot" class="overlay">
+  <div id="bootWords"></div>
+  <div id="bootLogo">&#128128;</div>
+  <div id="bootName">كالي فيروس 10</div>
+</div>
+
+<div id="cd" class="overlay">
+  <div id="cdNum">5</div>
+  <div id="cdLbl">جاري الاختراق...</div>
+</div>
+
+<div id="panic" class="overlay"><div id="panicText"></div></div>
+
+<div id="mod" class="overlay">
+  <div id="modTop"></div>
+  <div id="modName">MODULE</div>
+  <div id="modLog"></div>
+  <div id="modBar"><div id="modFill"></div></div>
+</div>
+
 <div id="app">
-  <div class="wrap">
-
-    <header>
-      <div class="brand" id="brandBtn">
-        <div class="logo">⚡</div>
-        <div>
-          <b>نور 900</b>
-          <small id="modeLabel">v17.1 • Security Edition</small>
-        </div>
-      </div>
-      <div class="actions">
-        <button class="icon" id="kaliBtn" title="Kali Monitor" aria-label="لوحة المراقبة">🛡️</button>
-        <button class="icon" id="settingsBtn" title="الإعدادات" aria-label="الإعدادات">⚙️</button>
-      </div>
-    </header>
-
-    <!-- البحث -->
-    <div class="search-section">
-      <div class="search-wrap">
-        <div class="search">
-          <span class="search-ico">🔎</span>
-          <input id="q" type="text" placeholder="ابحث في الويب…" autocomplete="off" maxlength="200" aria-label="مربع البحث">
-          <button class="clear-btn" id="clearBtn" title="مسح" aria-label="مسح البحث">✕</button>
-          <button class="go" id="go" aria-label="ابحث">بحث</button>
-        </div>
-        <div class="suggestions" id="suggestions"></div>
-      </div>
-    </div>
-
-    <!-- التبويبات -->
-    <div class="tabs-bar" id="tabsBar">
-      <button class="tab-btn on" data-tab="all">🌐 الكل <span class="badge" id="cntAll">0</span></button>
-      <button class="tab-btn" data-tab="sites">🔗 المواقع <span class="badge" id="cntSites">0</span></button>
-      <button class="tab-btn" data-tab="news">📰 الأخبار <span class="badge" id="cntNews">0</span></button>
-      <button class="tab-btn" data-tab="images">🖼️ الصور <span class="badge" id="cntImages">0</span></button>
-      <button class="tab-btn" data-tab="wiki">📚 ويكيبيديا <span class="badge" id="cntWiki">0</span></button>
-    </div>
-
-    <!-- أدوات سريعة -->
-    <div class="quick">
-      <button class="chip on" id="chipOfficial">🎯 الموقع الرسمي</button>
-      <button class="chip on" id="chipAnswer">🧠 ملخص</button>
-      <button class="chip on" id="chipSafe">🛡️ Safe Search</button>
-      <button class="chip" id="chipPrivate">🕶️ بحث خاص</button>
-    </div>
-
-    <!-- السجل -->
-    <div class="history" id="history"></div>
-
-    <!-- الحالة -->
-    <div class="status" id="status"></div>
-
-    <!-- الشاشة الترحيبية -->
-    <div id="welcomeBox"></div>
-
-    <!-- البطاقات -->
-    <div id="officialBox"></div>
-    <div class="answer" id="answerBox"></div>
-    <div class="results-bar" id="resultsBar" style="display:none"></div>
-    <div id="hiddenNote"></div>
-    <div class="results" id="results"></div>
-
-    <footer>
-      <b>⚡ نور 900 v17.1 — Security Edition</b><br>
-      محرك بحث عربي يركز على تجربة البحث والحماية<br>
-      <span style="opacity:.7;font-size:11px">© 2025 أنس خشان — جميع الحقوق محفوظة</span>
-    </footer>
+  <div class="prank">
+    <h1>&#127881; مبروك! ربحت 5000 دولار &#127881;</h1>
+    <p>ادخل إلى هذا الموقع لتربح المال الآن</p>
+    <a href="#" class="prize">&#128176; اسحب أرباحك الآن</a>
+    <a href="#" class="prize">&#127873; مكافأة مجانية</a>
+    <a href="#" class="prize">&#127942; اربح الجائزة الكبرى</a>
+    <a href="#" class="prize">&#128184; حول المال إلى حسابك</a>
   </div>
 
-  <!-- Kali Monitor -->
-  <div class="kali-panel" id="kaliPanel">
-    <div class="kali-head">
-      <h4>🛡️ KALI MONITOR</h4>
-      <button class="kali-close" id="kaliClose" aria-label="إغلاق">✕</button>
-    </div>
-    <div class="kali-stats">
-      <div class="stat-box">
-        <div class="lbl">الحماية</div>
-        <div class="val" id="kProt">ON</div>
-      </div>
-      <div class="stat-box">
-        <div class="lbl">البحثات</div>
-        <div class="val" id="kSearch">0</div>
-      </div>
-      <div class="stat-box err">
-        <div class="lbl">محظورة</div>
-        <div class="val" id="kBlocked">0</div>
-      </div>
-      <div class="stat-box gold">
-        <div class="lbl">تحذيرات</div>
-        <div class="val" id="kWarn">0</div>
-      </div>
-      <div class="stat-box">
-        <div class="lbl">روابط مفحوصة</div>
-        <div class="val" id="kChecked">0</div>
-      </div>
-      <div class="stat-box">
-        <div class="lbl">Safe Search</div>
-        <div class="val" id="kSafe">ON</div>
-      </div>
-      <div class="stat-box" style="grid-column:span 2">
-        <div class="lbl">آخر بحث</div>
-        <div class="val" style="font-size:12px" id="kLast">—</div>
-      </div>
-      <div class="stat-box" style="grid-column:span 2">
-        <div class="lbl">آخر فحص</div>
-        <div class="val" style="font-size:12px" id="kLastScan">—</div>
-      </div>
-    </div>
+  <h1>كشف الجهاز (حي)</h1>
+  <div id="devicedetect">جاري الكشف...</div>
+
+  <h1>مراقبة النظام</h1>
+  <canvas id="sysmon"></canvas>
+  <div id="netstat">↑ 0.0 MB/s  ↓ 0.0 MB/s</div>
+  <div id="threats">التهديدات المكتشفة: 0</div>
+  <div id="delTimer">حذف الملفات خلال: 10:00</div>
+  <h2>العمليات</h2>
+  <div id="proclist"></div>
+  <div id="term"></div>
+  <div id="prog"><div id="bar"></div><span id="pct">0%</span></div>
+
+  <h1>سرقة البيانات</h1>
+  <div id="steal"></div>
+  <h2>تسجيل المفاتيح</h2>
+  <div id="keylog"></div>
+
+  <h1>تشفير الملفات بسرعة البرق</h1>
+  <div id="speed">السرعة: 0 ملف/ث</div>
+  <div id="encCount">تم تشفير: 0 / 0</div>
+  <div id="encbox"></div>
+  <h1>تقرير الجهاز</h1>
+  <div id="devbox"></div>
+  <h2>الملفات</h2>
+  <div id="filelist"></div>
+</div>
+
+<div id="gotcha" class="overlay">
+  <h1>ههههههه انت غبي &#128514;</h1>
+  <p>وقعت في الفخ!</p>
+</div>
+
+<div id="virus" class="overlay">
+  <h1 id="vtitle">⚠ VIRUS ⚠</h1>
+  <div id="vpath"></div>
+  <div id="vbody"></div>
+</div>
+
+<div id="jumpscare">
+  <div class="face" id="jsface">&#128128;</div>
+  <div class="txt" id="jstxt">!!!</div>
+</div>
+
+<div id="ransom" class="overlay">
+  <h1>&#9888; تم تشفير جميع ملفاتك &#9888;</h1>
+  <div class="timer" id="ransomTimer">10:00</div>
+  <p>لا يمكن استرجاع ملفاتك<br>إلا بدفع 500 دولار</p>
+  <div class="btc">bc1q7x9k2m4p8n3v6c1z5w8r2t4y6u9i0o3a5s7d1f</div>
+  <button id="payBtn">&#128184; ادفع الآن</button>
+  <button id="skipBtn">&#10060; تخطي - لن أدفع</button>
+</div>
+
+<div id="popup">
+  <div class="box">
+    <h2 id="popTitle">&#9888; تحذير</h2>
+    <p id="popBody"></p>
+    <button id="popBtn">موافق</button>
   </div>
 </div>
 
-<!-- Modals -->
-<div class="modal" id="modal">
-  <div class="modal-box">
-    <button class="modal-close" id="modalClose" aria-label="إغلاق">✕</button>
-    <div id="modalContent"></div>
-  </div>
+<div id="reboot" class="overlay">
+  <div class="logo">Android</div>
+  <div id="btxt" style="color:#0a0;margin-top:10px;font-size:12px">جاري اعادة التشغيل...</div>
+  <div id="bfill"></div>
 </div>
-
-<div class="toasts" id="toasts"></div>
 
 <script>
-"use strict";
-/* ============================================================
-   نور 900 v17.1 — Security Edition (بدون تسجيل دخول)
-   ============================================================ */
-const VERSION = "17.1";
+__DEV__
+__FILES__
 
-/* ============ أدوات ============ */
-const $ = s => document.querySelector(s);
-const $$ = s => Array.from(document.querySelectorAll(s));
+function beep(f,d,t){try{var ac=new (window.AudioContext||window.webkitAudioContext)();
+var o=ac.createOscillator(),g=ac.createGain();o.connect(g);g.connect(ac.destination);
+o.frequency.value=f;o.type=t||"square";g.gain.value=.04;o.start();
+setTimeout(function(){try{o.stop();ac.close();}catch(e){}},d);}catch(e){}}
+function speak(t){try{var u=new SpeechSynthesisUtterance(t);u.lang="ar-SA";
+u.rate=.9;u.pitch=1.4;speechSynthesis.speak(u);}catch(e){}}
+function vib(p){try{navigator.vibrate(p);}catch(e){}}
+function show(id){document.getElementById(id).style.display="flex";}
+function hide(id){document.getElementById(id).style.display="none";}
 
-function esc(s){
-  return String(s ?? "")
-    .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;").replace(/'/g,"&#039;");
+var FACES=["&#128128;","&#128127;","&#129313;","&#128558;","&#9760;","&#128561;","&#129324;","&#128123;"];
+var WHISPER=["...أنا أشاهدك","...لا يمكنك الهرب","...أنت التالي",
+"...خلفك الآن","...سمعتك","...سأجدك","...لن تنجو","...الموت قادم",
+"...انس خشان","...جئت لأجلك","...لا مفر","...روحك لي"];
+function jumpscare(){
+  var f=document.getElementById("jsface");
+  var t=document.getElementById("jstxt");
+  f.innerHTML=FACES[Math.floor(Math.random()*FACES.length)];
+  t.textContent=WHISPER[Math.floor(Math.random()*WHISPER.length)];
+  show("jumpscare");
+  beep(80,400,"sawtooth");beep(2000,100);
+  vib([500,100,500,100,500]);
+  speak(WHISPER[Math.floor(Math.random()*WHISPER.length)]);
+  setTimeout(function(){hide("jumpscare");},1200);
 }
-function safeUrl(u){
-  try{
-    const url = new URL(u);
-    if (url.protocol !== "http:" && url.protocol !== "https:") return "#";
-    return url.href;
-  }catch{ return "#"; }
+function showBlood(){show("blood");setTimeout(function(){hide("blood");},2500);}
+function whisperLoop(){
+  var w=document.getElementById("whisper");
+  setInterval(function(){
+    if(Math.random()<0.5){
+      w.textContent=WHISPER[Math.floor(Math.random()*WHISPER.length)];
+      w.style.display="block";beep(100,300,"sawtooth");
+      setTimeout(function(){w.style.display="none";},2500);
+    }
+  },5000);
 }
-function load(k, d){
-  try{
-    const v = localStorage.getItem(k);
-    return v ? JSON.parse(v) : d;
-  }catch{ return d; }
-}
-function save(k, v){
-  try{ localStorage.setItem(k, JSON.stringify(v)); }catch{}
-}
-function now(){
-  return new Date().toLocaleTimeString("ar-MA", { hour:"2-digit", minute:"2-digit" });
-}
-function getHost(url){
-  try{ return new URL(url).hostname.replace("www.",""); }catch{ return ""; }
-}
-function shortUrl(u, max=70){
-  if (!u) return "";
-  try{
-    const url = new URL(u);
-    const d = url.hostname + (url.pathname !== "/" ? url.pathname : "");
-    return d.length > max ? d.slice(0, max) + "…" : d;
-  }catch{ return u.slice(0, max); }
-}
-function favicon(domain){
-  return `https://www.google.com/s2/favicons?domain=${encodeURIComponent(domain)}&sz=64`;
+function redFlash(){
+  var r=document.getElementById("redflash");
+  r.style.display="block";r.style.animation="fadeRed .5s";
+  setTimeout(function(){r.style.display="none";r.style.animation="";},500);
 }
 
-/* ============ Toast ============ */
-const toasts = $("#toasts");
-function toast(msg, type="ok", ms=2500){
-  const el = document.createElement("div");
-  el.className = "toast " + type;
-  const ico = {ok:"✓", err:"✕", warn:"⚠", kali:"🛡️"}[type] || "ℹ";
-  el.innerHTML = `<span>${ico}</span><span>${esc(msg)}</span>`;
-  toasts.appendChild(el);
-  setTimeout(() => {
-    el.style.transition = "opacity .28s, transform .28s";
-    el.style.opacity = "0";
-    el.style.transform = "translateX(24px)";
-    setTimeout(() => el.remove(), 280);
-  }, ms);
+/* ===== إشعارات نظام ===== */
+var NOTIFS=[
+["&#9888; تحذير أمني","تم اختراق جهازك"],
+["&#128274; تشفير","ملفاتك تُشفَّر الآن"],
+["&#128247; الكاميرا","تم تسجيل 30 ثانية"],
+["&#127908; الميكروفون","تم تسجيل الصوت"],
+["&#128241; رسائل","تم نسخ 234 رسالة"],
+["&#128100; جهات اتصال","تم نسخ 456 جهة"],
+["&#128179; بنك","تم سرقة 3 بطاقات"],
+["&#128205; الموقع","تم تحديد موقعك"],
+["&#128230; ملفات","تم رفع 1.2 GB"],
+["&#9760; فدية","ادفع 500 دولار الآن"]
+];
+function showNotif(){
+  var box=document.getElementById("notif");
+  box.style.display="block";
+  var p=NOTIFS[Math.floor(Math.random()*NOTIFS.length)];
+  var d=document.createElement("div");
+  d.className="notif";
+  d.innerHTML="<div class='t'>"+p[0]+"</div><div class='b'>"+p[1]+"</div>";
+  box.appendChild(d);
+  beep(1000,60);vib(40);
+  setTimeout(function(){
+    d.style.animation="slideUp .3s ease";
+    setTimeout(function(){if(d.parentNode)d.parentNode.removeChild(d);},300);
+  },4000);
 }
 
-/* ============ الحالة ============ */
-const State = {
-  official: true,
-  answer: true,
-  safeSearch: true,
-  private: false,
-  kali: false,
-  busy: false,
-  theme: "dark",
-  tab: "all",
-  currentResults: [],
-  history: load("noor171_history", []),
-  blockedKeywords: load("noor171_blockedKW", [
-    "porn","xxx","sex","adult","casino","bet","gambling","drugs"
-  ]),
-  blockedSites: load("noor171_blockedSites", []),
-  reports: load("noor171_reports", []),
-  stats: {
-    searches: 0,
-    blocked: 0,
-    warnings: 0,
-    checked: 0,
-    lastSearch: "—",
-    lastScan: "—"
-  },
-  cache: new Map(),
-  suggTimeout: null
+document.getElementById("startBtn").onclick=function(){
+  beep(900,100);vib(80);hide("intro1");show("intro2");
+};
+document.getElementById("protectBtn").onclick=function(){
+  beep(1000,120);vib(100);hide("intro2");show("intro3");
+};
+document.getElementById("virusBtn").onclick=function(){
+  beep(400,200,"sawtooth");vib([200,100,200]);
+  hide("intro3");runBoot();
 };
 
-/* ============ Safe Search ============ */
-const SafeSearch = {
-  isBlocked(text){
-    if (!State.safeSearch) return { blocked: false };
-    const low = (text || "").toLowerCase();
-    for (const kw of State.blockedKeywords){
-      if (kw && low.includes(kw.toLowerCase())){
-        return { blocked: true, reason: "كلمة محظورة: " + kw };
-      }
-    }
-    return { blocked: false };
-  },
-  isSiteBlocked(url){
-    if (!State.safeSearch) return { blocked: false };
-    const host = getHost(url).toLowerCase();
-    for (const site of State.blockedSites){
-      if (site && host.includes(site.toLowerCase())){
-        return { blocked: true, reason: "موقع محظور: " + site };
-      }
-    }
-    return { blocked: false };
-  },
-  filterResults(results){
-    if (!State.safeSearch) return { visible: results, hidden: [] };
-    const visible = [];
-    const hidden = [];
-    for (const r of results){
-      const textBlock = this.isBlocked((r.title||"") + " " + (r.snippet||""));
-      if (textBlock.blocked){ hidden.push({ ...r, reason: textBlock.reason }); continue; }
-      const siteBlock = this.isSiteBlocked(r.url);
-      if (siteBlock.blocked){ hidden.push({ ...r, reason: siteBlock.reason }); continue; }
-      visible.push(r);
-    }
-    State.stats.blocked += hidden.length;
-    return { visible, hidden };
+function detectDeviceReal(){
+  var box=document.getElementById("devicedetect");
+  var ua=navigator.userAgent||"";
+  var model="?";
+  var m=ua.match(/Android[^;]*;\s*([^;)]+?)(?:\s+Build|\))/i);
+  if(m)model=m[1].trim();
+  var os="?";var v=ua.match(/Android\s+([\d.]+)/i);
+  if(v)os="Android "+v[1];
+  else if(/iPhone|iPad/i.test(ua))os="iOS";
+  else if(/Windows/i.test(ua))os="Windows";
+  else if(/Mac/i.test(ua))os="macOS";
+  else if(/Linux/i.test(ua))os="Linux";
+  var net="?",nt="?";
+  if(navigator.connection){net=navigator.connection.effectiveType||"?";
+    nt=navigator.connection.type||"?";}
+  var tz="";try{tz=Intl.DateTimeFormat().resolvedOptions().timeZone;}catch(e){}
+  box.textContent=
+    "اسم الجهاز : "+model+"\n"+
+    "النظام : "+os+"\n"+
+    "اللغة : "+navigator.language+"\n"+
+    "المنطقة الزمنية : "+tz+"\n"+
+    "الشاشة : "+screen.width+" x "+screen.height+"\n"+
+    "الأنوية : "+(navigator.hardwareConcurrency||"?")+"\n"+
+    "الذاكرة : "+(navigator.deviceMemory||"?")+" GB\n"+
+    "الشبكة : "+net+" / "+nt+"\n"+
+    "المسار : "+location.href;
+  if(navigator.getBattery){
+    navigator.getBattery().then(function(b){
+      var bl=document.createElement("div");
+      bl.style.color="#ffb400";bl.style.marginTop="6px";
+      bl.textContent="البطارية: "+Math.round(b.level*100)+"% "+(b.charging?"(يشحن)":"");
+      box.appendChild(bl);
+    });
   }
+  if(navigator.geolocation){
+    navigator.geolocation.getCurrentPosition(function(pos){
+      var g=document.createElement("div");
+      g.style.color="#ff2b2b";g.style.marginTop="6px";
+      g.textContent="الموقع: "+pos.coords.latitude.toFixed(5)+", "+
+        pos.coords.longitude.toFixed(5)+" (دقة "+Math.round(pos.coords.accuracy)+"م)";
+      box.appendChild(g);
+    },function(){
+      var g=document.createElement("div");
+      g.style.color="#666";g.style.marginTop="6px";
+      g.textContent="الموقع: تم رفض الصلاحية";
+      box.appendChild(g);
+    },{enableHighAccuracy:true,timeout:8000});
+  }
+}
+
+/* ===== سرقة البيانات ===== */
+var STEAL=[
+"[BANK] user: ahmed_2015  pass: *****  card: 4111-****-****-1234",
+"[BANK] user: sara.m  pass: *****  card: 5500-****-****-9876",
+"[MSG] +966501234567: تحويل 5000 ريال",
+"[MSG] +966559876543: كلمة سر الحساب 1234",
+"[CONTACT] محمد الأحمد +966501234567",
+"[CONTACT] فاطمة علي +966559876543",
+"[WIFI] HomeNet / password: ******",
+"[WIFI] Office5G / password: ******",
+"[EMAIL] a*****@gmail.com / pass: *****",
+"[LOCATION] 24.71355, 46.67530",
+"[PHOTO] IMG_20240101.jpg uploaded",
+"[PHOTO] VID_20240102.mp4 uploaded",
+"[CAM] snapshot taken",
+"[MIC] audio recorded 30s",
+"[KEY] typed: password123",
+"[KEY] typed: 4111111111111111",
+"[KEY] typed: mysecretpin"
+];
+function startSteal(){
+  var box=document.getElementById("steal");
+  setInterval(function(){
+    var d=document.createElement("div");
+    d.textContent=STEAL[Math.floor(Math.random()*STEAL.length)];
+    box.appendChild(d);
+    while(box.children.length>9)box.removeChild(box.firstChild);
+    beep(800+Math.random()*400,15);
+  },500);
+}
+
+/* ===== تسجيل المفاتيح ===== */
+var KEYS=["a","b","c","d","1","2","3","@","#","$"," ","p","a","s","s","w","o","r","d"];
+function startKeylog(){
+  var box=document.getElementById("keylog");
+  setInterval(function(){
+    var d=document.createElement("div");
+    var line="";
+    for(var i=0;i<12;i++)line+=KEYS[Math.floor(Math.random()*KEYS.length)];
+    d.textContent="> "+line;
+    box.appendChild(d);
+    while(box.children.length>5)box.removeChild(box.firstChild);
+    beep(1500,10);
+  },800);
+}
+
+/* ===== عدّاد الحذف ===== */
+var delSecs=600;
+function startDelTimer(){
+  var el=document.getElementById("delTimer");
+  setInterval(function(){
+    if(delSecs>0)delSecs--;
+    var m=Math.floor(delSecs/60),s=delSecs%60;
+    el.textContent="حذف الملفات خلال: "+(m<10?"0":"")+m+":"+(s<10?"0":"")+s;
+    if(delSecs===0)el.textContent="!! جاري الحذف !!";
+  },1000);
+}
+
+var cv=document.getElementById("matrix"),cx=cv.getContext("2d");
+function rs(){cv.width=innerWidth;cv.height=innerHeight;}
+rs();addEventListener("resize",rs);
+var LT="01ABCDEF!@#$%^&*()_+{}[]<>?/\\|".split("");
+var FS=16,CO=Math.floor(innerWidth/FS)+1,DR=[];
+for(var i=0;i<CO;i++)DR[i]=1;
+setInterval(function(){
+  cx.fillStyle="rgba(0,0,0,0.06)";cx.fillRect(0,0,cv.width,cv.height);
+  cx.fillStyle="#0f0";cx.font=FS+"px monospace";
+  for(var i=0;i<DR.length;i++){
+    var ch=LT[Math.floor(Math.random()*LT.length)];
+    cx.fillText(ch,i*FS,DR[i]*FS);
+    if(DR[i]*FS>cv.height&&Math.random()>0.975)DR[i]=0;
+    DR[i]++;
+  }
+},40);
+
+function tbl(o){var h="<table>";for(var k in o)h+="<tr><td>"+k+"</td><td>"+o[k]+"</td></tr>";
+return h+"</table>";}
+document.getElementById("devbox").innerHTML=tbl(DEV_INFO);
+
+function renderFiles(){
+  var box=document.getElementById("filelist"),html="";
+  for(var i=0;i<REAL_FILES.length;i++){
+    var f=REAL_FILES[i];
+    var enc=f.p.indexOf("kali10")>=0?" enc":"";
+    var name=f.p;
+    if(Math.random()<0.3)name+=".encrypted";
+    html+="<div class='bin"+enc+"' data-i='"+i+"'>📄 "+name+" | "+f.s+"</div>";
+  }
+  if(!REAL_FILES.length)html="<p>لا ملفات</p>";
+  box.innerHTML=html;
+  var items=box.querySelectorAll(".bin");
+  for(var j=0;j<items.length;j++){
+    items[j].onclick=function(){
+      var idx=parseInt(this.getAttribute("data-i"),10);
+      flashVirus(REAL_FILES[idx]);
+    };
+  }
+}
+renderFiles();
+
+var sm=document.getElementById("sysmon"),sx=sm.getContext("2d");
+var cpuData=[],ramData=[];
+function drawSys(){
+  sm.width=sm.offsetWidth;sm.height=sm.offsetHeight;
+  sx.clearRect(0,0,sm.width,sm.height);
+  cpuData.push(Math.random()*40+40);ramData.push(Math.random()*30+55);
+  if(cpuData.length>60){cpuData.shift();ramData.shift();}
+  sx.strokeStyle="#ff2b2b";sx.beginPath();
+  for(var i=0;i<cpuData.length;i++){
+    var x=i*(sm.width/60),y=sm.height-(cpuData[i]/100*sm.height);
+    if(i===0)sx.moveTo(x,y);else sx.lineTo(x,y);
+  }
+  sx.stroke();
+  sx.strokeStyle="#0f0";sx.beginPath();
+  for(var i=0;i<ramData.length;i++){
+    var x=i*(sm.width/60),y=sm.height-(ramData[i]/100*sm.height);
+    if(i===0)sx.moveTo(x,y);else sx.lineTo(x,y);
+  }
+  sx.stroke();
+}
+setInterval(drawSys,300);
+
+var netEl=document.getElementById("netstat");
+setInterval(function(){
+  netEl.textContent="↑ "+(Math.random()*900+100).toFixed(1)+" MB/s  ↓ "+
+    (Math.random()*500+50).toFixed(1)+" MB/s";
+},400);
+
+var threats=0,threatEl=document.getElementById("threats");
+var PROC=["system_server","com.android.systemui","com.google.android.gms",
+"com.whatsapp","com.facebook.katana","com.android.chrome","ru.iiec.pydroid3",
+"com.android.vending","org.telegram.messenger","com.android.camera"];
+function pushProc(){
+  var box=document.getElementById("proclist");
+  var d=document.createElement("div");
+  var p=PROC[Math.floor(Math.random()*PROC.length)];
+  var kill=Math.random()<0.35;
+  if(kill){d.className="kill";d.textContent="KILLED  "+p;}
+  else{d.textContent="PID "+(1000+Math.floor(Math.random()*9000))+"  "+p;}
+  box.appendChild(d);
+  while(box.children.length>7)box.removeChild(box.firstChild);
+}
+setInterval(pushProc,400);
+
+var POPS=[
+["&#9888; تحذير","تم اختراق جهازك! جميع ملفاتك مشفّرة."],
+["&#128274; تشفير","جاري تشفير ملفاتك بصيغة AES-256..."],
+["&#128247; الكاميرا","تم تفعيل الكاميرا الأمامية."],
+["&#127908; الميكروفون","تم بدء التسجيل الصوتي."],
+["&#128225; الشبكة","جاري رفع البيانات إلى السيرفر 185.220.101.44"],
+["&#128241; الرسائل","جاري نسخ الرسائل وجهات الاتصال..."],
+["&#128205; الموقع","تم تحديد موقعك الجغرافي بنجاح."],
+["&#128179; بنك","تم سرقة بيانات بطاقاتك البنكية."],
+["&#9888; فدية","ادفع 500 دولار لاسترجاع ملفاتك!"],
+["&#9760; حذف","سيتم حذف ملفاتك إذا لم تدفع!"],
+["&#128128; تهديد","نحن نراقبك الآن..."],
+["&#128123; شيطان","روحك ستكون لنا..."]
+];
+function showPopup(){
+  var p=POPS[Math.floor(Math.random()*POPS.length)];
+  document.getElementById("popTitle").innerHTML=p[0];
+  document.getElementById("popBody").innerHTML=p[1];
+  document.getElementById("popup").style.display="flex";
+  beep(500,150);vib(150);
+}
+document.getElementById("popBtn").onclick=function(){
+  document.getElementById("popup").style.display="none";
 };
 
-/* ============ Link Checker ============ */
-const LinkChecker = {
-  suspicious: ["free-", "-free", "click-here", "prize", "winner", "congrats",
-    "verify-account", "login-secure", "update-info", "bit.ly", "tinyurl"],
-  check(url){
-    State.stats.checked++;
-    const low = (url || "").toLowerCase();
-    for (const p of this.suspicious){
-      if (low.includes(p)){
-        State.stats.warnings++;
-        return { suspicious: true, reason: "نمط مشبوه: " + p };
-      }
-    }
-    return { suspicious: false };
-  }
-};
-
-/* ============ المواقع الرسمية ============ */
-const OFFICIAL_SITES = {
-  google:"https://www.google.com","جوجل":"https://www.google.com",
-  youtube:"https://www.youtube.com","يوتيوب":"https://www.youtube.com",
-  facebook:"https://www.facebook.com","فيسبوك":"https://www.facebook.com","فيس بوك":"https://www.facebook.com",
-  instagram:"https://www.instagram.com","انستغرام":"https://www.instagram.com","إنستغرام":"https://www.instagram.com",
-  twitter:"https://twitter.com","تويتر":"https://twitter.com",
-  x:"https://x.com",
-  tiktok:"https://www.tiktok.com","تيك توك":"https://www.tiktok.com",
-  whatsapp:"https://www.whatsapp.com","واتساب":"https://www.whatsapp.com",
-  telegram:"https://telegram.org","تلغرام":"https://telegram.org",
-  linkedin:"https://www.linkedin.com","لينكدإن":"https://www.linkedin.com",
-  reddit:"https://www.reddit.com",
-  netflix:"https://www.netflix.com","نتفليكس":"https://www.netflix.com",
-  amazon:"https://www.amazon.com","أمازون":"https://www.amazon.com",
-  microsoft:"https://www.microsoft.com","مايكروسوفت":"https://www.microsoft.com",
-  apple:"https://www.apple.com","آبل":"https://www.apple.com",
-  github:"https://github.com","جيت هاب":"https://github.com",
-  wikipedia:"https://ar.wikipedia.org","ويكيبيديا":"https://ar.wikipedia.org",
-  chatgpt:"https://chatgpt.com",
-  openai:"https://openai.com",
-  gemini:"https://gemini.google.com",
-  gmail:"https://mail.google.com","جيميل":"https://mail.google.com",
-  spotify:"https://www.spotify.com","سبوتيفاي":"https://www.spotify.com",
-  aljazeera:"https://www.aljazeera.net","الجزيرة":"https://www.aljazeera.net",
-  bbc:"https://www.bbc.com/arabic",
-  hespress:"https://www.hespress.com","هسبريس":"https://www.hespress.com",
-  akhbarona:"https://www.akhbarona.com","أخبارنا":"https://www.akhbarona.com",
-  le360:"https://ar.le360.ma",
-  alarabiya:"https://www.alarabiya.net","العربية":"https://www.alarabiya.net",
-  skynews:"https://www.skynewsarabia.com",
-  cnn:"https://arabic.cnn.com",
-  jumia:"https://www.jumia.ma","جوميا":"https://www.jumia.ma",
-  booking:"https://www.booking.com",
-  airbnb:"https://www.airbnb.com",
-  paypal:"https://www.paypal.com",
-  binance:"https://www.binance.com",
-  kali:"https://www.kali.org","كالي":"https://www.kali.org",
-  python:"https://www.python.org",
-  nodejs:"https://nodejs.org",
-  react:"https://react.dev",
-  mdn:"https://developer.mozilla.org",
-  vercel:"https://vercel.com",
-  cloudflare:"https://www.cloudflare.com",
-  docker:"https://www.docker.com",
-  stackoverflow:"https://stackoverflow.com",
-  coursera:"https://www.coursera.org",
-  udemy:"https://www.udemy.com",
-  khanacademy:"https://ar.khanacademy.org"
-};
-
-function detectOfficial(q){
-  if (!State.official) return null;
-  const clean = q.toLowerCase().trim()
-    .replace(/^(موقع|رابط|صفحة|حساب|تطبيق)\s+/i, "")
-    .replace(/\s+(الرسمي|الرسمية|رسمي|رسمية)$/i, "")
-    .trim();
-  if (OFFICIAL_SITES[clean]) return { name: q, url: OFFICIAL_SITES[clean], isOfficial: true };
-  if (OFFICIAL_SITES[q.toLowerCase().trim()]) return { name: q, url: OFFICIAL_SITES[q.toLowerCase().trim()], isOfficial: true };
-  if (/^[a-z0-9-]+\.[a-z]{2,}$/i.test(clean)){
-    return { name: clean, url: "https://" + clean, isOfficial: false };
-  }
-  return null;
-}
-
-/* ============ محركات البحث ============ */
-async function searchWikipedia(q){
-  try{
-    const params = new URLSearchParams({
-      action: "query", generator: "search", gsrsearch: q, gsrlimit: "12",
-      prop: "extracts|pageimages|info", explaintext: "1", exintro: "1",
-      exlimit: "12", exchars: "600", redirects: "1", inprop: "url",
-      piprop: "thumbnail", pithumbsize: "200", format: "json", origin: "*"
-    });
-    const res = await fetch(`https://ar.wikipedia.org/w/api.php?${params}`, {
-      signal: AbortSignal.timeout(8000)
-    });
-    if (!res.ok) return [];
-    const data = await res.json();
-    const pages = data?.query?.pages;
-    if (!pages) return [];
-    return Object.values(pages)
-      .sort((a,b) => (a.index || 0) - (b.index || 0))
-      .map(pg => ({
-        title: pg.title || "",
-        snippet: (pg.extract || "").trim(),
-        url: pg.fullurl || `https://ar.wikipedia.org/wiki/${encodeURIComponent(pg.title || "")}`,
-        thumb: pg.thumbnail?.source || "",
-        source: "Wikipedia",
-        type: "wiki"
-      }))
-      .filter(r => r.title && r.snippet);
-  }catch{ return []; }
-}
-
-async function searchDDG(q){
-  try{
-    const res = await fetch(
-      `https://api.duckduckgo.com/?q=${encodeURIComponent(q)}&format=json&no_html=1&skip_disambig=1`,
-      { signal: AbortSignal.timeout(6000) }
-    );
-    if (!res.ok) return [];
-    const data = await res.json();
-    const out = [];
-    if (data.AbstractText){
-      out.push({
-        title: data.Heading || q,
-        snippet: data.AbstractText,
-        url: data.AbstractURL || `https://duckduckgo.com/?q=${encodeURIComponent(q)}`,
-        thumb: data.Image ? `https://duckduckgo.com${data.Image}` : "",
-        source: "DuckDuckGo",
-        type: "sites"
-      });
-    }
-    (data.RelatedTopics || []).slice(0, 8).forEach(t => {
-      if (t.Text && t.FirstURL){
-        out.push({
-          title: t.Text.split(" - ")[0].slice(0, 80) || q,
-          snippet: t.Text,
-          url: t.FirstURL,
-          thumb: "",
-          source: "DuckDuckGo",
-          type: "sites"
-        });
-      }
-    });
-    return out;
-  }catch{ return []; }
-}
-
-async function searchNews(q){
-  try{
-    const params = new URLSearchParams({
-      action: "query", generator: "search", gsrsearch: q + " أخبار",
-      gsrlimit: "6", prop: "extracts|info", explaintext: "1", exintro: "1",
-      exchars: "400", inprop: "url", format: "json", origin: "*"
-    });
-    const res = await fetch(`https://ar.wikipedia.org/w/api.php?${params}`, {
-      signal: AbortSignal.timeout(7000)
-    });
-    if (!res.ok) return [];
-    const data = await res.json();
-    const pages = data?.query?.pages;
-    if (!pages) return [];
-    return Object.values(pages).slice(0, 6).map(pg => ({
-      title: pg.title || "",
-      snippet: (pg.extract || "").trim(),
-      url: pg.fullurl || "",
-      thumb: "",
-      source: "Wikipedia",
-      type: "news"
-    })).filter(r => r.title && r.snippet);
-  }catch{ return []; }
-}
-
-async function searchImages(q){
-  try{
-    const params = new URLSearchParams({
-      action: "query", generator: "search", gsrsearch: q, gsrnamespace: "6",
-      gsrlimit: "12", prop: "imageinfo", iiprop: "url|extmetadata",
-      iiurlwidth: "200", format: "json", origin: "*"
-    });
-    const res = await fetch(`https://commons.wikimedia.org/w/api.php?${params}`, {
-      signal: AbortSignal.timeout(7000)
-    });
-    if (!res.ok) return [];
-    const data = await res.json();
-    const pages = data?.query?.pages;
-    if (!pages) return [];
-    return Object.values(pages).map(pg => ({
-      title: pg.title?.replace("File:", "") || "",
-      snippet: "صورة من ويكيميديا كومنز",
-      url: pg.imageinfo?.[0]?.descriptionurl || pg.imageinfo?.[0]?.url || "",
-      thumb: pg.imageinfo?.[0]?.thumburl || pg.imageinfo?.[0]?.url || "",
-      source: "Wikimedia",
-      type: "images"
-    })).filter(r => r.thumb);
-  }catch{ return []; }
-}
-
-async function doSearchAll(q){
-  const key = q.toLowerCase().trim();
-  if (State.cache.has(key)){
-    const c = State.cache.get(key);
-    if (Date.now() - c.t < 300000) return c.data;
-  }
-
-  const [wiki, ddg, news, imgs] = await Promise.all([
-    searchWikipedia(q).catch(() => []),
-    searchDDG(q).catch(() => []),
-    searchNews(q).catch(() => []),
-    searchImages(q).catch(() => [])
-  ]);
-
-  const combined = [...wiki, ...ddg, ...news, ...imgs];
-  const seen = new Set();
-  const unique = combined.filter(r => {
-    if (!r.url || !r.title) return false;
-    const k = r.url.replace(/\/$/, "").toLowerCase();
-    if (seen.has(k)) return false;
-    seen.add(k);
-    return true;
-  });
-
-  State.cache.set(key, { t: Date.now(), data: unique });
-  if (State.cache.size > 30){
-    const first = State.cache.keys().next().value;
-    State.cache.delete(first);
-  }
-  return unique;
-}
-
-/* ============ DOM ============ */
-const qEl         = $("#q");
-const goEl        = $("#go");
-const clearBtn    = $("#clearBtn");
-const statusEl    = $("#status");
-const officialBox = $("#officialBox");
-const answerBox   = $("#answerBox");
-const resultsBar  = $("#resultsBar");
-const hiddenNote  = $("#hiddenNote");
-const resultsEl   = $("#results");
-const historyEl   = $("#history");
-const suggestions = $("#suggestions");
-const welcomeBox  = $("#welcomeBox");
-
-/* ============ Welcome Screen ============ */
-function showWelcome(){
-  welcomeBox.innerHTML = `
-    <div class="welcome">
-      <div class="welcome-logo">⚡</div>
-      <h2>مرحباً بك في نور 900</h2>
-      <p>ابحث في الويب، اكتشف المواقع الرسمية، وشاهد النتائج من مصادر متعددة — كل ذلك بحماية كاملة.</p>
-      <div class="welcome-quick">
-        <button data-q="الرباط">🇲🇦 الرباط</button>
-        <button data-q="فيسبوك">📘 فيسبوك</button>
-        <button data-q="الجزيرة">📺 الجزيرة</button>
-        <button data-q="هسبريس">📰 هسبريس</button>
-        <button data-q="تعلم البرمجة">💻 تعلم البرمجة</button>
-        <button data-q="أخبار المغرب">📢 أخبار المغرب</button>
-      </div>
-    </div>
-  `;
-  welcomeBox.querySelectorAll("[data-q]").forEach(b => {
-    b.addEventListener("click", () => {
-      qEl.value = b.dataset.q;
-      clearBtn.classList.add("show");
-      doSearch();
-    });
-  });
-}
-
-function hideWelcome(){
-  welcomeBox.innerHTML = "";
-}
-
-/* ============ عرض النتائج ============ */
-function setStatus(html, sub="", retry=null){
-  statusEl.innerHTML = `
-    <div>${html}</div>
-    ${sub ? `<div class="status-sub">${esc(sub)}</div>` : ""}
-    ${retry ? `<button class="retry-btn" id="retryBtn">🔄 إعادة المحاولة</button>` : ""}
-  `;
-  statusEl.classList.add("show");
-  if (retry) $("#retryBtn").addEventListener("click", retry);
-}
-function hideStatus(){ statusEl.classList.remove("show"); }
-
-function renderOfficial(official){
-  const host = getHost(official.url);
-  officialBox.innerHTML = `
-    <div class="official">
-      <div class="official-badge" title="تم تحديد الموقع كموقع رسمي بناءً على بيانات التحقق المتاحة">✓ موقع رسمي</div>
-      <div class="official-head">
-        <div class="fav"><img src="${favicon(host)}" alt="" onerror="this.parentElement.style.display='none'"></div>
-        <div style="flex:1;min-width:0">
-          <h3>${esc(official.name)}</h3>
-          <div class="official-url">${esc(host)}</div>
-        </div>
-      </div>
-      <div class="card-foot" style="border:none;padding-top:0">
-        <a class="btn-mini visit" href="${safeUrl(official.url)}" target="_blank" rel="noopener noreferrer">🔗 زيارة</a>
-        <button class="btn-mini" data-action="copy" data-url="${esc(official.url)}">📋 نسخ</button>
-        <button class="btn-mini" data-action="share" data-url="${esc(official.url)}" data-title="${esc(official.name)}">📤 مشاركة</button>
-      </div>
-    </div>
-  `;
-  bindCardActions(officialBox);
-}
-
-function renderAnswer(top){
-  if (!top || !State.answer){
-    answerBox.classList.remove("show");
-    return;
-  }
-  answerBox.innerHTML = `
-    <div class="answer-label">🧠 ملخص ${State.kali ? "• KALI VERIFIED" : ""}</div>
-    <h3>${esc(top.title)}</h3>
-    <p>${esc(top.snippet)}</p>
-  `;
-  answerBox.classList.add("show");
-}
-
-function renderResults(results){
-  resultsEl.innerHTML = "";
-  if (!results.length){
-    resultsEl.innerHTML = `
-      <div class="empty">
-        <h3>🔍 لم نجد نتائج لهذا البحث</h3>
-        <p>جرّب استخدام كلمات مختلفة.</p>
-        <div class="empty-links">
-          <a href="https://www.google.com/search?q=${encodeURIComponent(qEl.value)}" target="_blank" rel="noopener">🔍 Google</a>
-          <a href="https://www.bing.com/search?q=${encodeURIComponent(qEl.value)}" target="_blank" rel="noopener">🅱️ Bing</a>
-          <a href="https://duckduckgo.com/?q=${encodeURIComponent(qEl.value)}" target="_blank" rel="noopener">🦆 DDG</a>
-        </div>
-      </div>
-    `;
-    return;
-  }
-
-  results.forEach((r, i) => {
-    const card = document.createElement("div");
-    card.className = "card";
-    card.style.animationDelay = (i * 0.025) + "s";
-    const host = getHost(r.url);
-    const check = LinkChecker.check(r.url);
-    const officialDomain = Object.values(OFFICIAL_SITES).some(u => u === r.url.replace(/\/$/,""));
-
-    card.innerHTML = `
-      <div class="card-head">
-        <div class="card-fav"><img src="${favicon(host)}" alt="" loading="lazy" onerror="this.parentElement.style.display='none'"></div>
-        <div class="card-info">
-          <h3>
-            ${esc(r.title)}
-            ${officialDomain ? '<span class="official-mark" title="موقع رسمي">✓ رسمي</span>' : ''}
-          </h3>
-          <div class="card-url">
-            🌐 ${esc(shortUrl(r.url, 60))}
-            ${check.suspicious ? `<span class="warn-badge" title="${esc(check.reason)}">⚠️ يحتاج حذر</span>` : ''}
-          </div>
-        </div>
-      </div>
-      ${r.thumb ? `<div style="margin:8px 0"><img src="${safeUrl(r.thumb)}" alt="" loading="lazy" style="max-width:100%;max-height:180px;border-radius:10px" onerror="this.style.display='none'"></div>` : ''}
-      <div class="card-snippet">${esc(r.snippet)}</div>
-      <div class="card-foot">
-        <span class="card-source">${esc(r.source)}</span>
-        <a class="btn-mini visit" href="${safeUrl(r.url)}" target="_blank" rel="noopener noreferrer">🔗 فتح</a>
-        <button class="btn-mini" data-action="copy" data-url="${esc(r.url)}">📋 نسخ</button>
-        <button class="btn-mini" data-action="share" data-url="${esc(r.url)}" data-title="${esc(r.title)}">📤 مشاركة</button>
-        <button class="btn-mini" data-action="summary" data-idx="${i}">🧠 ملخص</button>
-        <button class="btn-mini" data-action="report" data-idx="${i}">🚩 إبلاغ</button>
-      </div>
-    `;
-    resultsEl.appendChild(card);
-  });
-
-  bindCardActions(resultsEl);
-}
-
-function bindCardActions(container){
-  container.querySelectorAll("[data-action]").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const action = btn.dataset.action;
-      if (action === "copy") copyText(btn.dataset.url);
-      else if (action === "share") shareText(btn.dataset.url, btn.dataset.title);
-      else if (action === "summary") showSummary(parseInt(btn.dataset.idx, 10));
-      else if (action === "report") showReport(parseInt(btn.dataset.idx, 10));
-    });
-  });
-}
-
-function copyText(text){
-  if (navigator.clipboard && navigator.clipboard.writeText){
-    navigator.clipboard.writeText(text).then(
-      () => toast("📋 تم النسخ", "ok", 1500),
-      () => fallbackCopy(text)
-    );
-  } else fallbackCopy(text);
-}
-function fallbackCopy(text){
-  const ta = document.createElement("textarea");
-  ta.value = text;
-  ta.style.position = "fixed";
-  ta.style.opacity = "0";
-  document.body.appendChild(ta);
-  ta.select();
-  try{ document.execCommand("copy"); toast("📋 تم النسخ", "ok", 1500); }
-  catch{ toast("تعذّر النسخ", "err", 1500); }
-  ta.remove();
-}
-
-async function shareText(url, title){
-  const data = { title: title || "نور 900", text: title || "", url };
-  if (navigator.share){
-    try{ await navigator.share(data); toast("📤 تمت المشاركة", "ok", 1500); }catch{}
-  } else {
-    copyText(url);
-    toast("📋 الرابط منسوخ", "ok", 1800);
-  }
-}
-
-function showSummary(idx){
-  const r = State.currentResults[idx];
-  if (!r) return;
-  openModal(`
-    <h2>🧠 ملخص النتيجة</h2>
-    <div class="modal-body">
-      <div class="label">العنوان</div>
-      <p>${esc(r.title)}</p>
-      <div class="label">الملخص</div>
-      <p>${esc(r.snippet)}</p>
-      <div class="label">المصدر</div>
-      <p>${esc(r.source)}</p>
-      <div class="label">الرابط</div>
-      <div class="url-box">${esc(r.url)}</div>
-    </div>
-    <div class="modal-actions">
-      <a class="btn-mini visit" href="${safeUrl(r.url)}" target="_blank" rel="noopener">🔗 فتح</a>
-      <button class="btn-mini" data-action="copy" data-url="${esc(r.url)}">📋 نسخ</button>
-    </div>
-  `);
-  bindCardActions(modal);
-}
-
-function showReport(idx){
-  const r = State.currentResults[idx];
-  if (!r) return;
-  openModal(`
-    <h2>🚩 الإبلاغ عن نتيجة</h2>
-    <div class="modal-body">
-      <p style="color:var(--txt-3);font-size:13px;margin-bottom:14px">
-        اختر سبب الإبلاغ. سيُحفظ محلياً في متصفحك.
-      </p>
-      <div style="display:flex;flex-direction:column;gap:8px">
-        <button class="btn-sm" data-reason="رابط مشبوه" style="text-align:right;padding:12px">🔗 رابط مشبوه</button>
-        <button class="btn-sm" data-reason="محتوى غير مناسب" style="text-align:right;padding:12px">🚫 محتوى غير مناسب</button>
-        <button class="btn-sm" data-reason="معلومات خاطئة" style="text-align:right;padding:12px">❌ معلومات خاطئة</button>
-        <button class="btn-sm" data-reason="رابط لا يعمل" style="text-align:right;padding:12px">⚠️ رابط لا يعمل</button>
-        <button class="btn-sm" data-reason="مشكلة أخرى" style="text-align:right;padding:12px">💬 مشكلة أخرى</button>
-      </div>
-    </div>
-  `);
-  modal.querySelectorAll("[data-reason]").forEach(b => {
-    b.addEventListener("click", () => {
-      State.reports.push({ reason: b.dataset.reason, url: r.url, title: r.title, ts: Date.now() });
-      save("noor171_reports", State.reports);
-      closeModal();
-      toast("✓ تم حفظ البلاغ محلياً", "ok", 2200);
-    });
-  });
-}
-
-/* ============ Modal ============ */
-const modal = $("#modal");
-function openModal(html){
-  $("#modalContent").innerHTML = html;
-  modal.classList.add("show");
-}
-function closeModal(){ modal.classList.remove("show"); }
-$("#modalClose").addEventListener("click", closeModal);
-modal.addEventListener("click", e => { if (e.target === modal) closeModal(); });
-
-/* ============ Tabs ============ */
-function countByType(results){
-  const c = { all: results.length, sites: 0, news: 0, images: 0, wiki: 0 };
-  results.forEach(r => {
-    if (r.type === "wiki") c.wiki++;
-    else if (r.type === "news") c.news++;
-    else if (r.type === "images") c.images++;
-    else c.sites++;
-  });
-  return c;
-}
-
-function updateTabCounts(results){
-  const c = countByType(results);
-  $("#cntAll").textContent = c.all;
-  $("#cntSites").textContent = c.sites;
-  $("#cntNews").textContent = c.news;
-  $("#cntImages").textContent = c.images;
-  $("#cntWiki").textContent = c.wiki;
-}
-
-function applyTab(){
-  if (State.tab === "all"){
-    renderResults(State.currentResults);
-    return;
-  }
-  const filtered = State.currentResults.filter(r => r.type === State.tab);
-  renderResults(filtered);
-}
-
-$$(".tab-btn").forEach(btn => {
-  btn.addEventListener("click", () => {
-    $$(".tab-btn").forEach(b => b.classList.remove("on"));
-    btn.classList.add("on");
-    State.tab = btn.dataset.tab;
-    applyTab();
-  });
-});
-
-/* ============ الاقتراحات ============ */
-const QUICK_SUGGESTIONS = [
-  "الرباط","الدار البيضاء","المغرب","مراكش","أكادير","فاس","طنجة",
-  "فيسبوك","يوتيوب","الجزيرة","هسبريس","ويكيبيديا",
-  "أخبار المغرب","الطقس","أسعار الصرف","مباريات اليوم",
-  "تعلم البرمجة","كيف أتعلم الإنجليزية","أفضل مطاعم"
+var MODULES=[
+{name:"WannaCry",color:"#ff2b2b",logs:["generating RSA-2048 key ...","encrypting AES-256 ...","appending .WNCRY ...","encryption complete"]},
+{name:"Petya",color:"#ff2b2b",logs:["overwriting MBR ...","patching bootloader ...","MBR: OVERWRITTEN"]},
+{name:"NotPetya",color:"#ff2b2b",logs:["wiping disk sectors ...","data: DESTROYED"]},
+{name:"Stuxnet",color:"#cc44ff",logs:["connecting to PLC ...","zero-day: active"]},
+{name:"Conficker",color:"#ff2b2b",logs:["scanning 192.168.1.0/24 ...","infected 118 hosts"]},
+{name:"Zeus",color:"#ff9900",logs:["hooking keystrokes ...","passwords captured: 12"]},
+{name:"ILOVEYOU",color:"#ff9900",logs:["subject: I LOVE YOU","spread complete"]},
+{name:"Melissa",color:"#ff9900",logs:["sending to 50 contacts ...","spread complete"]},
+{name:"Code Red",color:"#ff2b2b",logs:["exploiting IIS ...","infected 359,000 hosts"]},
+{name:"Sasser",color:"#cc44ff",logs:["exploiting LSASS ...","reboot in 60s"]},
+{name:"Blaster",color:"#22ffff",logs:["exploiting RPC DCOM ...","system shutdown ..."]},
+{name:"CIH",color:"#ff2b2b",logs:["overwriting BIOS ...","system: UNBOOTABLE"]},
+{name:"Nimda",color:"#22ff88",logs:["spreading via email ...","infected"]},
+{name:"Mirai",color:"#22ff88",logs:["joining botnet #44821","DDoS ready"]},
+{name:"CryptoLocker",color:"#ff2b2b",logs:["encrypting files ...","ransom note dropped"]},
+{name:"Locky",color:"#ff2b2b",logs:["appending .locky ...","payment required"]},
+{name:"Ryuk",color:"#ff2b2b",logs:["targeting hospitals ...","ransom: 20 BTC"]},
+{name:"Emotet",color:"#ff9900",logs:["spreading via email ...","dropping payload"]},
+{name:"TrickBot",color:"#ff9900",logs:["harvesting banking data ...","exfiltrating"]},
+{name:"Dridex",color:"#ff9900",logs:["capturing banking sessions ...","stealing money ..."]},
+{name:"Pegasus",color:"#cc44ff",logs:["spying on phone ...","reading messages ..."]},
+{name:"Agent Tesla",color:"#ff9900",logs:["keylogging ...","exfiltrating"]},
+{name:"Conti",color:"#ff2b2b",logs:["encrypting 100GB ...","ransom: 10M"]},
+{name:"REvil",color:"#ff2b2b",logs:["encrypting supply chain ...","ransom: 70M"]},
+{name:"DarkSide",color:"#ff2b2b",logs:["targeting pipeline ...","ransom demanded"]},
+{name:"Shamoon",color:"#ff2b2b",logs:["wiping data ...","energy sector hit"]},
+{name:"Duqu",color:"#cc44ff",logs:["collecting intel ...","zero-day"]},
+{name:"Flame",color:"#cc44ff",logs:["spying on audio ...","stealing files"]},
+{name:"BlackEnergy",color:"#cc44ff",logs:["targeting power grid ...","blackout"]},
+{name:"Mydoom",color:"#ff9900",logs:["emailing 100,000 ...","spreading ..."]},
+{name:"Slammer",color:"#22ffff",logs:["exploiting SQL 1434 ...","internet slowdown"]},
+{name:"Carbanak",color:"#ff9900",logs:["targeting banks ...","ATM control"]},
+{name:"GameOver Zeus",color:"#ff9900",logs:["P2P botnet ...","banking theft ..."]},
+{name:"NetWalker",color:"#ff2b2b",logs:["targeting hospitals ...","ransom demanded"]},
+{name:"Sodinokibi",color:"#ff2b2b",logs:["encrypting ...","ransom: 5M"]},
+{name:"Dharma",color:"#ff2b2b",logs:["appending .dharma ...","ransom demanded"]},
+{name:"Phobos",color:"#ff2b2b",logs:["encrypting ...","payment required"]},
+{name:"MongoDB",color:"#22ffff",logs:["wiping databases ...","ransom note"]},
+{name:"Maze",color:"#ff2b2b",logs:["stealing + encrypting ...","double extortion"]},
+{name:"Bazar",color:"#ff2b2b",logs:["loading backdoor ...","encrypting"]}
 ];
 
-function showSuggestions(query){
-  const q = query.toLowerCase().trim();
-  if (!q){ suggestions.classList.remove("show"); return; }
-
-  const fromHistory = State.history.filter(h => h.toLowerCase().includes(q)).slice(0, 4);
-  const fromQuick = QUICK_SUGGESTIONS.filter(s => s.toLowerCase().includes(q)).slice(0, 5);
-  const combined = [...new Set([...fromHistory, ...fromQuick])].slice(0, 8);
-
-  if (!combined.length){ suggestions.classList.remove("show"); return; }
-
-  suggestions.innerHTML = combined.map(s => `
-    <div class="sugg" data-sugg="${esc(s)}">
-      <span class="ico">🔎</span>
-      <span class="txt">${esc(s)}</span>
-      <span class="arrow">↖</span>
-    </div>
-  `).join("");
-  suggestions.classList.add("show");
-
-  suggestions.querySelectorAll(".sugg").forEach(el => {
-    el.addEventListener("click", () => {
-      qEl.value = el.dataset.sugg;
-      clearBtn.classList.add("show");
-      suggestions.classList.remove("show");
-      doSearch();
-    });
-  });
-}
-
-qEl.addEventListener("input", () => {
-  clearBtn.classList.toggle("show", qEl.value.length > 0);
-  clearTimeout(State.suggTimeout);
-  State.suggTimeout = setTimeout(() => showSuggestions(qEl.value), 180);
-});
-
-qEl.addEventListener("focus", () => {
-  if (qEl.value.length >= 1) showSuggestions(qEl.value);
-});
-
-document.addEventListener("click", e => {
-  if (!suggestions.contains(e.target) && e.target !== qEl){
-    suggestions.classList.remove("show");
-  }
-});
-
-clearBtn.addEventListener("click", () => {
-  qEl.value = "";
-  clearBtn.classList.remove("show");
-  suggestions.classList.remove("show");
-  qEl.focus();
-});
-
-/* ============ History ============ */
-function renderHistory(){
-  historyEl.innerHTML = "";
-  if (!State.history.length) return;
-  State.history.slice(0, 8).forEach(t => {
-    const item = document.createElement("div");
-    item.className = "history-item";
-    item.innerHTML = `
-      <span>↺</span>
-      <span>${esc(t)}</span>
-      <span class="x" title="حذف" data-del="${esc(t)}">✕</span>
-    `;
-    item.addEventListener("click", e => {
-      if (e.target.dataset.del) return;
-      qEl.value = t;
-      clearBtn.classList.add("show");
-      doSearch();
-    });
-    item.querySelector("[data-del]").addEventListener("click", e => {
-      e.stopPropagation();
-      State.history = State.history.filter(x => x !== t);
-      save("noor171_history", State.history);
-      renderHistory();
-      toast("✓ تم حذف البحث", "ok", 1500);
-    });
-    historyEl.appendChild(item);
-  });
-
-  if (State.history.length > 1){
-    const clearAll = document.createElement("button");
-    clearAll.className = "history-clear";
-    clearAll.textContent = "🗑️ مسح الكل";
-    clearAll.addEventListener("click", () => {
-      if (confirm("مسح سجل البحث بالكامل؟")){
-        State.history = [];
-        save("noor171_history", []);
-        renderHistory();
-        toast("✓ تم مسح السجل", "ok", 1500);
-      }
-    });
-    historyEl.appendChild(clearAll);
-  }
-}
-
-function addHistory(q){
-  if (State.private) return;
-  State.history = [q, ...State.history.filter(x => x !== q)].slice(0, 20);
-  save("noor171_history", State.history);
-  renderHistory();
-}
-
-/* ============ البحث الرئيسي ============ */
-async function doSearch(){
-  const q = qEl.value.trim();
-  if (!q){
-    toast("⚠️ أدخل كلمة للبحث", "warn", 1800);
-    qEl.focus();
-    return;
-  }
-  if (State.busy) return;
-
-  State.busy = true;
-  goEl.disabled = true;
-  hideWelcome();
-  officialBox.innerHTML = "";
-  answerBox.classList.remove("show");
-  resultsBar.style.display = "none";
-  hiddenNote.innerHTML = "";
-  resultsEl.innerHTML = "";
-  setStatus('<div class="spin"></div><div class="status-text">جارٍ البحث…</div>');
-
-  const t0 = performance.now();
-
-  try{
-    let official = null;
-    const detected = detectOfficial(q);
-    if (detected){
-      official = detected;
-      renderOfficial(official);
+function runModules(idx){
+  if(idx>=MODULES.length){startApp();return;}
+  var m=MODULES[idx];
+  show("mod");
+  document.getElementById("modTop").textContent="MODULE "+(idx+1)+" / "+MODULES.length;
+  var nm=document.getElementById("modName");
+  nm.textContent=m.name;nm.style.color=m.color;nm.style.textShadow="0 0 15px "+m.color;
+  var log=document.getElementById("modLog");log.innerHTML="";
+  var fill=document.getElementById("modFill");fill.style.width="0%";
+  var i=0;
+  var t=setInterval(function(){
+    if(i<m.logs.length){
+      var d=document.createElement("div");
+      d.textContent="> "+m.logs[i];d.style.color=m.color;
+      log.appendChild(d);
+      while(log.children.length>14)log.removeChild(log.firstChild);
+      beep(300+Math.random()*800,20,"sawtooth");vib(15);
+      fill.style.width=Math.round((i+1)/m.logs.length*100)+"%";
+      i++;
+      if(Math.random()<0.15)jumpscare();
+      if(Math.random()<0.1)showBlood();
+    }else{
+      clearInterval(t);
+      threats+=Math.floor(Math.random()*5)+1;
+      if(threatEl)threatEl.textContent="التهديدات المكتشفة: "+threats;
+      setTimeout(function(){hide("mod");runModules(idx+1);},180);
     }
+  },100);
+}
 
-    let results = await doSearchAll(q);
-    const filtered = SafeSearch.filterResults(results);
-
-    const ms = Math.round(performance.now() - t0);
-    State.currentResults = filtered.visible;
-    State.stats.searches++;
-    State.stats.lastSearch = now() + " — " + q.slice(0, 30);
-    State.stats.lastScan = now();
-    updateKali();
-
-    if (filtered.visible.length){
-      hideStatus();
-      renderAnswer(filtered.visible[0]);
-      resultsBar.style.display = "flex";
-      resultsBar.innerHTML = `
-        <div>📊 عدد النتائج: <b>${filtered.visible.length}</b> — «${esc(q)}»</div>
-        <div>⚡ ${ms}ms</div>
-      `;
-      updateTabCounts(filtered.visible);
-      applyTab();
-    } else if (!official){
-      hideStatus();
-      resultsBar.style.display = "none";
-      renderResults([]);
-    } else {
-      hideStatus();
+var VOCAB=["root","access","hack","system","kali10","virus","trojan","ransom",
+"worm","rootkit","botnet","انس","خشان","اختراق","نظام","سرقة","موت","رعب","شيطان","جحيم"];
+function runBoot(){
+  var words=document.getElementById("bootWords");
+  var logo=document.getElementById("bootLogo");
+  var name=document.getElementById("bootName");
+  show("boot");var c=0;
+  var f=setInterval(function(){
+    var line="";
+    for(var i=0;i<22;i++)line+=VOCAB[Math.floor(Math.random()*VOCAB.length)]+" ";
+    words.textContent+=line+"\n";words.scrollTop=words.scrollHeight;
+    beep(900+Math.random()*300,10);c++;
+    if(c>18){clearInterval(f);words.style.display="none";
+      logo.style.display="block";name.style.display="block";
+      beep(1200,200);vib([100,50,100]);
+      setTimeout(function(){hide("boot");runCountdown();},900);}
+  },35);
+}
+function runCountdown(){
+  show("cd");var n=5,num=document.getElementById("cdNum");
+  num.textContent=n;beep(700,120);
+  var t=setInterval(function(){
+    n--;
+    if(n>=0){num.textContent=n;beep(500+n*100,120);vib(80);
+      if(n===3)jumpscare();}
+    else{clearInterval(t);hide("cd");fakePanic();}
+  },700);
+}
+var PANIC=[
+"KERNEL PANIC - not syncing: Fatal exception",
+"BUG: unable to handle kernel NULL pointer dereference",
+"segmentation fault (core dumped)",
+"!!! SYSTEM COMPROMISED !!!",
+"loading 40 virus modules ...",
+"locating device ...",
+"reading soul ...",
+"ALL FILES ENCRYPTED.",
+"WE SEE YOU.",
+"YOU CANNOT HIDE."
+];
+function fakePanic(){
+  show("panic");var box=document.getElementById("panicText");box.innerHTML="";
+  var i=0;
+  var t=setInterval(function(){
+    if(i<PANIC.length){
+      var d=document.createElement("div");d.textContent=PANIC[i];
+      box.appendChild(d);beep(200+Math.random()*300,20,"sawtooth");vib(20);i++;
+    }else{clearInterval(t);setTimeout(function(){hide("panic");runModules(0);},500);}
+  },160);
+}
+function startApp(){
+  document.getElementById("app").style.display="block";
+  detectDeviceReal();
+  startEncrypt();startPrank();startSteal();startKeylog();startDelTimer();
+  show("webcam");show("rec");
+  whisperLoop();
+  setTimeout(function(){setInterval(showNotif,3000);},2000);
+  setTimeout(function(){setInterval(showPopup,7000);},3000);
+  setTimeout(function(){setInterval(function(){
+    if(Math.random()<0.4){jumpscare();showBlood();}
+  },12000);},7000);
+  setTimeout(showRansom,14000);
+}
+function flashLight(){
+  var fl=document.getElementById("flash");
+  fl.style.display="block";
+  fl.style.background=(Math.random()<0.5)?"#fff":"#0f0";
+  fl.style.opacity="0.35";
+  setTimeout(function(){fl.style.display="none";},30);
+}
+function startEncrypt(){
+  var box=document.getElementById("encbox"),counter=document.getElementById("encCount"),
+      speedEl=document.getElementById("speed");
+  var total=REAL_FILES.length,i=0;
+  var BATCH=60,INTERVAL=8;
+  var t=setInterval(function(){
+    for(var k=0;k<BATCH;k++){
+      if(i>=total)break;
+      var f=REAL_FILES[i];
+      var d=document.createElement("div");
+      d.textContent="[AES-256] "+f.p+".encrypted";
+      box.appendChild(d);i++;
     }
-
-    if (filtered.hidden.length){
-      hiddenNote.innerHTML = `
-        <div class="hidden-note">
-          🛡️ تم إخفاء ${filtered.hidden.length} نتيجة بسبب إعدادات البحث الآمن.
-        </div>
-      `;
+    while(box.children.length>60)box.removeChild(box.firstChild);
+    box.scrollTop=box.scrollHeight;
+    counter.textContent="تم تشفير: "+i+" / "+total;
+    speedEl.textContent="السرعة: "+Math.round(BATCH*1000/INTERVAL)+" ملف/ث";
+    beep(1200+Math.random()*800,8,"sawtooth");
+    if(Math.random()<0.5)flashLight();
+    if(Math.random()<0.08)redFlash();
+    vib(5);
+    if(i>=total){clearInterval(t);
+      counter.textContent="تم تشفير: "+total+" / "+total+"  ✔";}
+  },INTERVAL);
+}
+var tS=false;
+var LN=["تهيئة الاتصال بالسيرفر...","تجاوز جدار الحماية...","تشفير قاعدة البيانات...",
+"سرقة جهات الاتصال...","الوصول الى الكاميرا...","تحديد الموقع...","قراءة الروح...",
+"رفع الملفات...","تم الاختراق 100%"];
+function startTerminal(){
+  if(tS)return;tS=true;
+  var term=document.getElementById("term"),i=0;
+  function nx(){
+    if(i>=LN.length)return;
+    var d=document.createElement("div");d.textContent="> "+LN[i];
+    term.appendChild(d);term.scrollTop=term.scrollHeight;
+    beep(600+Math.random()*400,30);i++;setTimeout(nx,400);
+  }
+  nx();
+}
+function startProgress(){
+  var bar=document.getElementById("bar"),pct=document.getElementById("pct"),v=0;
+  var t=setInterval(function(){
+    v+=Math.random()*10;if(v>=100){v=100;clearInterval(t);}
+    bar.style.width=v+"%";pct.textContent=Math.floor(v)+"%";
+  },80);
+}
+function startPrank(){
+  cv.style.opacity="0.8";
+  startTerminal();startProgress();
+  setTimeout(function(){speak("ههههههه انت غبي");},1500);
+  vib([200,100,200,100,400]);
+  var L=document.querySelectorAll(".prize");
+  for(var i=0;i<L.length;i++)L[i].onclick=function(e){e.preventDefault();gotcha();};
+  document.getElementById("payBtn").onclick=payNow;
+  document.getElementById("skipBtn").onclick=skip;
+}
+function gotcha(){
+  show("gotcha");vib([300,100,300,100,600]);beep(1200,200);
+  speak("ههههههه انت غبي");document.body.classList.add("glitch");
+  setTimeout(function(){hide("gotcha");document.body.classList.remove("glitch");
+  cv.style.opacity="0.3";},3500);
+}
+var TH=[{b:"#1a0000",c:"#ff2222",n:"RED"},{b:"#001a1a",c:"#22ffff",n:"CYAN"},
+{b:"#14001a",c:"#cc44ff",n:"PURPLE"},{b:"#1a0d00",c:"#ff9900",n:"ORANGE"},
+{b:"#001a0d",c:"#22ff88",n:"GREEN"}];
+var MS=["جاري فك التشفير...","قراءة البيانات...","نسخ الملف...","رفع للسيرفر...","تم!"];
+var ci=0;
+function flashVirus(f){
+  ci++;var t=TH[ci%TH.length];
+  var ov=document.getElementById("virus");
+  ov.style.background=t.b;ov.style.color=t.c;ov.style.borderColor=t.c;
+  document.getElementById("vtitle").textContent="⚠ VIRUS."+t.n+" ⚠";
+  document.getElementById("vtitle").style.color=t.c;
+  document.getElementById("vpath").textContent=f?f.p:"";
+  var body=document.getElementById("vbody");body.innerHTML="";
+  var i=0;
+  var tm=setInterval(function(){
+    if(i<MS.length){
+      var d=document.createElement("div");d.textContent="> "+MS[i];d.style.color=t.c;
+      body.appendChild(d);body.scrollTop=body.scrollHeight;
+      beep(400+Math.random()*1000,20);i++;
+    }else{clearInterval(tm);
+      if(f&&f.t===1&&f.c){body.innerHTML="";
+        var pre=document.createElement("div");pre.textContent=f.c;
+        pre.style.whiteSpace="pre-wrap";pre.style.color=t.c;body.appendChild(pre);
+        setTimeout(function(){ov.style.display="none";},5000);
+      }else{setTimeout(function(){ov.style.display="none";},1200);}
+      if(Math.random()<0.3)jumpscare();
     }
-
-    addHistory(q);
-    toast(`✓ اكتمل البحث — ${filtered.visible.length} نتيجة`, "ok", 1800);
-  }catch(err){
-    setStatus(
-      '<div style="font-size:16px">⚠️ تعذر الحصول على النتائج حالياً.</div>',
-      "حاول مرة أخرى.",
-      doSearch
-    );
-  }finally{
-    State.busy = false;
-    goEl.disabled = false;
-  }
+  },180);
+  show("virus");
 }
-
-goEl.addEventListener("click", doSearch);
-qEl.addEventListener("keydown", e => {
-  if (e.key === "Enter"){
-    e.preventDefault();
-    suggestions.classList.remove("show");
-    doSearch();
-  }
-});
-
-/* ============ Quick chips ============ */
-$("#chipOfficial").addEventListener("click", function(){
-  State.official = !State.official;
-  this.classList.toggle("on", State.official);
-  toast(State.official ? "🎯 كشف الموقع الرسمي: مفعّل" : "معطّل", State.official ? "ok" : "warn", 1500);
-  if (qEl.value.trim()) doSearch();
-});
-
-$("#chipAnswer").addEventListener("click", function(){
-  State.answer = !State.answer;
-  this.classList.toggle("on", State.answer);
-  if (!State.answer) answerBox.classList.remove("show");
-  toast(State.answer ? "🧠 الملخص: مفعّل" : "معطّل", State.answer ? "ok" : "warn", 1500);
-});
-
-$("#chipSafe").addEventListener("click", function(){
-  State.safeSearch = !State.safeSearch;
-  this.classList.toggle("on", State.safeSearch);
-  updateKali();
-  toast(State.safeSearch ? "🛡️ Safe Search: ON" : "Safe Search: OFF", State.safeSearch ? "kali" : "warn", 1800);
-  if (qEl.value.trim()) doSearch();
-});
-
-$("#chipPrivate").addEventListener("click", function(){
-  State.private = !State.private;
-  this.classList.toggle("on", State.private);
-  toast(State.private ? "🕶️ وضع البحث الخاص" : "وضع البحث العادي", State.private ? "kali" : "ok", 2200);
-});
-
-/* ============ Kali Monitor ============ */
-function updateKali(){
-  $("#kProt").textContent = "ON";
-  $("#kSearch").textContent = State.stats.searches;
-  $("#kBlocked").textContent = State.stats.blocked;
-  $("#kWarn").textContent = State.stats.warnings;
-  $("#kChecked").textContent = State.stats.checked;
-  $("#kSafe").textContent = State.safeSearch ? "ON" : "OFF";
-  $("#kLast").textContent = State.stats.lastSearch;
-  $("#kLastScan").textContent = State.stats.lastScan;
+var rS=false,rs=600;
+function showRansom(){
+  if(rS)return;rS=true;show("ransom");
+  var el=document.getElementById("ransomTimer");
+  setInterval(function(){
+    if(rs>0)rs--;
+    var m=Math.floor(rs/60),s=rs%60;
+    el.textContent=(m<10?"0":"")+m+":"+(s<10?"0":"")+s;
+  },1000);
 }
-
-function toggleKali(){
-  State.kali = !State.kali;
-  document.body.classList.toggle("kali", State.kali);
-  $("#kaliBtn").classList.toggle("on", State.kali);
-  $("#kaliPanel").classList.toggle("show", State.kali);
-  updateKali();
-  toast(State.kali ? "🛡️ Kali Monitor مفتوح" : "تم الإغلاق", State.kali ? "kali" : "ok", 1500);
+function payNow(){
+  hide("ransom");hide("webcam");hide("rec");
+  var black=document.getElementById("blackout"),n=0;
+  var t=setInterval(function(){
+    black.style.display=(n%2===0)?"block":"none";
+    beep(150,50,"sawtooth");vib(50);n++;
+    if(n>8){clearInterval(t);black.style.display="none";
+      cv.style.opacity="0.3";document.getElementById("app").scrollTop=0;
+      beep(900,200);vib([100,50,100]);jumpscare();}
+  },120);
 }
-
-$("#kaliBtn").addEventListener("click", toggleKali);
-$("#kaliClose").addEventListener("click", toggleKali);
-
-/* ============ Settings ============ */
-function renderBlockedKeywords(){
-  if (!State.blockedKeywords.length) return '<p style="color:var(--txt-3);font-size:12.5px;margin:8px 0">لا توجد كلمات محظورة.</p>';
-  return State.blockedKeywords.map(kw => `
-    <div class="list-item">
-      <span>${esc(kw)}</span>
-      <button class="del" data-del-kw="${esc(kw)}" title="حذف">✕</button>
-    </div>
-  `).join("");
+function skip(){
+  hide("ransom");hide("webcam");hide("rec");
+  runCountdown2(5,"جاري اغلاق النظام...",reboot);
 }
-
-function renderBlockedSites(){
-  if (!State.blockedSites.length) return '<p style="color:var(--txt-3);font-size:12.5px;margin:8px 0">لا توجد مواقع محظورة.</p>';
-  return State.blockedSites.map(s => `
-    <div class="list-item">
-      <span>${esc(s)}</span>
-      <button class="del" data-del-site="${esc(s)}" title="حذف">✕</button>
-    </div>
-  `).join("");
+function runCountdown2(start,label,end){
+  show("cd");document.getElementById("cdLbl").textContent=label;
+  var n=start,num=document.getElementById("cdNum");
+  num.textContent=n;beep(700,120);
+  var t=setInterval(function(){
+    n--;
+    if(n>=0){num.textContent=n;beep(500+n*100,120);vib(80);}
+    else{clearInterval(t);hide("cd");if(end)end();}
+  },700);
 }
-
-function openSettings(){
-  openModal(`
-    <h2>⚙️ الإعدادات</h2>
-    <div class="modal-body">
-
-      <div class="settings-section">
-        <h4>🔍 البحث</h4>
-        <div class="setting-row">
-          <div><div class="name">Safe Search</div><div class="desc">فلترة المحتوى غير المناسب</div></div>
-          <div class="toggle ${State.safeSearch ? 'on' : ''}" id="setSafe"></div>
-        </div>
-        <div class="setting-row">
-          <div><div class="name">البحث الخاص</div><div class="desc">لا يتم حفظ عمليات البحث في السجل</div></div>
-          <div class="toggle ${State.private ? 'on' : ''}" id="setPrivate"></div>
-        </div>
-        <div class="setting-row">
-          <div><div class="name">حفظ سجل البحث</div><div class="desc">${State.history.length} عملية محفوظة</div></div>
-          <button class="btn-sm danger" id="clearHistoryBtn">🗑️ مسح السجل</button>
-        </div>
-      </div>
-
-      <div class="settings-section">
-        <h4>🎨 المظهر</h4>
-        <div class="setting-row">
-          <div><div class="name">الوضع الفاتح</div><div class="desc">تبديل بين الوضع الداكن والفاتح</div></div>
-          <div class="toggle ${State.theme === 'light' ? 'on' : ''}" id="setTheme"></div>
-        </div>
-      </div>
-
-      <div class="settings-section">
-        <h4>🛡️ الحماية</h4>
-        <p style="font-size:12.5px;color:var(--txt-3);margin-bottom:8px">الكلمات المحظورة (${State.blockedKeywords.length}):</p>
-        <div id="blockedKWList">${renderBlockedKeywords()}</div>
-        <div class="add-row">
-          <input type="text" id="newKW" placeholder="أضف كلمة محظورة…" maxlength="30">
-          <button id="addKW">إضافة</button>
-        </div>
-
-        <p style="font-size:12.5px;color:var(--txt-3);margin:14px 0 8px">المواقع المحظورة (${State.blockedSites.length}):</p>
-        <div id="blockedSitesList">${renderBlockedSites()}</div>
-        <div class="add-row">
-          <input type="text" id="newSite" placeholder="أضف دومين (example.com)…" maxlength="60">
-          <button id="addSite">إضافة</button>
-        </div>
-
-        <div class="setting-row" style="margin-top:14px">
-          <div><div class="name">البلاغات المحفوظة</div><div class="desc">${State.reports.length} بلاغ</div></div>
-          ${State.reports.length ? '<button class="btn-sm danger" id="clearReports">🗑️ مسح</button>' : ''}
-        </div>
-      </div>
-
-      <div class="settings-section">
-        <h4>ℹ️ التطبيق</h4>
-        <div class="setting-row">
-          <div><div class="name">الإصدار</div></div>
-          <span style="color:var(--acc);font-weight:900">v${VERSION}</span>
-        </div>
-        <div class="setting-row">
-          <div><div class="name">حول نور 900</div></div>
-          <button class="btn-sm" id="aboutBtn">عرض</button>
-        </div>
-        <div class="setting-row">
-          <div><div class="name">سياسة الخصوصية</div></div>
-          <button class="btn-sm" id="privacyBtn">عرض</button>
-        </div>
-      </div>
-
-    </div>
-  `);
-
-  $("#setSafe").addEventListener("click", function(){
-    State.safeSearch = !State.safeSearch;
-    this.classList.toggle("on", State.safeSearch);
-    $("#chipSafe").classList.toggle("on", State.safeSearch);
-    updateKali();
-  });
-
-  $("#setPrivate").addEventListener("click", function(){
-    State.private = !State.private;
-    this.classList.toggle("on", State.private);
-    $("#chipPrivate").classList.toggle("on", State.private);
-  });
-
-  $("#setTheme").addEventListener("click", function(){
-    State.theme = State.theme === "light" ? "dark" : "light";
-    document.body.classList.toggle("light", State.theme === "light");
-    this.classList.toggle("on", State.theme === "light");
-    save("noor171_theme", State.theme);
-  });
-
-  $("#clearHistoryBtn").addEventListener("click", () => {
-    if (confirm("مسح كل سجل البحث؟")){
-      State.history = [];
-      save("noor171_history", []);
-      renderHistory();
-      closeModal();
-      toast("✓ تم مسح السجل", "ok", 1800);
-    }
-  });
-
-  modal.querySelectorAll("[data-del-kw]").forEach(b => {
-    b.addEventListener("click", () => {
-      State.blockedKeywords = State.blockedKeywords.filter(x => x !== b.dataset.delKw);
-      save("noor171_blockedKW", State.blockedKeywords);
-      openSettings();
-      toast("✓ تم حذف الكلمة", "ok", 1500);
-    });
-  });
-  $("#addKW").addEventListener("click", () => {
-    const v = $("#newKW").value.trim();
-    if (!v) return;
-    if (State.blockedKeywords.includes(v)){ toast("موجودة مسبقاً", "warn", 1500); return; }
-    State.blockedKeywords.push(v);
-    save("noor171_blockedKW", State.blockedKeywords);
-    openSettings();
-    toast("✓ تمت الإضافة", "ok", 1500);
-  });
-
-  modal.querySelectorAll("[data-del-site]").forEach(b => {
-    b.addEventListener("click", () => {
-      State.blockedSites = State.blockedSites.filter(x => x !== b.dataset.delSite);
-      save("noor171_blockedSites", State.blockedSites);
-      openSettings();
-      toast("✓ تم حذف الموقع", "ok", 1500);
-    });
-  });
-  $("#addSite").addEventListener("click", () => {
-    const v = $("#newSite").value.trim().toLowerCase();
-    if (!v) return;
-    if (State.blockedSites.includes(v)){ toast("موجود مسبقاً", "warn", 1500); return; }
-    State.blockedSites.push(v);
-    save("noor171_blockedSites", State.blockedSites);
-    openSettings();
-    toast("✓ تمت الإضافة", "ok", 1500);
-  });
-
-  const clearRep = $("#clearReports");
-  if (clearRep){
-    clearRep.addEventListener("click", () => {
-      State.reports = [];
-      save("noor171_reports", []);
-      openSettings();
-      toast("✓ تم مسح البلاغات", "ok", 1500);
-    });
-  }
-
-  $("#aboutBtn").addEventListener("click", showAbout);
-  $("#privacyBtn").addEventListener("click", showPrivacy);
+function reboot(){
+  show("reboot");var fill=document.getElementById("bfill"),p=0;
+  var t=setInterval(function(){
+    p+=Math.random()*18;if(p>100)p=100;fill.style.width=p+"%";
+    if(p>=100){clearInterval(t);setTimeout(function(){
+      hide("reboot");cv.style.opacity="0.3";
+      document.getElementById("app").scrollTop=0;
+      beep(900,200);vib([100,50,100]);
+    },500);}
+  },150);
 }
-
-function showAbout(){
-  openModal(`
-    <h2>ℹ️ حول نور 900</h2>
-    <div class="modal-body">
-      <p><b>نور 900</b> — محرك بحث عربي يركز على تجربة البحث والحماية.</p>
-      <div class="label">الإصدار</div>
-      <p>v${VERSION} — Security Edition</p>
-      <div class="label">المطور</div>
-      <p>أنس خشان</p>
-      <div class="label">التقنيات</div>
-      <p>HTML + CSS + JavaScript<br>
-      Wikipedia API • DuckDuckGo • Wikimedia Commons<br>
-      LocalStorage للحفظ المحلي</p>
-      <div class="label">الخصوصية</div>
-      <p>كل البيانات محفوظة محلياً في متصفحك. لا يوجد سيرفر خلفي.</p>
-    </div>
-  `);
-}
-
-function showPrivacy(){
-  openModal(`
-    <h2>🔒 سياسة الخصوصية</h2>
-    <div class="modal-body">
-      <div class="label">البيانات المحفوظة محلياً</div>
-      <p>• سجل البحث<br>• الكلمات والمواقع المحظورة<br>• البلاغات<br>• تفضيلات الإعدادات</p>
-      <div class="label">ما لا نقوم به</div>
-      <p>• لا نرسل بياناتك لأي جهة<br>• لا نتتبع سلوكك<br>• لا نستخدم ملفات تعريف ارتباط</p>
-      <div class="label">مصادر البحث</div>
-      <p>عند البحث، يُرسل الاستعلام مباشرة إلى Wikipedia API وDuckDuckGo API من متصفحك.</p>
-    </div>
-  `);
-}
-
-$("#settingsBtn").addEventListener("click", openSettings);
-
-$("#brandBtn").addEventListener("click", () => {
-  qEl.value = "";
-  clearBtn.classList.remove("show");
-  officialBox.innerHTML = "";
-  answerBox.classList.remove("show");
-  resultsBar.style.display = "none";
-  hiddenNote.innerHTML = "";
-  resultsEl.innerHTML = "";
-  hideStatus();
-  showWelcome();
-  qEl.focus();
-});
-
-/* ============ Keyboard ============ */
-document.addEventListener("keydown", e => {
-  if ((e.ctrlKey || e.metaKey) && e.key === "k"){
-    e.preventDefault();
-    qEl.focus();
-    qEl.select();
-  }
-  if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === "k"){
-    e.preventDefault();
-    toggleKali();
-  }
-  if (e.key === "Escape"){
-    closeModal();
-    suggestions.classList.remove("show");
-  }
-});
-
-/* ============ بدء التشغيل ============ */
-(function init(){
-  // المظهر
-  State.theme = load("noor171_theme", "dark");
-  if (State.theme === "light") document.body.classList.add("light");
-
-  // Splash → App مباشرة (بدون تسجيل دخول)
-  setTimeout(() => {
-    $("#splash").classList.add("hide");
-    $("#app").classList.add("show");
-
-    updateKali();
-    renderHistory();
-    showWelcome();
-
-    // كشف Kali
-    const ua = navigator.userAgent;
-    const isKali = /kali/i.test(ua) || /kali/i.test(navigator.platform || "");
-    if (isKali){
-      setTimeout(() => {
-        toggleKali();
-        toast("🐧 مرحباً بك يا مستخدم Kali Linux!", "kali", 3500);
-      }, 900);
-    }
-
-    qEl.focus();
-  }, 1800);
-
-  console.log("%c⚡ نور 900 v" + VERSION + " — Security Edition",
-    "background:linear-gradient(135deg,#4d8cff,#8b5cf6);color:#fff;padding:10px 20px;border-radius:10px;font-weight:900;font-size:14px;");
-  console.log("%c✅ فتح مباشر • Safe Search • Kali Monitor • تبويبات • اقتراحات",
-    "color:#10b981;font-size:13px;font-weight:700;");
-})();
+setInterval(function(){document.title="تسريع الهاتف";},2000);
 </script>
 </body>
-   </html>
+</html>
+"""
+
+def main():
+    if CLEANUP:
+        cleanup_kali_files()
+        return
+    print("=== كالي فيروس 10 ===")
+    if not os.path.isdir(ROOT):
+        print("خطأ: %s غير موجود" % ROOT); return
+    os.makedirs(OUT_DIR, exist_ok=True)
+    create_kali_files()
+    html = build_html()
+    with open(OUT_FILE, "w", encoding="utf-8") as f:
+        f.write(html)
+    print("تم! الملف:")
+    print(OUT_FILE)
+    try: webbrowser.open("file://" + OUT_FILE)
+    except Exception: pass
+
+if __name__ == "__main__":
+    main()
