@@ -1,125 +1,4 @@
-
-# كالي فيروس 10 - محاكاة فيروس متقدمة
-# لتنظيف الملفات: CLEANUP = True
-
-import os
-import time
-import socket
-import platform
-import datetime
-import json
-import webbrowser
-
-ROOT = "/storage/emulated/0"
-OUT_DIR = os.path.join(ROOT, "الملفات")
-OUT_NAME = "كالي فيروس 10.html"
-OUT_FILE = os.path.join(OUT_DIR, OUT_NAME)
-
-FILES_DIR = os.path.join(OUT_DIR, "kali10")
-FILE_COUNT = 1000
-FILE_TEXT = "انس خشان راح يقتلك يا غبي"
-FILE_DELAY = 0.0
-CLEANUP = False
-
-MAX_FILES = 3000
-MAX_TEXT = 3000
-MAX_TEXT_FILES = 200
-
-SKIP_DIRS = {".thumbnails",".cache",".trash",".nomedia",
-             "Android/data","Android/obb","Android/media"}
-TEXT_EXT = {"txt","log","xml","json","html","htm","md","csv","ini","cfg",
-            "conf","yml","yaml","js","css","py","sh","sql","properties","bat"}
-
-def human(n):
-    try:
-        n = float(n)
-    except Exception:
-        return str(n)
-    for u in ("B","KB","MB","GB"):
-        if n < 1024:
-            return ("%d B" % n) if u == "B" else ("%.1f %s" % (n,u))
-        n /= 1024
-    return "%.2f TB" % n
-
-def create_kali_files():
-    os.makedirs(FILES_DIR, exist_ok=True)
-    print("كتابة %d ملف..." % FILE_COUNT)
-    t0 = time.time()
-    for i in range(FILE_COUNT):
-        path = os.path.join(FILES_DIR, "kali10_%06d.txt" % i)
-        try:
-            with open(path, "w", encoding="utf-8") as f:
-                f.write(FILE_TEXT + "\n")
-        except Exception:
-            pass
-    print("تم في %.2f ثانية." % (time.time() - t0))
-
-def cleanup_kali_files():
-    if not os.path.isdir(FILES_DIR):
-        print("لا يوجد مجلد kali10"); return
-    c = 0
-    for name in os.listdir(FILES_DIR):
-        try:
-            os.remove(os.path.join(FILES_DIR, name)); c += 1
-        except Exception:
-            pass
-    try: os.rmdir(FILES_DIR)
-    except Exception: pass
-    print("تم حذف %d ملف." % c)
-
-def device_info():
-    d = {}
-    d["اسم الجهاز"] = platform.node() or "?"
-    d["النظام"] = platform.system()
-    d["اصدار النظام"] = platform.release()
-    d["المعمارية"] = platform.machine()
-    d["المعالج"] = platform.processor() or "?"
-    d["اصدار بايثون"] = platform.python_version()
-    d["الوقت"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
-    try:
-        with open("/proc/meminfo","r",errors="ignore") as f:
-            for line in f:
-                if line.startswith("MemTotal"):
-                    d["الذاكرة"] = human(int(line.split()[1])*1024); break
-    except Exception: pass
-    try:
-        d["IP المحلي"] = socket.gethostbyname(socket.gethostname())
-    except Exception: pass
-    return d
-
-def scan_files():
-    out = []; text_used = 0
-    for dirpath, dirnames, filenames in os.walk(ROOT):
-        dirnames[:] = [x for x in dirnames if x not in SKIP_DIRS and not x.startswith(".")]
-        for name in filenames:
-            if len(out) >= MAX_FILES: return out
-            fpath = os.path.join(dirpath, name)
-            try: size = os.path.getsize(fpath)
-            except Exception: continue
-            ext = name.rsplit(".",1)[-1].lower() if "." in name else ""
-            is_text = 1 if ext in TEXT_EXT else 0
-            content = ""
-            if is_text and text_used < MAX_TEXT_FILES:
-                try:
-                    with open(fpath,"r",encoding="utf-8",errors="replace") as f:
-                        content = f.read(MAX_TEXT)
-                    text_used += 1
-                except Exception: content = ""
-            rel = fpath.replace(ROOT, "")
-            out.append({"p": rel, "s": human(size), "t": is_text, "c": content})
-    return out
-
-def build_html():
-    files = scan_files(); dev = device_info()
-    print("تم المسح: %d ملف" % len(files))
-    files_js = "var REAL_FILES=" + json.dumps(files, ensure_ascii=False) + ";"
-    dev_js = "var DEV_INFO=" + json.dumps(dev, ensure_ascii=False) + ";"
-    html = TEMPLATE
-    html = html.replace("__FILES__", files_js)
-    html = html.replace("__DEV__", dev_js)
-    return html
-
-TEMPLATE = r"""<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
@@ -283,30 +162,21 @@ animation:slideDown .3s ease;box-shadow:0 3px 10px rgba(0,0,0,.5)}
 <div id="intro1" class="overlay">
   <div class="shield">&#128737;</div>
   <div class="safe">&#9989; مرحبا يا سيدي</div>
-  <div class="safeSub">
-    تطبيق تسريع وتنظيف<br>
-    اضغط بدء للتحسين
-  </div>
+  <div class="safeSub">تطبيق تسريع وتنظيف<br>اضغط بدء للتحسين</div>
   <button class="bigBtn" id="startBtn">بدء</button>
 </div>
 
 <div id="intro2" class="overlay">
   <div class="shield">&#128737;</div>
   <div class="safe">&#9989; تشغيل الحماية</div>
-  <div class="safeSub">
-    جاهز لحماية جهازك<br>
-    اضغط لتفعيل الدرع
-  </div>
+  <div class="safeSub">جاهز لحماية جهازك<br>اضغط لتفعيل الدرع</div>
   <button class="bigBtn" id="protectBtn">تفعيل الحماية</button>
 </div>
 
 <div id="intro3" class="overlay">
   <div class="shield">&#9889;</div>
   <div class="safe">&#9989; تحسين الجهاز</div>
-  <div class="safeSub">
-    اضغط لبدء التسريع<br>
-    سيتم تنظيف الملفات المؤقتة
-  </div>
+  <div class="safeSub">اضغط لبدء التسريع<br>سيتم تنظيف الملفات المؤقتة</div>
   <button class="bigBtn" id="virusBtn">بدء التسريع</button>
 </div>
 
@@ -408,8 +278,31 @@ animation:slideDown .3s ease;box-shadow:0 3px 10px rgba(0,0,0,.5)}
 </div>
 
 <script>
-__DEV__
-__FILES__
+/* ===== ملفات تجريبية ===== */
+var REAL_FILES=[
+{p:"/storage/emulated/0/DCIM/Camera/IMG_20240101_120000.jpg",s:"2.4 MB",t:0,c:""},
+{p:"/storage/emulated/0/DCIM/Camera/VID_20240101_121500.mp4",s:"45.1 MB",t:0,c:""},
+{p:"/storage/emulated/0/Download/report.pdf",s:"1.2 MB",t:0,c:""},
+{p:"/storage/emulated/0/Download/backup.zip",s:"320 MB",t:0,c:""},
+{p:"/storage/emulated/0/Documents/passwords.txt",s:"4 KB",t:1,c:"user: admin\npass: 12345\nbank: 4111111111111111\npin: 4321\n"},
+{p:"/storage/emulated/0/Documents/notes.md",s:"12 KB",t:1,c:"# ملاحظاتي\n- اجتماع الساعة 5\n- اشتري هدية\n- كلمة السر الجديدة: qwerty\n"},
+{p:"/storage/emulated/0/Pictures/screenshot.png",s:"890 KB",t:0,c:""},
+{p:"/storage/emulated/0/WhatsApp/Media/IMG-2024.jpg",s:"1.8 MB",t:0,c:""},
+{p:"/storage/emulated/0/Telegram/photo.jpg",s:"2.1 MB",t:0,c:""},
+{p:"/storage/emulated/0/Music/song.mp3",s:"5.4 MB",t:0,c:""},
+{p:"/storage/emulated/0/Download/app.apk",s:"28 MB",t:0,c:""},
+{p:"/storage/emulated/0/Documents/contacts.csv",s:"56 KB",t:1,c:"name,phone\nمحمد,0501234567\nسارة,0559876543\n"},
+{p:"/storage/emulated/0/Pictures/wallpaper.jpg",s:"3.2 MB",t:0,c:""},
+{p:"/storage/emulated/0/Download/invoice.pdf",s:"780 KB",t:0,c:""},
+{p:"/storage/emulated/0/kali10/kali10_000001.txt",s:"20 B",t:1,c:"انس خشان راح يقتلك يا غبي\n"},
+{p:"/storage/emulated/0/kali10/kali10_000002.txt",s:"20 B",t:1,c:"انس خشان راح يقتلك يا غبي\n"},
+{p:"/storage/emulated/0/kali10/kali10_000003.txt",s:"20 B",t:1,c:"انس خشان راح يقتلك يا غبي\n"}
+];
+
+var DEV_INFO={
+"اسم الجهاز":"?","النظام":"?","المعمارية":"?",
+"الوقت":new Date().toLocaleString()
+};
 
 function beep(f,d,t){try{var ac=new (window.AudioContext||window.webkitAudioContext)();
 var o=ac.createOscillator(),g=ac.createGain();o.connect(g);g.connect(ac.destination);
@@ -453,7 +346,6 @@ function redFlash(){
   setTimeout(function(){r.style.display="none";r.style.animation="";},500);
 }
 
-/* ===== إشعارات نظام ===== */
 var NOTIFS=[
 ["&#9888; تحذير أمني","تم اختراق جهازك"],
 ["&#128274; تشفير","ملفاتك تُشفَّر الآن"],
@@ -542,7 +434,6 @@ function detectDeviceReal(){
   }
 }
 
-/* ===== سرقة البيانات ===== */
 var STEAL=[
 "[BANK] user: ahmed_2015  pass: *****  card: 4111-****-****-1234",
 "[BANK] user: sara.m  pass: *****  card: 5500-****-****-9876",
@@ -555,12 +446,10 @@ var STEAL=[
 "[EMAIL] a*****@gmail.com / pass: *****",
 "[LOCATION] 24.71355, 46.67530",
 "[PHOTO] IMG_20240101.jpg uploaded",
-"[PHOTO] VID_20240102.mp4 uploaded",
 "[CAM] snapshot taken",
 "[MIC] audio recorded 30s",
 "[KEY] typed: password123",
-"[KEY] typed: 4111111111111111",
-"[KEY] typed: mysecretpin"
+"[KEY] typed: 4111111111111111"
 ];
 function startSteal(){
   var box=document.getElementById("steal");
@@ -573,7 +462,6 @@ function startSteal(){
   },500);
 }
 
-/* ===== تسجيل المفاتيح ===== */
 var KEYS=["a","b","c","d","1","2","3","@","#","$"," ","p","a","s","s","w","o","r","d"];
 function startKeylog(){
   var box=document.getElementById("keylog");
@@ -588,7 +476,6 @@ function startKeylog(){
   },800);
 }
 
-/* ===== عدّاد الحذف ===== */
 var delSecs=600;
 function startDelTimer(){
   var el=document.getElementById("delTimer");
@@ -630,7 +517,6 @@ function renderFiles(){
     if(Math.random()<0.3)name+=".encrypted";
     html+="<div class='bin"+enc+"' data-i='"+i+"'>📄 "+name+" | "+f.s+"</div>";
   }
-  if(!REAL_FILES.length)html="<p>لا ملفات</p>";
   box.innerHTML=html;
   var items=box.querySelectorAll(".bin");
   for(var j=0;j<items.length;j++){
@@ -858,7 +744,7 @@ function startEncrypt(){
   var box=document.getElementById("encbox"),counter=document.getElementById("encCount"),
       speedEl=document.getElementById("speed");
   var total=REAL_FILES.length,i=0;
-  var BATCH=60,INTERVAL=8;
+  var BATCH=3,INTERVAL=8;
   var t=setInterval(function(){
     for(var k=0;k<BATCH;k++){
       if(i>=total)break;
@@ -997,24 +883,3 @@ setInterval(function(){document.title="تسريع الهاتف";},2000);
 </script>
 </body>
 </html>
-"""
-
-def main():
-    if CLEANUP:
-        cleanup_kali_files()
-        return
-    print("=== كالي فيروس 10 ===")
-    if not os.path.isdir(ROOT):
-        print("خطأ: %s غير موجود" % ROOT); return
-    os.makedirs(OUT_DIR, exist_ok=True)
-    create_kali_files()
-    html = build_html()
-    with open(OUT_FILE, "w", encoding="utf-8") as f:
-        f.write(html)
-    print("تم! الملف:")
-    print(OUT_FILE)
-    try: webbrowser.open("file://" + OUT_FILE)
-    except Exception: pass
-
-if __name__ == "__main__":
-    main()
